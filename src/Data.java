@@ -3,10 +3,10 @@ public class Data {
     private int mese;
     private int anno;
 
-    public Data(int giorno, int mese, int anno){
-        this.giorno = giorno;
-        this.mese = mese;
+    public Data(int anno, int mese, int giorno){
         this.anno = anno;
+        this.mese = mese;
+        this.giorno = giorno;
     }
 
     @Override
