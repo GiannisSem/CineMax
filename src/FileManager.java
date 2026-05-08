@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class FileManager {
@@ -13,6 +12,7 @@ public class FileManager {
                 String riga = br.readLine(); // la prima è l'intestazione
                 while ((riga = br.readLine()) != null) {
                     Proiezione p = getProiezione(riga);
+                    System.out.println("ok");
                     lista.add(p);
                 }
 
@@ -26,16 +26,34 @@ public class FileManager {
         return lista;
     }
 
-    // ERRORE MI DA DOPPIE "" QUANDO SI SPLIT FA PARTE DELLA STRINGA
     private static Proiezione getProiezione(String riga) {
-        String[] attributi = riga.split(",");
-        System.out.println(Arrays.toString(attributi));
+        // System.out.println(riga);
+        String[] attributi = splitAttributi(riga);
         DataOra dataOra = new DataOra(attributi[0]);
         Film film = new Film(attributi[1], attributi[2], attributi[3],
                 Integer.parseInt(attributi[4]), Integer.parseInt(attributi[5]), Integer.parseInt(attributi[6]));
-        System.out.println(film.getTitolo());
         return new Proiezione(dataOra, film, Double.parseDouble(attributi[7]));
     }
 
+    private static String[] splitAttributi(String riga){
+        String[] attributi = new String[8];
+        int attr = 0;
+        System.out.println(riga);
+        String temp = "";
+        boolean isDentro = false;
+        for (int i = 0; i < riga.length(); i++) {
+            char c = riga.charAt(i);
+            if (c == '\"')
+                isDentro = !isDentro;
+            else if (c == ',' && !isDentro) {
+                attributi[attr++] = temp;
+                temp = "";
+            } else {
+                temp += c;
+            }
+        }
 
+        attributi[attr] = temp;
+        return attributi;
+    }
 }

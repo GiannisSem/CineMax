@@ -13,16 +13,11 @@ public class DataOra {
 
     // vedere se tenerlo (errore virgolette interne)
     public DataOra(String dataOra){
-        String data = dataOra.split(" ")[0].substring(1);
-        String[] attr_data = data.split("-");
-        String ora = dataOra.split(" ")[1];
-        ora = ora.substring(0, ora.length()-1);
-        String[] attr_ora = ora.split(":");
-        System.out.println(data);
-        System.out.println(ora);
+        String[] data = dataOra.split(" ")[0].split("-");
+        String[] ora = dataOra.split(" ")[1].split(":");
 
-        this.data = new Data(Integer.parseInt(attr_data[0]), Integer.parseInt(attr_data[1]), Integer.parseInt(attr_data[2]));
-        this.ora = new Ora(Integer.parseInt(attr_ora[0]), Integer.parseInt(attr_ora[1]), Integer.parseInt(attr_ora[2]));
+        this.data = new Data(Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]));
+        this.ora = new Ora(Integer.parseInt(ora[0]), Integer.parseInt(ora[1]), Integer.parseInt(ora[2]));
     }
 
     @Override
