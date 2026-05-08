@@ -13,4 +13,14 @@ public class Data {
     public String toString() {
         return String.format("%d-%d-%d", anno, mese, giorno);
     }
+
+    public int getAnno() {
+        return anno;
+    }
+    public int getMese() {
+        return mese;
+    }
+    public int getGiorno() {
+        return giorno;
+    }
 }
