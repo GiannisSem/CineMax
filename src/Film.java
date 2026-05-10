@@ -1,4 +1,8 @@
-public class Film {
+import java.io.Serializable;
+
+public class Film implements Serializable, Comparable {
+    private static final long serialVersionUID = 1L;
+
     private String titolo;
     private String genere;
     private String regista;
@@ -18,6 +22,11 @@ public class Film {
     @Override
     public String toString(){
         return String.format("%s %s %s %d %d %d", titolo, genere, regista, annoUscita, durata, vmeta);
+    }
+
+    @Override
+    public int compareTo(Object altro) {
+        return titolo.compareTo(((Film) altro).titolo);
     }
 
     public String getTitolo(){

@@ -1,4 +1,8 @@
-public class Ora {
+import java.io.Serializable;
+
+public class Ora implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int ore;
     private int minuti;
     private int secondi;

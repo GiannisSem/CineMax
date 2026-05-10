@@ -1,4 +1,8 @@
-public class Data {
+import java.io.Serializable;
+
+public class Data implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int giorno;
     private int mese;
     private int anno;

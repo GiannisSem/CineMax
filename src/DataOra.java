@@ -1,4 +1,8 @@
-public class DataOra {
+import java.io.Serializable;
+
+public class DataOra implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Data data;
     private Ora ora;
 
