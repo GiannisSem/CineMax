@@ -12,3 +12,4 @@ POI
   - utenti: anche
 - Implementare bene le classi utenti
 - Capire quando scrivere / aggiornare files
+- Fix data e ora -> valori singoli vanno preceduti da zeri
