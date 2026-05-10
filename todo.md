@@ -1,7 +1,7 @@
 OGGI
-- creare classi Film e Proiezione.
-- creare file binario corrispondente al csv.
-- Creare classe FileUtil - leggi, scrivi.
+- creare classi Film e Proiezione. (FATTO)
+- creare file binario corrispondente al csv. (FATTO, da ordinare)
+- Creare classe FileManager - leggi, scrivi. (FATTO) 
 - creare struttura classi Cliente NR, R, Bigli, Proiez + loginMager
 - Progettazione grafica / backend menù.
 

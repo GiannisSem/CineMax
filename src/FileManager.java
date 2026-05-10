@@ -6,6 +6,7 @@ public class FileManager {
     // paths
     public static final String path_proiezioni = "data/proiezioni.dat";
     public static final String path_film = "data/film.dat";
+    public static final String path_utenti = "data/utenti.dat";
 
     // metodi
     public static List<Proiezione> leggiProiezioni_csv() {
@@ -73,11 +74,10 @@ public class FileManager {
 
     // fonte: https://www.iprogrammatori.it/forum-programmazione/java/arraylist-con-file-binari-t37366.html
     public static List<Proiezione> deserializza_proiezioni(){
-        String path = "data/proiezioni.dat";
         try {
             List<Proiezione> lista = new ArrayList<>();
 
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path_proiezioni));
             lista = (List<Proiezione>) ois.readObject();
             ois.close();
             return lista;
@@ -88,12 +88,25 @@ public class FileManager {
     }
 
     public static List<Film> deserializza_film(){
-        String path = "data/film.dat";
         try {
             List<Film> lista = new ArrayList<>();
 
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path_film));
             lista = (List<Film>) ois.readObject();
+            ois.close();
+            return lista;
+        } catch (ClassNotFoundException | IOException ex){
+            System.out.println(ex.getMessage());
+        }
+        return null;
+    }
+
+    public static List<Utente> deserializza_utenti(){
+        try {
+            List<Utente> lista = new ArrayList<>();
+
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path_utenti));
+            lista = (List<Utente>) ois.readObject();
             ois.close();
             return lista;
         } catch (ClassNotFoundException | IOException ex){
