@@ -1,5 +1,3 @@
-import java.io.Serializable;
-
 public class Utente {
 
     private String nome;
@@ -81,6 +79,10 @@ public class Utente {
 
     @Override
     public String toString(){
+        return String.format(nome + ";" + cognome + ";" +  username + ";" + dataNascita + ";" + getPassword() + ";" + domicilio + ";" + ruolo.toString());
+    }
+
+    public String toInfo(){
         return String.format(nome + " " + cognome + " " +  username + " " + dataNascita + " " + getPassword() + " " + domicilio + " " + ruolo.toString());
     }
 
