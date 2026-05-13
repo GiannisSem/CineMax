@@ -1,7 +1,6 @@
 import java.io.Serializable;
 
-public class Utente implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Utente {
 
     private String nome;
     private String cognome;
