@@ -1,6 +1,8 @@
+import java.io.Serial;
 import java.io.Serializable;
 
-public class DataOra implements Serializable {
+public class DataOra implements Serializable, Comparable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private Data data;
@@ -27,6 +29,14 @@ public class DataOra implements Serializable {
     @Override
     public String toString(){
         return data + " " + ora;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        DataOra other = (DataOra) o;
+        if (data.equals(other.data))
+            return ora.compareTo(other.ora);
+        return data.compareTo(other.data);
     }
 
     public Data getData(){

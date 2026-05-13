@@ -36,7 +36,7 @@ public class FileManager {
         DataOra dataOra = new DataOra(attributi[0]);
         Film film = new Film(attributi[1], attributi[2], attributi[3],
                 Integer.parseInt(attributi[4]), Integer.parseInt(attributi[5]), Integer.parseInt(attributi[6]));
-        return new Proiezione(dataOra, film, Double.parseDouble(attributi[7]));
+        return new Proiezione(dataOra, film, Double.parseDouble(attributi[7]), new Sala(10, 20));
     }
 
     private static String[] splitAttributi(String riga){

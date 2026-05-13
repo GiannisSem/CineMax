@@ -1,6 +1,8 @@
+import java.io.Serial;
 import java.io.Serializable;
 
-public class Ora implements Serializable {
+public class Ora implements Serializable, Comparable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private int ore;
@@ -18,6 +20,19 @@ public class Ora implements Serializable {
         return String.format("%d:%d:%d", ore, minuti, secondi);
     }
 
+    @Override
+    public int compareTo(Object o) {
+        Ora other = (Ora) o;
+        // hh:mm:ss
+        if (ore == other.ore){
+            if(minuti == other.minuti){
+                return Integer.compare(secondi, other.secondi);
+            }
+            return Integer.compare(minuti, other.minuti);
+        }
+        return Integer.compare(ore, other.ore);
+    }
+    
     public int getOre() {
         return ore;
     }
