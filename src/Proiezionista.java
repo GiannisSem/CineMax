@@ -14,7 +14,7 @@ public class Proiezionista extends Utente {
         List<Film> film = new ArrayList<Film>(FileManager.deserializza_film());
         for(Film f : film){
             if(f.getTitolo().equals(titolo)){
-                return false;
+                return false; // Creare una classe CinemaManager con metodi di ricerca o altro che potrebbero servire a tutti
             }
         }
         film.add(new Film(titolo, genere, regista, annoUscita, durata, vmeta));
