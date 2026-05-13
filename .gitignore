@@ -33,3 +33,4 @@ bin/
 *.iml
 gen/
 bin/*.jar
+src/FileManagerTester.java
