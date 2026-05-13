@@ -32,5 +32,6 @@ bin/
 .idea/
 *.iml
 gen/
+data/*.*
 bin/*.jar
 src/FileManagerTester.java
