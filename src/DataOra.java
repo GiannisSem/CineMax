@@ -5,8 +5,8 @@ public class DataOra implements Serializable, Comparable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Data data;
-    private Ora ora;
+    private final Data data;
+    private final Ora ora;
 
     public DataOra(Data data, Ora ora){
         this.data = data;

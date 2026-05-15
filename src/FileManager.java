@@ -1,4 +1,6 @@
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +9,8 @@ public class FileManager {
     public static final String path_proiezioni = "data/proiezioni.dat";
     public static final String path_film = "data/film.dat";
     public static final String path_utenti = "data/utenti.dat";
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static final DataOra oggi = new DataOra(LocalDateTime.now().format(formatter));
 
     // metodi
     public static List<Proiezione> leggiProiezioni_csv() {
@@ -36,7 +40,7 @@ public class FileManager {
         DataOra dataOra = new DataOra(attributi[0]);
         Film film = new Film(attributi[1], attributi[2], attributi[3],
                 Integer.parseInt(attributi[4]), Integer.parseInt(attributi[5]), Integer.parseInt(attributi[6]));
-        return new Proiezione(dataOra, film, Double.parseDouble(attributi[7]), new Sala(10, 20));
+        return new Proiezione(dataOra, film, Double.parseDouble(attributi[7]), new Sala());
     }
 
     private static String[] splitAttributi(String riga){
@@ -75,10 +79,8 @@ public class FileManager {
     // fonte: https://www.iprogrammatori.it/forum-programmazione/java/arraylist-con-file-binari-t37366.html
     public static List<Proiezione> deserializza_proiezioni(){
         try {
-            List<Proiezione> lista = new ArrayList<>();
-
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path_proiezioni));
-            lista = (List<Proiezione>) ois.readObject();
+            List<Proiezione> lista = (List<Proiezione>) ois.readObject();
             ois.close();
             return lista;
         } catch (ClassNotFoundException | IOException ex){
@@ -89,10 +91,8 @@ public class FileManager {
 
     public static List<Film> deserializza_film(){
         try {
-            List<Film> lista = new ArrayList<>();
-
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path_film));
-            lista = (List<Film>) ois.readObject();
+            List<Film> lista = (List<Film>) ois.readObject();
             ois.close();
             return lista;
         } catch (ClassNotFoundException | IOException ex){
@@ -103,10 +103,8 @@ public class FileManager {
 
     public static List<Utente> deserializza_utenti(){
         try {
-            List<Utente> lista = new ArrayList<>();
-
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path_utenti));
-            lista = (List<Utente>) ois.readObject();
+            List<Utente> lista = (List<Utente>) ois.readObject();
             ois.close();
             return lista;
         } catch (ClassNotFoundException | IOException ex){

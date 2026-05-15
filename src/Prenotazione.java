@@ -6,12 +6,12 @@ public class Prenotazione implements Serializable {
     private static int codicePrenotazione = 0;
     private Cliente cliente;
     private Proiezione proiezione;
-    private Posto posto;
+    //private Posto posto;
     public Prenotazione(Cliente cliente, Proiezione proiezione, int numero, char fila) {
         codicePrenotazione++;
         this.cliente = cliente;
         this.proiezione = proiezione;
-        posto = new Posto(numero, fila); // NO! Per ogni prenotazione si possono prendere più posti, posti_prenotati ha formato "2G-3G-4G"
+        //posto = new Posto(numero, fila); // NO! Per ogni prenotazione si possono prendere più posti, posti_prenotati ha formato "2G-3G-4G"
     }
     public int getCodicePrenotazione() {
         return codicePrenotazione;
@@ -25,8 +25,8 @@ public class Prenotazione implements Serializable {
     public double getPrezzo(){
         return proiezione.getCostoBiglietto();
     }
-    public String posto(){
+    /*public String posto(){
         return posto.toString();
-    }
+    }*/
 
 }
