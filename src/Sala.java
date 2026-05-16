@@ -7,69 +7,68 @@ public class Sala implements Serializable {
     private static final int lettere = 10;
     private static final int numeri = 20;
 
-    private byte[] posti;
+    private boolean[] posti;
 
     public Sala(){
-        this.posti = new byte[25];
+        this.posti = new boolean[200];
     }
 
-    public Sala(byte[] posti) {
+    public Sala(boolean[] posti) {
         this.posti = posti;
     }
 
     public void stampa(){
-        for (int i = 0; i < numeri; i++) {
-            System.out.print(i+1 + " ");
+        // Riga dei numeri (Intestazione colonne)
+        System.out.print("    "); // Spazio per allineare con le lettere
+        for (int i = 1; i <= numeri; i++) {
+            System.out.print(String.format("%2d ", i)); // Allinea i numeri a 2 cifre
         }
-        System.out.println();
-        for (int i = 0; i < lettere; i++) {
+        System.out.println("\n   " + "---".repeat(numeri));
+
+        // Stampa da J (in alto) a A (in basso, vicino allo schermo)
+        for (int i = lettere - 1; i >= 0; i--) {
             char fila = (char) ('A' + i);
             System.out.print(fila + " | ");
             for (int j = 1; j <= numeri; j++) {
-                System.out.print(isPostoDisponibile(fila, j) ? "X" : ".");
+                // Stampa "." se libero, " X" se occupato (con spazio per allineamento)
+                System.out.print(isPostoDisponibile(fila, j) ? " . " : " X ");
             }
             System.out.println();
         }
+        System.out.println("\n                           [ SCHERMO ]");
     }
 
     // FUNZIONALITA'
     public boolean isPostoDisponibile(char lettera, int numero){
         int indice = (lettera - 'A') * numeri + numero-1; // [0, 199]
-        int indiceByte = indice / 8;
-        int posizioneBit = indice % 8;
-
-        return (posti[indiceByte] & (1 << posizioneBit)) != 0;
+        return !posti[indice];
     }
 
     public boolean setPosto(char lettera, int numero, boolean SR) {
-        if (!isPostoDisponibile(lettera, numero))
+        // se si vuole occupare il posto ma non è disponibile.
+        if (SR && !isPostoDisponibile(lettera, numero))
             return false;
 
         int indice = (lettera - 'A') * 20 + (numero - 1);
-        int indiceByte = indice / 8;
-        int posizioneBit = indice % 8;
-
-        if (SR){
-            // Set: Forza il bit a 1 (Operazione OR)
-            posti[indiceByte] |= (byte) (1 << posizioneBit);
-        } else {
-            // Reset: Forza il bit a 0 (Operazione AND con maschera invertita)
-            posti[indiceByte] &= (byte) ~(1 << posizioneBit);
-        }
+        posti[indice] = SR;
         return true;
     }
 
     public int postiOccupati(){
         int occupati = 0;
-        for (byte b : posti) {
-            // Integer.bitCount conta quanti bit sono a '1' in un intero.
-            // b & 0xFF serve per evitare problemi con i numeri negativi (signed byte).
-            occupati += Integer.bitCount(b & 0xFF);
+        for (boolean posto : posti) {
+            occupati += (posto ? 1 : 0);
         }
         return occupati;
     }
 
     public int postiDisponibili(){
         return 200 - postiOccupati();
+    }
+
+    public void svuotaSala(){
+        for (int i = 0; i < 200; i++) {
+            posti[i] = false;
+        }
     }
 }

@@ -17,7 +17,7 @@ public class Ora implements Serializable, Comparable {
 
     @Override
     public String toString(){
-        return String.format("%d:%d:%d", ore, minuti, secondi);
+        return String.format("%02d:%02d:%02d", ore, minuti, secondi);
     }
 
     @Override

@@ -17,7 +17,7 @@ public class Data implements Serializable, Comparable {
 
     @Override
     public String toString() {
-        return String.format("%d-%d-%d", anno, mese, giorno);
+        return String.format("%04d-%02d-%02d", anno, mese, giorno);
     }
 
     @Override
