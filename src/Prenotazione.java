@@ -6,12 +6,12 @@ public class Prenotazione implements Serializable {
     private static int codicePrenotazione = 0;
     private Cliente cliente;
     private Proiezione proiezione;
-    //private Posto posto;
-    public Prenotazione(Cliente cliente, Proiezione proiezione, int numero, char fila) {
+    public Prenotazione(Cliente cliente, Proiezione proiezione, String posti) {
         codicePrenotazione++;
         this.cliente = cliente;
         this.proiezione = proiezione;
-        //posto = new Posto(numero, fila); // NO! Per ogni prenotazione si possono prendere più posti, posti_prenotati ha formato "2G-3G-4G"
+        if(!assegnaPosto(posti))
+            throw new IllegalArgumentException("Posto non valido");
     }
     public int getCodicePrenotazione() {
         return codicePrenotazione;
@@ -25,8 +25,22 @@ public class Prenotazione implements Serializable {
     public double getPrezzo(){
         return proiezione.getCostoBiglietto();
     }
-    /*public String posto(){
-        return posto.toString();
-    }*/
 
+
+    private boolean assegnaPosto(String posti){                                 // formato stringa "2G-3G-4G"
+        String [] arrPosti = posti.split("-");
+        for(String s : arrPosti){
+            char lettera = s.charAt(s.length() - 1);                            //prendo l'ultimo carattere
+            int numero = Integer.parseInt(s.substring(0, s.length() - 1));      //faccio il substring dal primo valore all'ultimo non compreso anche se ho 12A prendo tutto il 12
+            if(!proiezione.getSala().isPostoDisponibile(lettera, numero))
+                return false;
+            proiezione.getSala().setPosto(lettera, numero, true);
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(codicePrenotazione + ";" + cliente.toString() + ";" + proiezione.toString());
+    }
 }
