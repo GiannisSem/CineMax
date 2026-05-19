@@ -1,8 +1,4 @@
-import java.io.Serializable;
-
-public class Prenotazione implements Serializable {
-    private static final long serialVersionUID = 1L;
-
+public class Prenotazione {
     private static int codicePrenotazione = 0;
     private Cliente cliente;
     private Proiezione proiezione;
@@ -32,9 +28,9 @@ public class Prenotazione implements Serializable {
         for(String s : arrPosti){
             char lettera = s.charAt(s.length() - 1);                            //prendo l'ultimo carattere
             int numero = Integer.parseInt(s.substring(0, s.length() - 1));      //faccio il substring dal primo valore all'ultimo non compreso anche se ho 12A prendo tutto il 12
-            if(!proiezione.getSala().isPostoDisponibile(lettera, numero))
+            if(!proiezione.isPostoDisponibile(lettera, numero))
                 return false;
-            proiezione.getSala().setPosto(lettera, numero, true);
+            proiezione.prenotaPosto(lettera, numero);
         }
         return true;
     }

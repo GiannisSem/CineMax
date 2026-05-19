@@ -22,7 +22,7 @@ public class Proiezionista extends Utente {
         return true;
     }
     public Proiezione cercaProiezione(Proiezione proiezione){
-        List<Proiezione> proiezioni = new ArrayList<>(FileManager.deserializza_proiezioni());
+        List<Proiezione> proiezioni = FileManager.deserializza_proiezioni();
         for(Proiezione p : proiezioni){
             if(p == proiezione)
                 return proiezione;
@@ -30,7 +30,7 @@ public class Proiezionista extends Utente {
         return null;
     }
     public DataOra cercaDataOra(DataOra dataOra){
-        List<Proiezione> proiezioni = new ArrayList<>(FileManager.deserializza_proiezioni());
+        List<Proiezione> proiezioni = FileManager.deserializza_proiezioni();
         List<DataOra> date = new ArrayList<>();
         for (Proiezione p : proiezioni) {
             date.add(p.getDataOra());
