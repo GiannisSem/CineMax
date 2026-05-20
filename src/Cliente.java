@@ -11,8 +11,8 @@ public class Cliente extends Utente {
     }
 
     // Da fare
-    public String cercaProiezioni(){
-
+    public Proiezione cercaProiezioni(DataOra data){
+        return CineMaxManager.cercaProiezione(data);
     }
     public boolean inserisciPrenotazione(String titolo, DataOra dataOra, String posti){
 
