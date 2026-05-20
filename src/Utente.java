@@ -47,7 +47,7 @@ public class Utente {
         this.cognome = cognome;
     }
 
-    private void setUsername(String username) {
+    public void setUsername(String username) {
         if(username == null)
             throw new IllegalArgumentException("Username non valido");
         this.username = username;
@@ -63,7 +63,7 @@ public class Utente {
          this.password = Base64.getEncoder().encodeToString(hash);
      }
 
-    private void setDomicilio(String domicilio) {
+    public void setDomicilio(String domicilio) {
         if(domicilio == null)
             throw new IllegalArgumentException("Domicilio non valido");
         this.domicilio = domicilio;
