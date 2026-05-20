@@ -1,22 +1,30 @@
+import java.security.NoSuchAlgorithmException;
+
 public class Cliente extends Utente {
 
-    public Cliente(String nome, String cognome, String username, String password, int giorno, int mese, int anno, String domicilio) {
+    public Cliente(String nome, String cognome, String username, String password, int giorno, int mese, int anno, String domicilio) throws NoSuchAlgorithmException {
         super(nome, cognome, username, password, giorno, mese, anno, domicilio, Ruolo.CLIENTE);
     }
 
-    public Cliente(String nome, String cognome, String username, String password, String domicilio){
+    public Cliente(String nome, String cognome, String username, String password, String domicilio) throws NoSuchAlgorithmException {
         super(nome, cognome, username, password, domicilio, Ruolo.CLIENTE);
     }
 
-    /* Da fare
-    public boolean inserisciPrenotazione(){ todo fare nel file manager file prenotazioni
+    // Da fare
+    public String cercaProiezioni(){
 
     }
-    public String visuaPrenotazione(){ todo fare nel file manager file prenotazioni
+    public boolean inserisciPrenotazione(String titolo, DataOra dataOra, String posti){
 
     }
-    public boolean modificaPrenotazione(){ todo fare nel file manager file prenotazioni
+    public String visuaPrenotazione(){
+        return
+    }
+    public boolean cancellaPrenotazione(int codPrenotazione){
 
     }
-    */
+    public boolean modificaPrenotazione(int codPrenotazione, Data dataNuova){
+
+    }
+
 }

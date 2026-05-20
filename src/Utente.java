@@ -1,3 +1,8 @@
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+
 public class Utente {
 
     private String nome;
@@ -8,11 +13,11 @@ public class Utente {
     private String domicilio;
     private Ruolo ruolo;
 
-    public Utente(String nome, String cognome, String username, String password, int giorno, int mese, int anno, String domicilio, Ruolo ruolo){
+    public Utente(String nome, String cognome, String username, String password, int giorno, int mese, int anno, String domicilio, Ruolo ruolo) throws NoSuchAlgorithmException {
         setNome(nome);
         setCognome(cognome);
         setUsername(username);
-        //setPassword(password);
+        setPassword(password);
         this.dataNascita = new Data(anno, mese, giorno);
         setDomicilio(domicilio);
         if(ruolo == null){
@@ -21,11 +26,11 @@ public class Utente {
         this.ruolo = ruolo;
     }
 
-    public Utente (String nome, String cognome, String username, String password, String domicilio, Ruolo ruolo){
+    public Utente (String nome, String cognome, String username, String password, String domicilio, Ruolo ruolo) throws NoSuchAlgorithmException {
         setNome(nome);
         setCognome(cognome);
         setUsername(username);
-        //setPassword(password);
+        setPassword(password);
         setDomicilio(domicilio);
         this.ruolo = ruolo;
     }
@@ -48,7 +53,15 @@ public class Utente {
         this.username = username;
     }
 
-    // private void setPassword(String password) {} //todo fare hash
+    //fonte: https://stackoverflow.com/questions/5531455/how-to-hash-some-string-with-sha-256-in-java
+     private void setPassword(String password) throws NoSuchAlgorithmException {
+        if(password == null)
+            throw new IllegalArgumentException("Password non valido");
+
+         MessageDigest digest = MessageDigest.getInstance("SHA-256");
+         byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+         this.password = Base64.getEncoder().encodeToString(hash);
+     }
 
     private void setDomicilio(String domicilio) {
         if(domicilio == null)
@@ -66,13 +79,13 @@ public class Utente {
     public String getUsername() {
         return username;
     }
-    public String getPassword() { //todo fare hash
+    private String getPassword() {
         return  password;
     }
-    public String getDomicilio() {
+    private String getDomicilio() {
         return domicilio;
     }
-    public String getRuolo() {
+    private String getRuolo() {
         return ruolo.toString();
     }
 
@@ -82,6 +95,7 @@ public class Utente {
         return String.format(nome + ";" + cognome + ";" +  username + ";" + dataNascita + ";" + getPassword() + ";" + domicilio + ";" + ruolo.toString());
     }
 
+    //zini se vuoi modifica
     public String toInfo(){
         return String.format(nome + " " + cognome + " " +  username + " " + dataNascita + " " + getPassword() + " " + domicilio + " " + ruolo.toString());
     }

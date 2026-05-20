@@ -31,7 +31,8 @@ RICHIESTE:
   - Cancellare le prenotazioni (se riusciamo anche modifica).
   - Logout.
 - Bigliettai:
-  - Cercare Proiezioni (in base a titolo, genere, data o costo_biglietto)
+  - Cercare Prenotazione nella data odierna
+  - Cercare una prenotazione
   - Logout
 - Utenti: 
   - Cifrare password HASH DIGEST.
