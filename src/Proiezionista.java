@@ -12,7 +12,7 @@ public class Proiezionista extends Utente {
     }
 
     public boolean aggiungiFilm(String titolo, String genere, String regista, int annoUscita, int durata, int vmeta){
-
+        return true;
     }
     public boolean aggiungiProiezione(DataOra dataOra, String titolo, String genere, String regista, int annoUscita, int durata, int vmeta, double costoBiglietto){
         return CineMaxManager.inserisciProiezione(dataOra, new Film(titolo, genere, regista, annoUscita, durata, vmeta), costoBiglietto);
@@ -21,10 +21,10 @@ public class Proiezionista extends Utente {
         return CineMaxManager.inserisciProiezione(dataOra, film, costoBiglietto);
     }
     public boolean modificaDataProiezione(DataOra dataOraOld, DataOra dataOraNew){
-
+        return true;
     }
     public boolean eliminaProiezione(DataOra dataOra){
-
+        return true;
     }
 
 //    public boolean aggiungiFilm(String titolo, String genere, String regista, int annoUscita, int durata, int vmeta){

@@ -1,4 +1,5 @@
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 public class Cliente extends Utente {
 
@@ -11,20 +12,20 @@ public class Cliente extends Utente {
     }
 
     // Da fare
-    public Proiezione cercaProiezioni(DataOra data){
-        return CineMaxManager.cercaProiezione(data);
+    public List<Proiezione> cercaProiezioni(String titolo){
+        return CineMaxManager.cercaProiezione_Titolo(FileManager.deserializza_proiezioni(), titolo);
     }
     public boolean inserisciPrenotazione(String titolo, DataOra dataOra, String posti){
-
+        return true;
     }
     public String visuaPrenotazione(){
-        return
+        return  null;
     }
     public boolean cancellaPrenotazione(int codPrenotazione){
-
+        return true;
     }
     public boolean modificaPrenotazione(int codPrenotazione, Data dataNuova){
-
+        return true;
     }
 
 }
