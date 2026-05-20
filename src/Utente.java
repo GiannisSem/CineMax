@@ -97,7 +97,7 @@ public class Utente {
 
     //zini se vuoi modifica
     public String toInfo(){
-        return String.format(nome + " " + cognome + " " +  username + " " + dataNascita + " " + getPassword() + " " + domicilio + " " + ruolo.toString());
+        return String.format("Nome:%n" + nome + "Cognome:%n" + cognome + "Username:%n" +  username + "Data di nascita:%n" + dataNascita + "Domicilio:%n " + domicilio);
     }
 
 }
