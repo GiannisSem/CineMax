@@ -42,4 +42,8 @@ public class Ora implements Serializable, Comparable {
     public int getSecondi() {
         return secondi;
     }
+
+    public int getOraInMinutiTot(){
+        return ore * 60 + minuti;
+    }
 }
