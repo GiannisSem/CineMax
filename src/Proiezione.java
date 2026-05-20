@@ -31,6 +31,11 @@ public class Proiezione implements Serializable {
         return dataOra + " " + film + " " + costoBiglietto + " " + sala;
     }
 
+    public String toInfo(){
+        // todo: format info proiezione
+        return "";
+    }
+
     public DataOra getDataOra(){
         return dataOra;
     }

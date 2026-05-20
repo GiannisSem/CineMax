@@ -45,4 +45,9 @@ public class DataOra implements Serializable, Comparable {
     public Ora getOra() {
         return ora;
     }
+
+    public DataOra aggiungi(int minuti){
+        // todo: aggiungi minuti ad una data.
+        return null;
+    }
 }
