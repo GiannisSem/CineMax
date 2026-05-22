@@ -34,6 +34,14 @@ public class Utente {
         setDomicilio(domicilio);
         this.ruolo = ruolo;
     }
+    public Utente(Ruolo ruolo) throws NoSuchAlgorithmException {
+        setNome("");
+        setCognome("");
+        setUsername("");
+        setPassword("");
+        setDomicilio("");
+        this.ruolo = ruolo;
+    }
 
     private void setNome(String nome) {
         if(nome == null)
