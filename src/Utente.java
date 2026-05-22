@@ -61,14 +61,12 @@ public class Utente {
         this.username = username;
     }
 
-    //fonte: https://stackoverflow.com/questions/5531455/how-to-hash-some-string-with-sha-256-in-java
+
      private void setPassword(String password) throws NoSuchAlgorithmException {
         if(password == null)
             throw new IllegalArgumentException("Password non valido");
 
-         MessageDigest digest = MessageDigest.getInstance("SHA-256");
-         byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-         this.password = Base64.getEncoder().encodeToString(hash);
+         this.password = getHash(password);
      }
 
     public void setDomicilio(String domicilio) {
@@ -87,10 +85,10 @@ public class Utente {
     public String getUsername() {
         return username;
     }
-    private String getPassword() {
+    public String getPassword() {
         return  password;
     }
-    private String getDomicilio() {
+    public String getDomicilio() {
         return domicilio;
     }
     public String getRuolo() {
@@ -106,6 +104,16 @@ public class Utente {
     //zini se vuoi modifica
     public String toInfo(){
         return String.format("Nome:%n" + nome + "%nCognome:%n" + cognome + "%nUsername:%n" +  username + "%nData di nascita:%n" + dataNascita + "%nDomicilio:%n " + domicilio);
+    }
+
+    //fonte: https://stackoverflow.com/questions/5531455/how-to-hash-some-string-with-sha-256-in-java
+    private String getHash(String s) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(s.getBytes(StandardCharsets.UTF_8));
+        return Base64.getEncoder().encodeToString(hash);
+    }
+    public boolean checkPassword(String password) throws NoSuchAlgorithmException {
+        return this.password.equals(getHash(password));
     }
 
 }
