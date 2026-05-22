@@ -35,6 +35,12 @@ public class Proiezione implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o){
+        Proiezione other = (Proiezione) o;
+        return this.dataOra.compareTo(other.dataOra) == 0;
+    }
+
+    @Override
     public String toString(){
         return dataOra + " " + film + " " + costoBiglietto + " " + sala;
     }
@@ -59,6 +65,7 @@ public class Proiezione implements Serializable {
     public double getCostoBiglietto(){
         return costoBiglietto;
     }
+    public Sala getSala() { return sala; }
 
     public boolean isPostoDisponibile(char lettera, int numero){
         return sala.isPostoDisponibile(lettera, numero);
