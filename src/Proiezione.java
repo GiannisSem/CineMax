@@ -17,6 +17,10 @@ public class Proiezione implements Serializable {
         this.sala = sala;
     }
 
+    public Proiezione(DataOra dataOra, Film film, double costoBiglietto){
+        this(dataOra, film, costoBiglietto, new Sala());
+    }
+
     public Proiezione(int anno, int mese, int giorno, int ore, int minuti, int secondi,
                       String titolo, String genere, String regista, int annoUscita, int durata, int vmeta, double costoBiglietto, Sala sala){
         this(new DataOra(anno, mese, giorno, ore, minuti, secondi), new Film(titolo, genere, regista, annoUscita, durata, vmeta), costoBiglietto, sala);
@@ -24,6 +28,10 @@ public class Proiezione implements Serializable {
 
     public Proiezione(int anno, int mese, int giorno, int ore, int minuti, int secondi, Film film, double costoBiglietto, Sala sala){
         this(new DataOra(anno, mese, giorno, ore, minuti, secondi), film, costoBiglietto, sala);
+    }
+
+    public Proiezione(String dataOra, Film film, double costoBiglietto){
+        this(new DataOra(dataOra), film, costoBiglietto, new Sala());
     }
 
     @Override

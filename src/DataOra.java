@@ -17,13 +17,13 @@ public class DataOra implements Serializable, Comparable {
         this(new Data(anno, mese, giorno), new Ora(ore, minuti, secondi));
     }
 
-    // vedere se tenerlo (errore virgolette interne)
     public DataOra(String dataOra){
-        String[] data = dataOra.split(" ")[0].split("-");
-        String[] ora = dataOra.split(" ")[1].split(":");
+        String[] attributi = dataOra.split(" ");
+        String data = attributi[0];
+        String ora = attributi[1];
 
-        this.data = new Data(Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]));
-        this.ora = new Ora(Integer.parseInt(ora[0]), Integer.parseInt(ora[1]), Integer.parseInt(ora[2]));
+        this.data = new Data(data);
+        this.ora = new Ora(ora);
     }
 
     @Override

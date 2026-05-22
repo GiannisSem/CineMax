@@ -15,6 +15,13 @@ public class Data implements Serializable, Comparable {
         this.giorno = giorno;
     }
 
+    public Data(String data){
+        String[] attributi = data.split("-");
+        this.anno = Integer.parseInt(attributi[0]);
+        this.mese = Integer.parseInt(attributi[1]);
+        this.giorno = Integer.parseInt(attributi[2]);
+    }
+
     @Override
     public String toString() {
         return String.format("%04d-%02d-%02d", anno, mese, giorno);

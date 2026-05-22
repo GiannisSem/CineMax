@@ -13,7 +13,7 @@ public class Cliente extends Utente {
 
     // Da fare
     public List<Proiezione> cercaProiezioni(String titolo){
-        return CineMaxManager.cercaProiezione_Titolo(FileManager.deserializza_proiezioni(), titolo);
+        return CineMaxManager.cercaProiezioni_Titolo(FileManager.deserializza_proiezioni(), titolo);
     }
     public boolean inserisciPrenotazione(String titolo, DataOra dataOra, String posti){
         return true;

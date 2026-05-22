@@ -101,15 +101,11 @@ public class FileManager {
         return null;
     }
 
-    public static List<Utente> deserializza_utenti(){
-        try {
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path_utenti));
-            List<Utente> lista = (List<Utente>) ois.readObject();
-            ois.close();
-            return lista;
-        } catch (ClassNotFoundException | IOException ex){
-            System.out.println(ex.getMessage());
-        }
+    public static List<Utente> deserializza_utenti_csv(){
+        return null;
+    }
+
+    public static List<Prenotazione> deserializza_prenotazioni_csv(){
         return null;
     }
 

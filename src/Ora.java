@@ -15,6 +15,13 @@ public class Ora implements Serializable, Comparable {
         this.secondi = secondi;
     }
 
+    public Ora(String data){
+        String[] attributi = data.split(":");
+        this.ore = Integer.parseInt(attributi[0]);
+        this.minuti = Integer.parseInt(attributi[1]);
+        this.secondi = Integer.parseInt(attributi[2]);
+    }
+
     @Override
     public String toString(){
         return String.format("%02d:%02d:%02d", ore, minuti, secondi);
