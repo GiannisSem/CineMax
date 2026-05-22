@@ -1,5 +1,7 @@
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DataOra implements Serializable, Comparable {
     @Serial
@@ -47,7 +49,11 @@ public class DataOra implements Serializable, Comparable {
     }
 
     public DataOra aggiungi(int minuti){
-        // todo: aggiungi minuti ad una data.
-        return null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        String dataStr = this.toString();
+        LocalDateTime tempoAttuale = LocalDateTime.parse(dataStr, formatter);
+        LocalDateTime tempoFuturo = tempoAttuale.plusMinutes(minuti);
+        return new DataOra(tempoFuturo.format(formatter));
     }
 }
