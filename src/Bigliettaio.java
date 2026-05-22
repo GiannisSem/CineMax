@@ -1,6 +1,9 @@
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 public class Bigliettaio extends Utente {
+    private List<Prenotazione> prenotazioni;
+
     public Bigliettaio(String nome, String cognome, String username, String password, int giorno, int mese, int anno, String domicilio) throws NoSuchAlgorithmException {
         super(nome, cognome, username, password, giorno, mese, anno, domicilio, Ruolo.BIGLIETTAIO);
     }
@@ -12,8 +15,8 @@ public class Bigliettaio extends Utente {
     public String visuaPrenotazioniOggi(){
         return null;
     }
-    public boolean cercaPrenotazione(int codPrenotazione){
-        return true;
+    public Prenotazione cercaPrenotazione(int codPrenotazione){
+        return null;
     }
     public boolean cercaPrenotazione(String nome, String cognome){
         return true;

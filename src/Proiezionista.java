@@ -24,7 +24,7 @@ public class Proiezionista extends Utente {
         return true;
     }
     public boolean eliminaProiezione(DataOra dataOra){
-        return true;
+        return CineMaxManager.eliminaProiezione(dataOra);
     }
 
 //    public boolean aggiungiFilm(String titolo, String genere, String regista, int annoUscita, int durata, int vmeta){

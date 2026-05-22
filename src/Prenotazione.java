@@ -2,10 +2,12 @@ public class Prenotazione {
     private static int codicePrenotazione = 0;
     private Cliente cliente;
     private Proiezione proiezione;
+    private String posti;
     public Prenotazione(Cliente cliente, Proiezione proiezione, String posti) {
         codicePrenotazione++;
         this.cliente = cliente;
         this.proiezione = proiezione;
+        this.posti = posti;
         if(!assegnaPosto(posti))
             throw new IllegalArgumentException("Posto non valido");
     }
@@ -34,9 +36,23 @@ public class Prenotazione {
         }
         return true;
     }
+    public boolean modificaData(DataOra data){
+        Proiezione proiezioneNuova = CineMaxManager.cercaProiezione(data);
+        if(proiezioneNuova == null || proiezioneNuova.equals(proiezione))
+            return false;
+        if(assegnaPosto(this.posti)) {
+            this.proiezione = proiezioneNuova;
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public String toString() {
         return String.format(codicePrenotazione + ";" + cliente.toString() + ";" + proiezione.toString());
+    }
+
+    public  String toInfo(){
+        return String.format("codice prenotazione: " + codicePrenotazione, " username cliente " + cliente.getUsername() + " proiezione " + proiezione.toString());
     }
 }
