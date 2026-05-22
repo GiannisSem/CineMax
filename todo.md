@@ -52,3 +52,10 @@ FUNZIONALITA':
     - uno da titolo del film
     - una tra un intervallo di date
 - fare file prenotazioni
+- elimina proiezione(dataora)
+- modificaDataProiezione(DataOra dataOraOld, DataOra dataOraNew)
+- aggiungiFilm(...)
+- visuaPrenotazioniOggi
+- inserisciPrenotazione
+- cancellaPrenotazione dove ti passo anche il cliente
+- modificaPrenotazione
