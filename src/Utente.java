@@ -93,7 +93,7 @@ public class Utente {
     private String getDomicilio() {
         return domicilio;
     }
-    private String getRuolo() {
+    public String getRuolo() {
         return ruolo.toString();
     }
 
@@ -105,7 +105,7 @@ public class Utente {
 
     //zini se vuoi modifica
     public String toInfo(){
-        return String.format("Nome:%n" + nome + "Cognome:%n" + cognome + "Username:%n" +  username + "Data di nascita:%n" + dataNascita + "Domicilio:%n " + domicilio);
+        return String.format("Nome:%n" + nome + "%nCognome:%n" + cognome + "%nUsername:%n" +  username + "%nData di nascita:%n" + dataNascita + "%nDomicilio:%n " + domicilio);
     }
 
 }

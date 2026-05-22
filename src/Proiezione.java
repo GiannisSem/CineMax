@@ -40,8 +40,11 @@ public class Proiezione implements Serializable {
     }
 
     public String toInfo(){
-        // todo: format info proiezione
-        return "";
+        return String.format(dataOra + "   " + film.getTitolo() + "   " + film.getRegista() + "   " + film.annoUscita() + "   " + film.getDurata() + "   " + film.getVmeta() + "   " + costoBiglietto + "   " + sala.postiDisponibili());
+    }
+
+    public String toInfo1(){
+        return String.format("Data e ora:%n" + dataOra + "%nTitolo:%n" + film.getTitolo() + "%nRegista:%n" + film.getRegista() + "%nAnno di uscita:%n" + film.annoUscita() + "%nDurata:%n" + film.getDurata() + "%nEtà minima:%n" + film.getVmeta() + "%nCosto biglietto:%n" + costoBiglietto);
     }
 
     public DataOra getDataOra(){
@@ -49,6 +52,9 @@ public class Proiezione implements Serializable {
     }
     public Film getFilm(){
         return film;
+    }
+    public Sala getSala(){
+        return sala;
     }
     public double getCostoBiglietto(){
         return costoBiglietto;
