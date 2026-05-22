@@ -21,7 +21,7 @@ public class CineMaxManager {
     }
 
     /* INSERIMENTO */
-    public static boolean inserisciProiezione(DataOra dataOra, Film film, Double costoBiglietto){
+    public static boolean inserisciProiezione(DataOra dataOra, Film film, Double costoBiglietto, Sala sala){
         // in ordine descrescente
         int inizio = 0;
         int fine = listaProiezioni.size() -1;
@@ -56,7 +56,7 @@ public class CineMaxManager {
         }
 
         if (okMin && okMax){
-            Proiezione p = new Proiezione(dataOra, film, costoBiglietto);
+            Proiezione p = new Proiezione(dataOra, film, costoBiglietto, sala);
             listaProiezioni.add(index, p);
             //FileManager.serializza_lista(listaProiezioni, FileManager.path_proiezioni);
             return true;
@@ -64,8 +64,16 @@ public class CineMaxManager {
         return false;
     }
 
+    public static boolean inserisciProiezione(String dataOra, Film film, Double costoBiglietto, Sala sala){
+        return inserisciProiezione(new DataOra(dataOra), film, costoBiglietto, sala);
+    }
+
+    public static boolean inserisciProiezione(DataOra dataOra, Film film, Double costoBiglietto){
+        return inserisciProiezione(dataOra, film, costoBiglietto, new Sala());
+    }
+
     public static boolean inserisciProiezione(String dataOra, Film film, Double costoBiglietto){
-        return inserisciProiezione(new DataOra(dataOra), film, costoBiglietto);
+        return inserisciProiezione(new DataOra(dataOra), film, costoBiglietto, new Sala());
     }
 
     /* CERCA PROIEZIONE */
@@ -176,10 +184,23 @@ public class CineMaxManager {
         return sb.toString();
     }
 
-    /* REGISTRA CLIENTE */
-    public static boolean registraCliente(String[] params){
-        // todo: da fare per ogni tipo (più metodi)
+    /* MODIFICA DATA PRENOTAZIONE */
+    public static boolean modificaDataProiezione(DataOra old, DataOra nuova){
+        Proiezione p = cercaProiezione(old);
+        if (p == null)
+            return false;
+
+        eliminaProiezione(old);
+        if (inserisciProiezione(nuova, p.getFilm(), p.getCostoBiglietto(), p.getSala()))
+            return true;
+
+        // Errore allora reinserisci
+        inserisciProiezione(p.getDataOra(), p.getFilm(), p.getCostoBiglietto(), p.getSala());
         return false;
+    }
+
+    public static boolean modificaDataProiezione(String old, String nuova){
+        return modificaDataProiezione(new DataOra(old), new DataOra(nuova));
     }
 
     /* Prenotazioni */

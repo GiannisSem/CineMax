@@ -59,6 +59,7 @@ public class Proiezione implements Serializable {
     public double getCostoBiglietto(){
         return costoBiglietto;
     }
+    public Sala getSala() { return sala; }
 
     public boolean isPostoDisponibile(char lettera, int numero){
         return sala.isPostoDisponibile(lettera, numero);
