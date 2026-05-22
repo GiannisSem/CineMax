@@ -35,6 +35,12 @@ public class Proiezione implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o){
+        Proiezione other = (Proiezione) o;
+        return this.dataOra.compareTo(other.dataOra) == 0;
+    }
+
+    @Override
     public String toString(){
         return dataOra + " " + film + " " + costoBiglietto + " " + sala;
     }

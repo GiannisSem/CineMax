@@ -36,7 +36,7 @@ public class DataOra implements Serializable, Comparable {
     @Override
     public int compareTo(Object o) {
         DataOra other = (DataOra) o;
-        if (data.equals(other.data))
+        if (data.compareTo(other.data) == 0)
             return ora.compareTo(other.ora);
         return data.compareTo(other.data);
     }

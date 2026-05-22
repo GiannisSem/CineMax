@@ -46,14 +46,12 @@ public class CineMaxManager {
         DataOra limiteMin = null;
         if (prec != null)
             limiteMin = prec.getDataOra().aggiungi(prec.getFilm().getDurata() + 5);
-        System.out.println(limiteMin);
 
         boolean okMin = (limiteMin == null) || (dataOra.compareTo(limiteMin) >= 0);
         boolean okMax = true;
 
         if (succ != null){
             DataOra limiteMax = dataOra.aggiungi(film.getDurata() + 5);
-            System.out.println(limiteMax);
             okMax = succ.getDataOra().compareTo(limiteMax) >= 0;
         }
 
@@ -90,7 +88,6 @@ public class CineMaxManager {
                 fine = centro-1;
         }
 
-        System.out.println(inizio);
         return null;
     }
 
@@ -148,6 +145,23 @@ public class CineMaxManager {
 
     public static List<Proiezione> resetFiltri(){
         return getListaProiezioni();
+    }
+
+    /* ELIMINA PROIEZIONE */
+
+    /**
+     *
+     * @param dataOra Data e ora della Proiezione da cancellare.
+     * @return True se l'ha cancellato, altrimenti false. Restituisce false anche se la Proiezione non è presente.
+     */
+    public static boolean eliminaProiezione(DataOra dataOra){
+        boolean risultato = listaProiezioni.remove(cercaProiezione(dataOra));
+        // FileManager.serializza_lista(listaProiezioni, FileManager.path_proiezioni);
+        return risultato;
+    }
+
+    public static boolean eliminaProiezione(String dataOra){
+        return eliminaProiezione(new DataOra(dataOra));
     }
 
     /* VISUALIZZA PROIEZIONE */
