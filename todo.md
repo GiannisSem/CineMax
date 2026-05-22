@@ -42,15 +42,13 @@ RICHIESTE:
   - Ogni riga ha: data_proiezione, username, n_biglietti.
 
 FUNZIONALITA':
-- cercaProiezione()
-  - Per titolo (anche parziale -> LIKE titolo%)
-  - Per genere
-  - Per intervallo date -> d1 <= list Proiezioni <= d2
-  - Per costo biglietto -> p1 <= list Proiezioni <= p2
-  - Combo dei precedenti -> basta continuare a filtrare dai risultati, fino a reset filtri.
-- visualizzaProiezione() -> dopo aver fatto la ricerca..
-  - Visua Proiezione.toInfo() e numero posti liberi in sala.
 - registraCliente() -> inserisci i dati
 - visualizzaPrenotazione() -> dopo la ricerca
   - Visualizza codice prenotazione, nome e cognome, dataOra proiezione, n_biglietti, costo CAD, totale
 - ALTRO... pag 12+ slide
+- in cinemaxmanager aggiungere i metodi per cercare le prenotazioni
+    - uno base con il codice
+    - uno che return una lista e cerca per nome, cognome
+    - uno da titolo del film
+    - una tra un intervallo di date
+- fare file prenotazioni
