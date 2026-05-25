@@ -13,12 +13,12 @@ public class Utente {
     private String domicilio;
     private Ruolo ruolo;
 
-    public Utente(String nome, String cognome, String username, String password, int giorno, int mese, int anno, String domicilio, Ruolo ruolo) throws NoSuchAlgorithmException {
+    public Utente(String nome, String cognome, String username, String password, Data dataNascita, String domicilio, Ruolo ruolo) throws NoSuchAlgorithmException {
         setNome(nome);
         setCognome(cognome);
         setUsername(username);
         setPassword(password);
-        this.dataNascita = new Data(anno, mese, giorno);
+        this.dataNascita = dataNascita;
         setDomicilio(domicilio);
         if(ruolo == null){
             throw  new IllegalArgumentException("Ruolo non inserito");
@@ -26,21 +26,15 @@ public class Utente {
         this.ruolo = ruolo;
     }
 
+    public Utente(String nome, String cognome, String username, String password, int giorno, int mese, int anno, String domicilio, Ruolo ruolo) throws NoSuchAlgorithmException {
+        this(nome, cognome, username, password, new Data(anno, mese, giorno), domicilio, ruolo);
+    }
+
     public Utente (String nome, String cognome, String username, String password, String domicilio, Ruolo ruolo) throws NoSuchAlgorithmException {
-        setNome(nome);
-        setCognome(cognome);
-        setUsername(username);
-        setPassword(password);
-        setDomicilio(domicilio);
-        this.ruolo = ruolo;
+        this(nome, cognome, username, password, null, domicilio, ruolo);
     }
     public Utente(Ruolo ruolo) throws NoSuchAlgorithmException {
-        setNome("");
-        setCognome("");
-        setUsername("");
-        setPassword("");
-        setDomicilio("");
-        this.ruolo = ruolo;
+        this("","","","","", ruolo);
     }
 
     private void setNome(String nome) {
@@ -98,7 +92,8 @@ public class Utente {
 
     @Override
     public String toString(){
-        return String.format(nome + ";" + cognome + ";" +  username + ";" + dataNascita + ";" + getPassword() + ";" + domicilio + ";" + ruolo.toString());
+        // stampa su file csv
+        return String.format(nome + ";" + cognome + ";" +  username + ";" + getPassword() + ";" + dataNascita + ";" + domicilio + ";" + ruolo.toString());
     }
 
     //zini se vuoi modifica

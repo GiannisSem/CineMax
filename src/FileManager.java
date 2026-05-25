@@ -1,4 +1,5 @@
 import java.io.*;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ public class FileManager {
     // paths
     public static final String path_proiezioni = "data/proiezioni.dat";
     public static final String path_film = "data/film.dat";
-    public static final String path_utenti = "data/utenti.dat";
+    public static final String path_utenti = "data/utenti.csv";
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     public static final DataOra oggi = new DataOra(LocalDateTime.now().format(formatter));
 
@@ -24,7 +25,7 @@ public class FileManager {
                     Proiezione p = getProiezione(riga);
                     lista.add(p);
                 }
-
+                br.close();
             } catch (FileNotFoundException e) {
                 System.out.println("Errore");
             } catch (IOException e) {
@@ -34,6 +35,63 @@ public class FileManager {
 
         return lista;
     }
+
+    public static List<Utente> leggiUtenti_csv() {
+        List<Utente> lista = new ArrayList<>();
+        File f = new File(path_utenti);
+        if (f.exists()){
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(f));
+                String riga;
+                while ((riga = br.readLine()) != null) {
+                    String[] attributi = riga.split(";");
+                    Ruolo r = Ruolo.valueOf(attributi[6]);
+                    Utente u;
+                    switch (r){
+                        case CLIENTE-> u = (attributi[4] != null && !attributi[4].equals("null")) ?
+                                new Cliente(attributi[0], attributi[1], attributi[2], attributi[3], new Data(attributi[4]), attributi[5]) :
+                                new Cliente(attributi[0], attributi[1], attributi[2], attributi[3], attributi[5]);
+                        case BIGLIETTAIO -> u = (attributi[4] != null && !attributi[4].equals("null")) ?
+                                new Bigliettaio(attributi[0], attributi[1], attributi[2], attributi[3], new Data(attributi[4]), attributi[5]) :
+                                new Bigliettaio(attributi[0], attributi[1], attributi[2], attributi[3], attributi[5]);
+                        case PROIEZIONISTA -> u = (attributi[4] != null && !attributi[4].equals("null")) ?
+                                new Proiezionista(attributi[0], attributi[1], attributi[2], attributi[3], new Data(attributi[4]), attributi[5]) :
+                                new Proiezionista(attributi[0], attributi[1], attributi[2], attributi[3], attributi[5]);
+
+                        default -> u = new UtenteNR();
+                    }
+
+                    lista.add(u);
+                }
+                br.close();
+            } catch (FileNotFoundException e) {
+                System.out.println("Errore");
+            } catch (IOException e) {
+                System.out.println("io");
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return lista;
+    }
+
+    public static void carica_csv(List<?> lista, String path){
+        File f = new File(path);
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+            for (Object o : lista) {
+                bw.write(o.toString());
+                bw.newLine();
+            }
+            bw.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Errore");
+        } catch (IOException e) {
+            System.out.println("io");
+        }
+    }
+
 
     private static Proiezione getProiezione(String riga) {
         String[] attributi = splitAttributi(riga);

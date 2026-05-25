@@ -59,9 +59,6 @@ public class Proiezione implements Serializable {
     public Film getFilm(){
         return film;
     }
-    public Sala getSala(){
-        return sala;
-    }
     public double getCostoBiglietto(){
         return costoBiglietto;
     }
