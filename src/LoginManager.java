@@ -54,7 +54,7 @@ public class LoginManager {
         return utenteLoggato;
     }
 
-    private static Utente cercaUtente(String username){
+    public static Utente cercaUtente(String username){
         int inizio = 0;
         int fine = listaUtenti.size() -1;
 
