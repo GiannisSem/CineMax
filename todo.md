@@ -46,16 +46,16 @@ FUNZIONALITA':
 - visualizzaPrenotazione() -> dopo la ricerca
   - Visualizza codice prenotazione, nome e cognome, dataOra proiezione, n_biglietti, costo CAD, totale
 - ALTRO... pag 12+ slide
+- elimina proiezione(dataora) (fatto)
+- modificaDataProiezione(DataOra dataOraOld, DataOra dataOraNew) (fatto)
+- aggiungiFilm(...)
+- visuaPrenotazioniOggi
+- inserisciPrenotazione (fatto)
+- cancellaPrenotazione dove ti passo anche il cliente (fatto)
+- modificaPrenotazione (fatto)
 - in cinemaxmanager aggiungere i metodi per cercare le prenotazioni
     - uno base con il codice
     - uno che return una lista e cerca per nome, cognome
     - uno da titolo del film
     - una tra un intervallo di date
-- fare file prenotazioni
-- elimina proiezione(dataora)
-- modificaDataProiezione(DataOra dataOraOld, DataOra dataOraNew)
-- aggiungiFilm(...)
-- visuaPrenotazioniOggi
-- inserisciPrenotazione
-- cancellaPrenotazione dove ti passo anche il cliente
-- modificaPrenotazione
+    - fare file prenotazioni
