@@ -49,10 +49,10 @@ public class Prenotazione {
 
     @Override
     public String toString() {
-        return String.format(codicePrenotazione + ";" + cliente.toString() + ";" + proiezione.toString());
+        return String.format(codicePrenotazione + ";" + cliente.getUsername() + ";" + posti + ";" + proiezione.getDataOra());
     }
 
     public  String toInfo(){
-        return String.format("codice prenotazione: " + codicePrenotazione, " username cliente " + cliente.getUsername() + " proiezione " + proiezione.toString());
+        return String.format("codice prenotazione: " + codicePrenotazione, " username cliente " + cliente.getUsername() + " data proiezione " + proiezione.getDataOra() + " titolo film" + proiezione.getFilm().getTitolo());
     }
 }
