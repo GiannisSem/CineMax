@@ -3,7 +3,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-public class Utente {
+public class Utente implements Comparable {
 
     private String nome;
     private String cognome;
@@ -60,7 +60,7 @@ public class Utente {
         if(password == null)
             throw new IllegalArgumentException("Password non valido");
 
-         this.password = getHash(password);
+         this.password = password;
      }
 
     public void setDomicilio(String domicilio) {
@@ -94,6 +94,16 @@ public class Utente {
     public String toString(){
         // stampa su file csv
         return String.format(nome + ";" + cognome + ";" +  username + ";" + getPassword() + ";" + dataNascita + ";" + domicilio + ";" + ruolo.toString());
+    }
+
+    @Override
+    public int compareTo(Object o){
+        Utente u = (Utente) o;
+        return this.username.compareTo(u.username);
+    }
+
+    public void setHashPassword(String password) throws NoSuchAlgorithmException {
+        this.password = getHash(password);
     }
 
     //zini se vuoi modifica

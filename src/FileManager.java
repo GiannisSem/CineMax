@@ -42,7 +42,7 @@ public class FileManager {
         if (f.exists()){
             try {
                 BufferedReader br = new BufferedReader(new FileReader(f));
-                String riga;
+                String riga = br.readLine();
                 while ((riga = br.readLine()) != null) {
                     String[] attributi = riga.split(";");
                     Ruolo r = Ruolo.valueOf(attributi[6]);
@@ -78,8 +78,17 @@ public class FileManager {
 
     public static void carica_csv(List<?> lista, String path){
         File f = new File(path);
+
+        String colonne;
+        switch (path){
+            case path_utenti -> colonne = "Nome;Cognome;Username;Password;DataNascita;Domicilio;Ruolo";
+            default -> colonne = "";
+        }
+
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+            bw.write(colonne);
+            bw.newLine();
             for (Object o : lista) {
                 bw.write(o.toString());
                 bw.newLine();
@@ -156,10 +165,6 @@ public class FileManager {
         } catch (ClassNotFoundException | IOException ex){
             System.out.println(ex.getMessage());
         }
-        return null;
-    }
-
-    public static List<Utente> deserializza_utenti_csv(){
         return null;
     }
 

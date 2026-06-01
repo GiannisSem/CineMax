@@ -7,17 +7,12 @@ public class CineMaxManager {
 
     private static final List<Proiezione> listaProiezioni = FileManager.deserializza_proiezioni();
     private static final List<Film> listaFilm = FileManager.deserializza_film();
-    private static final List<Utente> listaUtenti = FileManager.deserializza_utenti_csv();
-    private static final List<Prenotazione> listaPrenotazioni = FileManager.deserializza_prenotazioni_csv();
 
     public static List<Proiezione> getListaProiezioni(){
         return listaProiezioni;
     }
     public static List<Film> getListaFilm(){
         return listaFilm;
-    }
-    public static List<Utente> getListaUtenti(){
-        return listaUtenti;
     }
 
     /* INSERIMENTO */
