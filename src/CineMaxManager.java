@@ -220,6 +220,46 @@ public class CineMaxManager {
         return null;
     }
 
-    // public static String visualizzaPrenotazione()
+    // secondo me da rivedere sistema inserimento proiezioni... dovrebbe essere che inserisci il titolo e pesca i dati dal file Films.
+
+    public static boolean aggiungiFilm(String titolo, String genere, String regista, int annoUscita, int durata, int vmeta){
+        int inizio = 0;
+        int fine = listaFilm.size() -1;
+
+        while (inizio <= fine){
+            int centro = inizio + (fine - inizio) / 2;
+            String centrale = listaFilm.get(centro).getTitolo();
+            if (titolo.compareTo(centrale) == 0)
+                return false;
+
+            if (titolo.compareTo(centrale) < 0)
+                fine = centro-1;
+            else
+                inizio = centro+1;
+        }
+
+        // Punto dove si sono incrociati
+        listaFilm.add(inizio, new Film(titolo, genere, regista, annoUscita, durata, vmeta));
+        //FileManager.serializza_lista(listaFilm, FileManager.path_film);
+        return true;
+    }
+
+    public static Film cercaFilm(String titolo){
+        int inizio = 0;
+        int fine = listaFilm.size() -1;
+
+        while (inizio <= fine){
+            int centro = inizio + (fine - inizio) / 2;
+            String centrale = listaFilm.get(centro).getTitolo();
+            if (titolo.compareTo(centrale) == 0)
+                return listaFilm.get(centro);
+
+            if (titolo.compareTo(centrale) < 0)
+                fine = centro-1;
+            else
+                inizio = centro+1;
+        }
+        return null;
+    }
 
 }
