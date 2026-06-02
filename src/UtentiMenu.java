@@ -1,5 +1,6 @@
 import javax.lang.model.util.SimpleElementVisitor7;
 import java.security.NoSuchAlgorithmException;
+import java.time.Year;
 import java.util.List;
 import java.util.Scanner;
 
@@ -308,28 +309,21 @@ public  class UtentiMenu {
         int scelta;
         do {
             System.out.println(proiezione.toInfo1());
-            System.out.println("1   Elimina proiezione");
-            System.out.println("2   Modifica proiezione");
-            System.out.println("0   Torna indietro");
-            scelta = scanner.nextInt();
 
-            if(!(scelta==1 || scelta==2 || scelta==0))
-                System.out.println("Inserimento non valido riprova:");
-        }while(!(scelta==1 || scelta==2 || scelta==0));
+            scelta = inputInt("1   Elimina proiezione\n2   Modifica proiezione\n0   Torna indietro", "Inserimento non valido. Riprova:", 0, 2);
 
 
-        switch (scelta)
-        {
-            case 0:
-                visualizzaProiezioni(utente,lista);
-                break;
-            case 1:
-                eliminaProiezione(utente,proiezione,lista);
-                break;
-            case 2:
-                modificaProiezione(utente,proiezione,lista);
-                break;
-        };
+            switch (scelta) {
+                case 1:
+                    eliminaProiezione(utente, proiezione, lista);
+                    break;
+                case 2:
+                    modificaProiezione(utente, proiezione, lista);
+                    break;
+            };
+        }while(scelta!=0);
+        //da fare
+        visualizzaProiezioni(utente, lista);
     }
 
     public static void eliminaProiezione(Utente utente,Proiezione proiezione,List<Proiezione> lista) throws NoSuchAlgorithmException {
@@ -351,16 +345,12 @@ public  class UtentiMenu {
         Scanner scanner = new Scanner(System.in);
         if(proiezione.getSala().postiOccupati()==0) {
 
-            System.out.println("Inserisci nuovo anno:");
-            int anno = scanner.nextInt();
-            System.out.println("Inserisci nuovo mese:");
-            int mese = scanner.nextInt();
-            System.out.println("Inserisci nuovo giorno:");
-            int giorno = scanner.nextInt();
-            System.out.println("Inserisci nuova ora:");
-            int ora = scanner.nextInt();
-            System.out.println("Inserisci nuovi minuti:");
-            int minuti = scanner.nextInt();
+            int anno = inputInt("Inserisci nuovo anno:", "inserimento non valido. Riprova:", 1900, Year.now().getValue());
+            int mese = inputInt("Inserisci nuovo mese:", "Inserimento non valido. Riprova:",1, 12);
+            int giorno = inputInt("Inserisci nuovo giorno:","Inserimento non valido. Riprova:",1,31);
+            int ora = inputInt("Inserisci nuova ora:","Inserimento non valido. Riprova:",0,23);
+            int minuti = inputInt("Inserisci nuovi minuti:","Inserimento non valido. Riprova:",0,59);
+
             if(((Proiezionista)utente).modificaDataProiezione(proiezione.getDataOra(),new DataOra(anno,mese,giorno,ora,minuti,0)))
                 System.out.println("Cambiamento data riuscito.");
             else
@@ -373,42 +363,75 @@ public  class UtentiMenu {
     }
 
 
+    private static int inputInt(String richiesta, String errore, int min,int max)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int risposta;
+        do {
+            System.out.println(richiesta);
+            risposta = scanner.nextInt();
+            if(risposta<min || risposta>max)
+                System.out.println(errore);
+        }while (risposta<min || risposta>max);
+        return risposta;
+    }
+
+    private static String inputString(String richiesta, String errore, String caratteriNonValidi)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String risposta;
+        boolean valido;
+        do {
+            valido=true;
+            System.out.println(richiesta);
+            risposta = scanner.nextLine();
+            for (char c : risposta.toCharArray())
+            {
+                if(caratteriNonValidi.indexOf(c) >=0) {
+                    valido = false;
+                    break;
+                }
+            }
+            if(!valido || risposta.trim().isEmpty()|| risposta.contains(caratteriNonValidi))
+                System.out.println(errore);
+        }while (!valido || risposta.trim().isEmpty()|| risposta.contains(caratteriNonValidi));
+        return risposta;
+    }
+
 
     public static void registrazioneUtente() throws NoSuchAlgorithmException {
         Scanner scanner = new Scanner(System.in);
         boolean riprova;
         do {
 
-            //mettere i controlli che non siano vuoti e con il ;
             riprova = false;
-            System.out.println("Nome:");
-            String nome = scanner.nextLine();
-            System.out.println("Cognome:");
-            String cognome = scanner.nextLine();
-            //controllare con il cerca username nel LoginManager
-            System.out.println("Username:");
-            String username = scanner.next();
-            System.out.println("Password:");
-            String password = scanner.next();
-            System.out.println("Luogo di domicilio:");
-            String domicilio = scanner.nextLine();
+            String nome = inputString("Nome:", "Inserimento non valido. Riprova:", ";");
+            String cognome = inputString("Cognome:","Inserimento non valido. Riprova:",";");
+
+            String username;
+            do {
+                username = inputString("Username:","Inserimento non valido. Riprova:","; ");
+                if(LoginManager.cercaUtente(username)!=null)
+                    System.out.println("Username già usato");
+            }while (LoginManager.cercaUtente(username)!=null);
+
+            String password = inputString("Password:", "Inserimento non valido. Riprova:",";");
+            String domicilio = inputString("Luogo di domicilio","Inserimento non valido. Riprova:",";");
             String data;
-            int giorno = 0;
-            int mese = 0;
-            int anno = 0;
+
             do {
                 System.out.println("Vuoi inserire la data di nascita. Scrivi S o N:");
                 data = scanner.nextLine();
                 if (!(data.equals("S") || data.equals("N")))
                     System.out.println("Inserimento non valido riprova:");
             } while (!(data.equals("S") || data.equals("N")));
+            int giorno = 0;
+            int mese = 0;
+            int anno = 0;
             if (data.equals("S")) {
-                System.out.println("Giorno di nascita:");
-                giorno = scanner.nextInt();
-                System.out.println("Mese di nascita:");
-                mese = scanner.nextInt();
-                System.out.println("Anno di nascita:");
-                anno = scanner.nextInt();
+                giorno = inputInt("Giorno di nascita:","Inserimento non valido. Riprova:",1,31);
+                mese = inputInt("Mese di nascita:", "Inserimento non valido. Riprova:",1, 12);
+                anno = inputInt("Anno di nascita:", "inserimento non valido. Riprova:", 1900, Year.now().getValue());
             }
 
             int scelta;
@@ -426,133 +449,96 @@ public  class UtentiMenu {
                 utenteNonRegistrato();
             else {
 
-                if (data.equals("S")) {
-                    switch (Ruolo.values()[scelta]) {
-                        case CLIENTE:
-                            Cliente cliente = new Cliente(nome, cognome, username, password, giorno, mese, anno, domicilio);
-                            if (LoginManager.signin(cliente)) {
-                                System.out.println("Registrazione non valida. Riprova.");
-                                riprova = true;
-                            } else
-                                utenteRegistrato(cliente);
-                            break;
-                        case PROIEZIONISTA:
-                            Proiezionista proiezionista = new Proiezionista(nome, cognome, username, password, giorno, mese, anno, domicilio);
-                            if (LoginManager.signin(proiezionista)) {
-                                System.out.println("Registrazione non valida. Riprova.");
-                                riprova = true;
-                            } else
-                                proiezionistaRegistrato(proiezionista);
-                            break;
-                        case BIGLIETTAIO:
-                            Bigliettaio bigliettaio = new Bigliettaio(nome, cognome, username, password, giorno, mese, anno, domicilio);
-                            if (LoginManager.signin(bigliettaio)) {
-                                System.out.println("Registrazione non valida. Riprova.");
-                                riprova = true;
-                            } else
-                                bigliettaioRegistrato(bigliettaio);
-                            break;
-                    }
-
-
-                } else {
-                    switch (Ruolo.values()[scelta]) {
-                        case CLIENTE:
-                            Cliente cliente = new Cliente(nome, cognome, username, password, domicilio);
-                            if (LoginManager.signin(cliente)) {
-                                System.out.println("Registrazione non valida. Riprova.");
-                                riprova = true;
-                            } else
-                                utenteRegistrato(cliente);
-                            break;
-                        case PROIEZIONISTA:
-                            Proiezionista proiezionista = new Proiezionista(nome, cognome, username, password, domicilio);
-                            if (LoginManager.signin(proiezionista)) {
-                                System.out.println("Registrazione non valida. Riprova.");
-                                riprova = true;
-                            } else
-                                proiezionistaRegistrato(proiezionista);
-                            break;
-                        case BIGLIETTAIO:
-                            Bigliettaio bigliettaio = new Bigliettaio(nome, cognome, username, password, domicilio);
-                            if (LoginManager.signin(bigliettaio)) {
-                                System.out.println("Registrazione non valida. Riprova.");
-                                riprova = true;
-                            } else
-                                bigliettaioRegistrato(bigliettaio);
-                            break;
-                    }
-                    ;
+                switch (Ruolo.values()[scelta]) {
+                    case CLIENTE:
+                        Cliente cliente;
+                        if(data.equals("S"))
+                            cliente = new Cliente(nome, cognome, username, password, giorno, mese, anno, domicilio);
+                        else
+                            cliente = new Cliente(nome, cognome, username, password, domicilio);
+                        if (!LoginManager.signin(cliente)) {
+                            riprova = true;
+                        } else
+                            utenteRegistrato(cliente);
+                        break;
+                    case PROIEZIONISTA:
+                        Proiezionista proiezionista;
+                        if(data.equals("S"))
+                            proiezionista = new Proiezionista(nome, cognome, username, password, giorno, mese, anno, domicilio);
+                        else
+                            proiezionista = new Proiezionista(nome, cognome, username, password, domicilio);
+                        if (LoginManager.signin(proiezionista)) {
+                            riprova = true;
+                        } else
+                            proiezionistaRegistrato(proiezionista);
+                        break;
+                    case BIGLIETTAIO:
+                        Bigliettaio bigliettaio;
+                        if(data.equals("S"))
+                            bigliettaio = new Bigliettaio(nome, cognome, username, password, giorno, mese, anno, domicilio);
+                        else
+                            bigliettaio = new Bigliettaio(nome, cognome, username, password, domicilio);
+                        if (LoginManager.signin(bigliettaio)) {
+                            riprova = true;
+                        } else
+                            bigliettaioRegistrato(bigliettaio);
+                        break;
                 }
             }
+            if(riprova)
+                System.out.println("Registrazione non valida. Riprova.");
         }while (riprova);
     }
 
 
 
-    public static void profilo(Utente utente)
-    {
+    public static void profilo(Utente utente) {
         Scanner scanner = new Scanner(System.in);
-
-        System.out.println(utente.toInfo());
-
         int scelta;
         do {
-            System.out.println("1   Modifica password");
-            System.out.println("2   Modifica username");
-            System.out.println("3   Modifica domicilio");
-            System.out.println("4   Modifica data di nascita");
-            System.out.println("0   Torna al menù principale");
-            scelta = scanner.nextInt();
-
-            if(!(scelta==1 || scelta==2 || scelta==3 || scelta==4 || scelta==0))
-                System.out.println("inserimento non valido riprova:");
-        }while(!(scelta==1 || scelta==2 || scelta==3 || scelta==4 || scelta==0));
-
-
-        switch (scelta)
-        {
-            case 0:
-                //fare  getRuolo e poi in base al ruolo riportare al menù indicato
-                //utenteRegistrato(utente);
-                break;
-            case 1:
-                //set password
-                break;
-            case 2:
-                modificaUsername(utente);
-                break;
-            case 3:
-                modificaDomicilio(utente);
-                break;
-            case 4:
-                //set dataNascita
-                break;
-        }
+            System.out.println(utente.toInfo());
+            scelta = inputInt("1   Modifica password\n2   Modifica username\n3   Modifica domicilio\n4   Modifica data di nascita\n0   Torna al menù principale","Inserimento non valido. Riprova:",0,4);
+            switch (scelta) {
+                case 1:
+                    //set password
+                    break;
+                case 2:
+                    modificaUsername(utente);
+                    break;
+                case 3:
+                    modificaDomicilio(utente);
+                    break;
+                case 4:
+                    //set dataNascita
+                    break;
+            }
+        }while(scelta!=0);
+        //fare  getRuolo e poi in base al ruolo riportare al menù indicato
+        //utenteRegistrato(utente);
     }
 
 
     static public void modificaDomicilio(Utente utente)
     {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Inserisci nuovo domicilio o 0 per tornare indietro");
-        String username = scanner.next();
-        if(username.equals("0"))
+        String domicilio = inputString("Inserisci nuovo domicilio o 0 per tornare indietro","Inserimento non valido. Riprova:",";");
+        if(domicilio.equals("0"))
             profilo(utente);
         else
-           utente.setDomicilio(username);
+           utente.setDomicilio(domicilio);
     }
 
     static public void modificaUsername(Utente utente)
     {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Inserisci nuovo username (di solo una parola) o 0 per tornare indietro");
-        String username = scanner.next();
+        String username;
+        do {
+            username = inputString("Inserisci nuovo username o 0 per tornare indietro:","Inserimento non valido. Riprova:","; ");
+            if(!username.equals("0") && LoginManager.cercaUtente(username)!=null)
+                System.out.println("Username già usato");
+        }while (!username.equals("0") && LoginManager.cercaUtente(username)!=null);
         if(username.equals("0"))
             profilo(utente);
-       else
+        else
             utente.setUsername(username);
-
     }
 
 }
