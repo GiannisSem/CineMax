@@ -1,4 +1,3 @@
-import javax.lang.model.util.SimpleElementVisitor7;
 import java.security.NoSuchAlgorithmException;
 import java.time.Year;
 import java.util.List;
@@ -7,38 +6,24 @@ import java.util.Scanner;
 public  class UtentiMenu {
 
 
-    public static void utenteNonRegistrato()
-    {
-
+    public static void utenteNonRegistrato() throws NoSuchAlgorithmException {
         Scanner scanner = new Scanner(System.in);
         int scelta;
         do {
-            System.out.println("1   Cerca proiezione");
-            System.out.println("2   Registrazione");
-            System.out.println("3   Login");
-            scelta = scanner.nextInt();
-
-            if(!(scelta==1 || scelta==2 || scelta==3))
-                System.out.println("Inserimento non valido riprova:");
-        }while(!(scelta==1 || scelta==2 || scelta==3));
-
-        switch (scelta)
-        {
-            case 1:
-                try {
+            scelta = inputInt("1   Cerca proiezione\n2   Registrazione\n3   Login\n0    Esci","Inserimento non valido. Riprova:",0,3);
+            switch (scelta)
+            {
+                case 1:
                     cercaProiezione(new UtenteNR());
-                } catch (NoSuchAlgorithmException e) {
-                    throw new RuntimeException(e);
-                }
-
-                break;
-            case 2:
-                //registrazioneUtente();
-                break;
-            case 3:
-                //login
-                break;
-        };
+                    break;
+                case 2:
+                    registrazioneUtente();
+                    break;
+                case 3:
+                    //login
+                    break;
+            }
+        }while(scelta!=0);
     }
 
 
@@ -46,32 +31,23 @@ public  class UtentiMenu {
         Scanner scanner = new Scanner(System.in);
         int scelta;
         do {
-            System.out.println("1   Cerca proiezione");
-            System.out.println("2   Visualizzare prenotazioni");
-            System.out.println("3   Profilo");
-            System.out.println("0   Logout");
-            scelta = scanner.nextInt();
-
-            if(!(scelta==1 || scelta==2 || scelta==3 || scelta==0))
-                System.out.println("Inserimento non valido riprova:");
-        }while(!(scelta==1 || scelta==2 || scelta==3 || scelta==0));
-
-
-        switch (scelta)
-        {
-            case 0:
-                utenteNonRegistrato();
-                break;
-            case 1:
-                cercaProiezione(utente);
-                break;
-            case 2:
-                //visualizza prenotazioni
-                break;
-            case 3:
-                profilo(utente);
-                break;
-        };
+            scelta = inputInt("1   Cerca proiezione\n2   Visualizzare prenotazioni\n3   Profilo\n0   Logout","Inserimento non valido. Riprova:",0,3);
+            switch (scelta)
+            {
+                case 0:
+                    utenteNonRegistrato();
+                    break;
+                case 1:
+                    cercaProiezione(utente);
+                    break;
+                case 2:
+                    //visualizza prenotazioni
+                    break;
+                case 3:
+                    profilo(utente);
+                    break;
+            }
+        }while(scelta!=0);
     }
 
 
@@ -79,66 +55,50 @@ public  class UtentiMenu {
         Scanner scanner = new Scanner(System.in);
         int scelta;
         do {
-            System.out.println("1   Inserire proiezione");
-            System.out.println("2   Cerca proiezione");
-            System.out.println("3   Profilo");
-            System.out.println("0   Logout");
-            scelta = scanner.nextInt();
-
-            if(!(scelta==1 || scelta==2 || scelta==3 || scelta==0))
-                System.out.println("Inserimento non valido riprova:");
-        }while(!(scelta==1 || scelta==2 || scelta==3 || scelta==0));
-
-
-        switch (scelta)
-        {
-            case 0:
-                utenteNonRegistrato();
-                break;
-            case 1:
-                //visualizza prenotazioni
-                break;
-            case 2:
-                cercaProiezione(proiezionista);
-                break;
-            case 3:
-                profilo(proiezionista);
-                break;
-        };
+            scelta = inputInt("1   Inserire proiezione\n2   Cerca proiezione\n3   Profilo\n0   Logout","Inserimento non valido. Riprova:",0,3);
+            switch (scelta)
+            {
+                case 0:
+                    utenteNonRegistrato();
+                    break;
+                case 1:
+                    //visualizza prenotazioni
+                    break;
+                case 2:
+                    cercaProiezione(proiezionista);
+                    break;
+                case 3:
+                    profilo(proiezionista);
+                    break;
+            }
+        }while(scelta!=0);
     }
 
 
-    public static void bigliettaioRegistrato(Bigliettaio bigliettaio)
-    {
+    public static void bigliettaioRegistrato(Bigliettaio bigliettaio) throws NoSuchAlgorithmException {
         Scanner scanner = new Scanner(System.in);
         int scelta;
         do {
-            System.out.println("1   Visualizza prenotazioni odierne");
-            System.out.println("2   Cerca proiezione");
-            System.out.println("3   Profilo");
-            System.out.println("0   Logout");
-            scelta = scanner.nextInt();
+            scelta=inputInt("1   Visualizza prenotazioni odierne\n2   Cerca proiezione\n3   Profilo\n0   Logout","Inserimento non valido. Riprova:",0,3);
+            switch (scelta)
+            {
+                case 0:
+                    utenteNonRegistrato();
+                    break;
+                case 1:
+                    //visualizza prenotazioni odierne
+                    break;
+                case 2:
+                    //cerca prenotazioni
+                    break;
+                case 3:
+                    profilo(bigliettaio);
+                    break;
+            }
+        }while(scelta!=0);
 
-            if(!(scelta==1 || scelta==2 || scelta==3 || scelta==0))
-                System.out.println("Inserimento non valido riprova:");
-        }while(!(scelta==1 || scelta==2 || scelta==3 || scelta==0));
 
 
-        switch (scelta)
-        {
-            case 0:
-                utenteNonRegistrato();
-                break;
-            case 1:
-                //visualizza prenotazioni odierne
-                break;
-            case 2:
-                //cerca prenotazioni
-                break;
-            case 3:
-                profilo(bigliettaio);
-                break;
-        };
     }
 
 
@@ -166,6 +126,7 @@ public  class UtentiMenu {
         }while (!(data.equals("S") || data.equals("N")));
         if(data.equals("S"))
         {
+            //da vedere se serve chiedere in input con il meno 0,1,2,3
             System.out.println("Inserisci genere del film:");
             lista=CineMaxManager.cercaProiezioni_Genere(lista,scanner.nextLine());
         }
@@ -178,19 +139,22 @@ public  class UtentiMenu {
         }while (!(data.equals("S") || data.equals("N")));
         if(data.equals("S"))
         {
-            System.out.println("Inserisci l'anno della data minima:");
-            int annoMin = scanner.nextInt();
-            System.out.println("Inserisci il mese della data minima:");
-            int meseMin = scanner.nextInt();
-            System.out.println("Inserisci il giorno della data minima:");
-            int giornoMin = scanner.nextInt();
+            int annoMin = inputInt("Inserisci l'anno della data minima:","Inserimento non valido. Riprova:",1900, Year.now().getValue());
+            int meseMin = inputInt("Inserisci il mese della data minima:","Inserimento non valido. Riprova:",1,12);
+            int giornoMin = inputInt("Inserisci il giorno della data minima:","Inserimento non valido. Riprova:",1,31);
 
-            System.out.println("Inserisci l'anno della data massima:");
-            int annoMax = scanner.nextInt();
-            System.out.println("Inserisci il mese della data massima:");
-            int meseMax = scanner.nextInt();
-            System.out.println("Inserisci il giorno della data massima:");
-            int giornoMax = scanner.nextInt();
+            int annoMax = inputInt("Inserisci l'anno della data massima:","Inserimento non valido. Riprova:",annoMin, Year.now().getValue());
+            int meseMax;
+            if (annoMax==annoMin)
+                meseMax = inputInt("Inserisci il mese della data massima:","Inserimento non valido. Riprova:",meseMin,12);
+            else
+                meseMax = inputInt("Inserisci il mese della data massima:","Inserimento non valido. Riprova:",1,12);
+            int giornoMax;
+            if(annoMax==annoMin && meseMax==meseMin)
+                giornoMax=inputInt("Inserisci il giorno della data massima:","Inserimento non valido. Riprova:",giornoMin,31);
+            else
+                giornoMax=inputInt("Inserisci il giorno della data massima:","Inserimento non valido. Riprova:",1,31);
+
             Data dataMin = new Data(annoMin,meseMin,giornoMin);
             Data dataMax = new Data(annoMax,meseMax,giornoMax);
             lista=CineMaxManager.cercaProiezioni_Date(lista,dataMin,dataMax);
@@ -204,73 +168,63 @@ public  class UtentiMenu {
         }while (!(data.equals("S") || data.equals("N")));
         if(data.equals("S"))
         {
-            System.out.println("Inserisci costo minimo del biglietto del film:");
-            double costoMin = scanner.nextDouble();
-            System.out.println("Inserisci costo minimo del biglietto del film:");
-            double costoMax = scanner.nextDouble();
+            double costoMin;
+            do{
+                System.out.println("Inserisci costo minimo del biglietto del film:");
+                costoMin = scanner.nextDouble();
+                if(costoMin<0)
+                    System.out.println("Inserimento non valido riprova:");
+            }while (costoMin<0);
+
+            double costoMax;
+            do{
+                System.out.println("Inserisci costo massimo del biglietto del film:");
+                costoMax = scanner.nextDouble();
+                if(costoMax<costoMin)
+                    System.out.println("Inserimento non valido riprova:");
+            }while (costoMax<costoMin);
+
             lista=CineMaxManager.cercaProiezioni_CostoBiglietto(lista,costoMin,costoMax);
         }
-
         visualizzaProiezioni(utente,lista);
 
     }
 
     public static void visualizzaProiezioni(Utente utente, List<Proiezione> lista) throws NoSuchAlgorithmException {
         Scanner scanner = new Scanner(System.in);
-
-
-        System.out.println("Indice   DataOra   titolo   genere   regista   anno   durata   età minima   costo   nPostiLiberi");
-        int i=1;
         int risposta;
-        for (Proiezione p: lista)
-        {
-            System.out.println(" " + i + "   " + p.toInfo());
-            i++;
-        }
         do {
-            System.out.println("Inserisci l'indice della proiezione che vuoi vedere o 0 per tornare al menù principale.");
-            risposta = scanner.nextInt();
-            if(risposta<0 || risposta>lista.size())
-                System.out.println("Inserimento non valido riprova:");
-        }while (risposta<0 || risposta>lista.size());
 
-        if(risposta==0)
-        {
-            if(utente.getRuolo().equals("CLIENTE"))
-                utenteRegistrato((Cliente) utente);
-            if(utente.getRuolo().equals("PROIEZIONISTA"))
-                proiezionistaRegistrato((Proiezionista) utente);
-            if(utente.getRuolo().equals("BIGLIETTAIO"))
-                bigliettaioRegistrato((Bigliettaio) utente);
-            if(utente.getRuolo().equals("NONREGISTRATO"))
-                utenteNonRegistrato();
 
-        }
-        else
-        {
-            Proiezione proiezione=(Proiezione) lista.toArray()[risposta];
-            if(utente.getRuolo().equals("CLIENTE"))
-                visualizzaProiezioneCliente(utente, proiezione,lista);
-            if(utente.getRuolo().equals("PROIEZIONISTA"))
-                visualizzaProiezioneProiezionista(utente,proiezione,lista);
-        }
+            System.out.println("Indice   DataOra   titolo   genere   regista   anno   durata   età minima   costo   nPostiLiberi");
+            int i=1;
 
+            for (Proiezione p: lista)
+            {
+                System.out.println(" " + i + "   " + p.toInfo());
+                i++;
+            }
+            risposta = inputInt("Inserisci l'indice della proiezione che vuoi vedere o 0 per tornare al menù principale.","Inserimento non valido riprova:",0,lista.size());
+
+            if(risposta!=0)
+            {
+                Proiezione proiezione=(Proiezione) lista.toArray()[risposta];
+                if(utente.getRuolo().equals("CLIENTE"))
+                    visualizzaProiezioneCliente(proiezione);
+                if(utente.getRuolo().equals("PROIEZIONISTA"))
+                    visualizzaProiezioneProiezionista((Proiezionista) utente,proiezione);
+            }
+
+        }while (risposta!=0);
     }
 
-    public static void visualizzaProiezioneCliente(Utente utente, Proiezione proiezione, List<Proiezione> lista) throws NoSuchAlgorithmException {
+    public static void visualizzaProiezioneCliente(Proiezione proiezione) throws NoSuchAlgorithmException {
         Scanner scanner = new Scanner(System.in);
         System.out.println(proiezione.toInfo1());
         proiezione.getSala().stampa();
-        int scelta;
-        do {
-            System.out.println("Numero posti liberi: " + proiezione.getSala().postiDisponibili());
-            System.out.println("Quanti posti vuoi prenotare? 0 per tornare indietro");
-            scelta = scanner.nextInt();
 
-            if(scelta>proiezione.getSala().postiDisponibili())
-                System.out.println("Posti liberi sono insufficienti:");
-        }while(scelta>proiezione.getSala().postiDisponibili());
-
+        System.out.println("Numero posti liberi: " + proiezione.getSala().postiDisponibili());
+        int scelta =inputInt((String.format("Numero posti liberi: " + proiezione.getSala().postiDisponibili())),"Posti liberi sono insufficienti:",1,proiezione.getSala().postiDisponibili());
 
         char lettera;
         int numero;
@@ -300,11 +254,10 @@ public  class UtentiMenu {
             }while(ritest);
             System.out.println("Hai prenotato il Posto " + lettera + numero);
         }
-        visualizzaProiezioni(utente,lista);
     }
 
 
-    public static void visualizzaProiezioneProiezionista(Utente utente,Proiezione proiezione,List<Proiezione> lista) throws NoSuchAlgorithmException {
+    public static void visualizzaProiezioneProiezionista(Proiezionista utente,Proiezione proiezione) throws NoSuchAlgorithmException {
         Scanner scanner = new Scanner(System.in);
         int scelta;
         do {
@@ -315,33 +268,30 @@ public  class UtentiMenu {
 
             switch (scelta) {
                 case 1:
-                    eliminaProiezione(utente, proiezione, lista);
+                    eliminaProiezione(utente, proiezione);
                     break;
                 case 2:
-                    modificaProiezione(utente, proiezione, lista);
+                    modificaProiezione(utente, proiezione);
                     break;
             };
         }while(scelta!=0);
-        //da fare
-        visualizzaProiezioni(utente, lista);
     }
 
-    public static void eliminaProiezione(Utente utente,Proiezione proiezione,List<Proiezione> lista) throws NoSuchAlgorithmException {
+    public static void eliminaProiezione(Proiezionista utente,Proiezione proiezione) throws NoSuchAlgorithmException {
 
 
 
         if(proiezione.getSala().postiOccupati()==0) {
-            if(((Proiezionista)utente).eliminaProiezione(proiezione.getDataOra()))
+            if(utente.eliminaProiezione(proiezione.getDataOra()))
                 System.out.println("Eliminazione riuscita.");
             else
                 System.out.println("Eliminazione non riuscita.");
         }
         else
             System.out.println("Non è modificabile perchè ci sono delle prenotazioni");
-        visualizzaProiezioneProiezionista(utente,proiezione,lista);
     }
 
-    public static void modificaProiezione(Utente utente,Proiezione proiezione,List<Proiezione> lista) throws NoSuchAlgorithmException {
+    public static void modificaProiezione(Proiezionista utente,Proiezione proiezione) throws NoSuchAlgorithmException {
         Scanner scanner = new Scanner(System.in);
         if(proiezione.getSala().postiOccupati()==0) {
 
@@ -351,14 +301,13 @@ public  class UtentiMenu {
             int ora = inputInt("Inserisci nuova ora:","Inserimento non valido. Riprova:",0,23);
             int minuti = inputInt("Inserisci nuovi minuti:","Inserimento non valido. Riprova:",0,59);
 
-            if(((Proiezionista)utente).modificaDataProiezione(proiezione.getDataOra(),new DataOra(anno,mese,giorno,ora,minuti,0)))
+            if(utente.modificaDataProiezione(proiezione.getDataOra(),new DataOra(anno,mese,giorno,ora,minuti,0)))
                 System.out.println("Cambiamento data riuscito.");
             else
                 System.out.println("Cambiamento data non riuscito.");
         }
         else
             System.out.println("Non è modificabile perchè ci sono delle prenotazioni");
-        visualizzaProiezioneProiezionista(utente,proiezione,lista);
 
     }
 
@@ -492,7 +441,7 @@ public  class UtentiMenu {
 
 
 
-    public static void profilo(Utente utente) {
+    public static void profilo(Utente utente) throws NoSuchAlgorithmException {
         Scanner scanner = new Scanner(System.in);
         int scelta;
         do {
@@ -500,7 +449,7 @@ public  class UtentiMenu {
             scelta = inputInt("1   Modifica password\n2   Modifica username\n3   Modifica domicilio\n4   Modifica data di nascita\n0   Torna al menù principale","Inserimento non valido. Riprova:",0,4);
             switch (scelta) {
                 case 1:
-                    //set password
+                    modificaPassword(utente);
                     break;
                 case 2:
                     modificaUsername(utente);
@@ -513,17 +462,27 @@ public  class UtentiMenu {
                     break;
             }
         }while(scelta!=0);
-        //fare  getRuolo e poi in base al ruolo riportare al menù indicato
-        //utenteRegistrato(utente);
+    }
+
+    static public void modificaDataNascita(Utente utente) throws NoSuchAlgorithmException {
+
+        int giorno = inputInt("Inserisci nuovo giorno di nascita:","Inserimento non valido. Riprova:",1,31);
+        int mese = inputInt("Inserisci nuovo mese di nascita:", "Inserimento non valido. Riprova:",1, 12);
+        int anno = inputInt("Inserisci nuovo anno di nascita:", "inserimento non valido. Riprova:", 1900, Year.now().getValue());
+        //set datanascita da fare
+    }
+
+    static public void modificaPassword(Utente utente) throws NoSuchAlgorithmException {
+        String password = inputString("Inserisci nuova password o 0 per tornare indietro","Inserimento non valido. Riprova:",";");
+        if(!password.equals("0"))
+            utente.setHashPassword(password);
     }
 
 
     static public void modificaDomicilio(Utente utente)
     {
         String domicilio = inputString("Inserisci nuovo domicilio o 0 per tornare indietro","Inserimento non valido. Riprova:",";");
-        if(domicilio.equals("0"))
-            profilo(utente);
-        else
+        if(!domicilio.equals("0"))
            utente.setDomicilio(domicilio);
     }
 
@@ -535,9 +494,7 @@ public  class UtentiMenu {
             if(!username.equals("0") && LoginManager.cercaUtente(username)!=null)
                 System.out.println("Username già usato");
         }while (!username.equals("0") && LoginManager.cercaUtente(username)!=null);
-        if(username.equals("0"))
-            profilo(utente);
-        else
+        if(!username.equals("0"))
             utente.setUsername(username);
     }
 

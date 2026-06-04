@@ -108,7 +108,7 @@ public class Utente implements Comparable {
 
     //zini se vuoi modifica
     public String toInfo(){
-        return String.format("Nome:%n" + nome + "%nCognome:%n" + cognome + "%nUsername:%n" +  username + "%nData di nascita:%n" + dataNascita + "%nDomicilio:%n " + domicilio);
+        return String.format("Nome:\n" + nome + "\nCognome:\n" + cognome + "\nUsername:\n" +  username + "\nData di nascita:\n" + dataNascita + "\nDomicilio:\n " + domicilio);
     }
 
     //fonte: https://stackoverflow.com/questions/5531455/how-to-hash-some-string-with-sha-256-in-java
