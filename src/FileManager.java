@@ -10,8 +10,7 @@ public class FileManager {
     public static final String path_proiezioni = "data/proiezioni.dat";
     public static final String path_film = "data/film.dat";
     public static final String path_utenti = "data/utenti.csv";
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    public static final DataOra oggi = new DataOra(LocalDateTime.now().format(formatter));
+    public static final String path_prenotazioni = "data/prenotazioni.csv";
 
     // metodi
     public static List<Proiezione> leggiProiezioni_csv() {
@@ -76,12 +75,35 @@ public class FileManager {
         return lista;
     }
 
+    public static List<Prenotazione> leggiPrenotazioni_csv() {
+        List<Prenotazione> lista = new ArrayList<>();
+        File f = new File(path_prenotazioni);
+        if (f.exists()){
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(f));
+                String riga = br.readLine();
+                while ((riga = br.readLine()) != null) {
+                    String[] attributi = riga.split(";");
+                    lista.add(new Prenotazione(Integer.parseInt(attributi[0]), attributi[1], new DataOra(attributi[2]), attributi[3].split("-")));
+                }
+                br.close();
+            } catch (FileNotFoundException e) {
+                System.out.println("Errore");
+            } catch (IOException e) {
+                System.out.println("io");
+            }
+        }
+
+        return lista;
+    }
+
     public static void carica_csv(List<?> lista, String path){
         File f = new File(path);
 
         String colonne;
         switch (path){
             case path_utenti -> colonne = "Nome;Cognome;Username;Password;DataNascita;Domicilio;Ruolo";
+            case path_prenotazioni -> colonne = "CodicePrenotazione;Username;DataOraProiezione;PostiPrenotati";
             default -> colonne = "";
         }
 
@@ -100,7 +122,6 @@ public class FileManager {
             System.out.println("io");
         }
     }
-
 
     private static Proiezione getProiezione(String riga) {
         String[] attributi = splitAttributi(riga);
@@ -165,10 +186,6 @@ public class FileManager {
         } catch (ClassNotFoundException | IOException ex){
             System.out.println(ex.getMessage());
         }
-        return null;
-    }
-
-    public static List<Prenotazione> deserializza_prenotazioni_csv(){
         return null;
     }
 

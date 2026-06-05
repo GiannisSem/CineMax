@@ -1,7 +1,7 @@
 import java.io.Serial;
 import java.io.Serializable;
 
-public class Film implements Serializable, Comparable {
+public class Film implements Serializable, Comparable<Film> {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -27,8 +27,8 @@ public class Film implements Serializable, Comparable {
     }
 
     @Override
-    public int compareTo(Object altro) {
-        return titolo.compareTo(((Film) altro).titolo);
+    public int compareTo(Film other) {
+        return titolo.compareTo(other.titolo);
     }
 
     public String getTitolo(){

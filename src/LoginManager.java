@@ -22,6 +22,7 @@ public class LoginManager {
         return utenteLoggato;
     }
 
+    // todo: creare un passcode per utenti con permessi (Bigliettaio e Proiezionista)
     public static boolean signin(Utente utente) throws NoSuchAlgorithmException {
         int inizio = 0;
         int fine = listaUtenti.size() -1;

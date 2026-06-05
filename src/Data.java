@@ -1,7 +1,7 @@
 import java.io.Serial;
 import java.io.Serializable;
 
-public class Data implements Serializable, Comparable {
+public class Data implements Serializable, Comparable<Data> {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -28,8 +28,7 @@ public class Data implements Serializable, Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
-        Data other = (Data) o;
+    public int compareTo(Data other) {
         // anno, mese, giorno
         if (anno == other.anno){
             if(mese == other.mese){

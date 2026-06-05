@@ -3,9 +3,11 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class DataOra implements Serializable, Comparable {
+public class DataOra implements Serializable, Comparable<DataOra> {
     @Serial
     private static final long serialVersionUID = 1L;
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static final DataOra oggi = new DataOra(LocalDateTime.now().format(formatter));
 
     private final Data data;
     private final Ora ora;
@@ -34,8 +36,7 @@ public class DataOra implements Serializable, Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
-        DataOra other = (DataOra) o;
+    public int compareTo(DataOra other) {
         if (data.compareTo(other.data) == 0)
             return ora.compareTo(other.ora);
         return data.compareTo(other.data);

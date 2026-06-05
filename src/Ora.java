@@ -1,7 +1,7 @@
 import java.io.Serial;
 import java.io.Serializable;
 
-public class Ora implements Serializable, Comparable {
+public class Ora implements Serializable, Comparable<Ora> {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -28,8 +28,7 @@ public class Ora implements Serializable, Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
-        Ora other = (Ora) o;
+    public int compareTo(Ora other) {
         // hh:mm:ss
         if (ore == other.ore){
             if(minuti == other.minuti){

@@ -3,7 +3,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-public class Utente implements Comparable {
+public class Utente implements Comparable<Utente> {
 
     private String nome;
     private String cognome;
@@ -97,9 +97,8 @@ public class Utente implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o){
-        Utente u = (Utente) o;
-        return this.username.compareTo(u.username);
+    public int compareTo(Utente other){
+        return this.username.compareTo(other.username);
     }
 
     public void setHashPassword(String password) throws NoSuchAlgorithmException {
