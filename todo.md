@@ -15,7 +15,7 @@ RICHIESTE:
 - Clienti:
   - Cercare Proiezioni (in base a titolo, genere, data o costo_biglietto)
   - Prenotare n posti per una o più proiezione.
-  - Visualizzare le prenotazioni attive (fino a che il film non termina è valida).
+  - Visualizzare le prenotazioni attive (fino a che il film non termina è valida). -> vediamo poi come
   - Cancellare le prenotazioni (se riusciamo anche modifica).
   - Logout.
 - Bigliettai:

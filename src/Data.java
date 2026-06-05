@@ -1,9 +1,13 @@
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Data implements Serializable, Comparable<Data> {
     @Serial
     private static final long serialVersionUID = 1L;
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static final Data oggi = new Data(LocalDateTime.now().format(formatter));
 
     private int giorno;
     private int mese;

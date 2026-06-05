@@ -1,7 +1,7 @@
 import java.io.Serial;
 import java.io.Serializable;
 
-public class Proiezione implements Serializable {
+public class Proiezione implements Serializable, Comparable<Proiezione> {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -35,9 +35,8 @@ public class Proiezione implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o){
-        Proiezione other = (Proiezione) o;
-        return this.dataOra.compareTo(other.dataOra) == 0;
+    public int compareTo(Proiezione other){
+        return this.dataOra.compareTo(other.dataOra);
     }
 
     @Override
@@ -63,12 +62,4 @@ public class Proiezione implements Serializable {
         return costoBiglietto;
     }
     public Sala getSala() { return sala; }
-
-    public boolean isPostoDisponibile(char lettera, int numero){
-        return sala.isPostoDisponibile(lettera, numero);
-    }
-
-    public boolean prenotaPosto(char lettera, int numero){
-        return sala.setPosto(lettera, numero, true);
-    }
 }

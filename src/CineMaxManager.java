@@ -5,14 +5,21 @@ import java.util.List;
 public class CineMaxManager {
     // tutta ricerca e funzionalità
 
-    private static final List<Proiezione> listaProiezioni = FileManager.deserializza_proiezioni();
-    private static final List<Film> listaFilm = FileManager.deserializza_film();
+    private static List<Proiezione> listaProiezioni = FileManager.deserializza_proiezioni();
+    private static List<Film> listaFilm = FileManager.deserializza_film();
+    private static List<Prenotazione> listaPrenotazioni = FileManager.leggiPrenotazioni_csv();
 
     public static List<Proiezione> getListaProiezioni(){
         return listaProiezioni;
     }
     public static List<Film> getListaFilm(){
         return listaFilm;
+    }
+    public static List<Prenotazione> getListaPrenotazioni() {
+        return listaPrenotazioni;
+    }
+    public static int getUltimoCodicePrenotazione(){
+        return listaPrenotazioni.get(listaPrenotazioni.size()-1).getCodicePrenotazione();
     }
 
     /* INSERIMENTO */
@@ -158,9 +165,11 @@ public class CineMaxManager {
      * @return True se l'ha cancellato, altrimenti false. Restituisce false anche se la Proiezione non è presente.
      */
     public static boolean eliminaProiezione(DataOra dataOra){
-        boolean risultato = listaProiezioni.remove(cercaProiezione(dataOra));
-        // FileManager.serializza_lista(listaProiezioni, FileManager.path_proiezioni);
-        return risultato;
+        boolean cancellato = listaProiezioni.remove(cercaProiezione(dataOra));
+        // todo: Cancella SOLO SE non ci sono prenotazioni associate a questa proiezione. Oppure di deafault elimina tutte le prenotazioni associate.
+        //if (cancellato)
+            // FileManager.serializza_lista(listaProiezioni, FileManager.path_proiezioni);
+        return cancellato;
     }
 
     public static boolean eliminaProiezione(String dataOra){
@@ -197,30 +206,6 @@ public class CineMaxManager {
     public static boolean modificaDataProiezione(String old, String nuova){
         return modificaDataProiezione(new DataOra(old), new DataOra(nuova));
     }
-
-    /* Prenotazioni */
-    public static Prenotazione cercaPrenotazione(List<Prenotazione> lista, int id) {
-        int inizio = 0;
-        int fine = lista.size()-1;
-
-        while (inizio <= fine){
-            int centro = inizio + (fine - inizio) / 2;
-            int idCentrale = lista.get(centro).getCodicePrenotazione();
-
-            if (idCentrale == id)
-                return lista.get(centro);
-
-            if (idCentrale > id)
-                fine = centro+1;
-
-            if (idCentrale < id)
-                inizio = centro+1;
-        }
-
-        return null;
-    }
-
-    // secondo me da rivedere sistema inserimento proiezioni... dovrebbe essere che inserisci il titolo e pesca i dati dal file Films.
 
     public static boolean aggiungiFilm(String titolo, String genere, String regista, int annoUscita, int durata, int vmeta){
         int inizio = 0;
@@ -260,6 +245,70 @@ public class CineMaxManager {
                 inizio = centro+1;
         }
         return null;
+    }
+
+    /* PRENOTAZIONI */
+    public void inserisciPrenotazione(Cliente cliente, Proiezione proiezione, String[] posti){
+        listaPrenotazioni.add(new Prenotazione(cliente, proiezione, posti));
+    }
+
+    public List<Prenotazione> getPrenotazioniCliente(Cliente cliente){
+        List<Prenotazione> prenotazioni = new ArrayList<>();
+        for (Prenotazione p : listaPrenotazioni){
+            if (p.getCliente().compareTo(cliente) == 0)
+                prenotazioni.add(p);
+        }
+        return prenotazioni;
+    }
+
+    public List<Prenotazione> getPrenotazioniClienteAttuale(){
+        return getPrenotazioniCliente((Cliente) LoginManager.getutenteLoggato());
+    }
+
+    public Prenotazione cercaPrenotazione(int codicePrenotazione){
+        int inizio = 0;
+        int fine = listaPrenotazioni.size() -1;
+
+        while (inizio <= fine){
+            int centro = inizio + (fine - inizio) / 2;
+            int centrale = listaPrenotazioni.get(centro).getCodicePrenotazione();
+            if (codicePrenotazione == centrale)
+                return listaPrenotazioni.get(centro);
+
+            if (codicePrenotazione < centrale)
+                fine = centro-1;
+            else
+                inizio = centro+1;
+        }
+        return null;
+    }
+
+    public boolean eliminaPrenotazione(int codicePrenotazione){
+        Prenotazione p = cercaPrenotazione(codicePrenotazione);
+        boolean cancellato = listaPrenotazioni.remove(p);
+        if (cancellato){
+            for (String posto : p.getPosti()){
+                p.getSala().liberaPosto(posto);
+            }
+            FileManager.carica_csv(listaPrenotazioni, FileManager.path_prenotazioni);
+        }
+
+        return cancellato;
+    }
+
+    /**
+     * Cerca tutte le prenotazioni di proiezioni di oggi.
+     * @return
+     */
+    public List<Prenotazione> cercaPrenotazioniOggi(){
+        List<Prenotazione> prenotazioni = new ArrayList<>();
+
+        for (Prenotazione p : listaPrenotazioni){
+            if (p.getDataOra().getData().compareTo(Data.oggi) == 0)
+                prenotazioni.add(p);
+        }
+
+        return prenotazioni;
     }
 
 }

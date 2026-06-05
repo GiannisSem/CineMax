@@ -46,19 +46,28 @@ public class Sala implements Serializable {
 
     /**
      *
-     * @param lettera Lettera del posto.
-     * @param numero Numero del posto.
+     * @param posto Posto (lettera + numero)
      * @param setReset True per provare ad occupare il posto, se disponibile. Invece false per liberarlo.
      * @return Restituisce true se il posto è stato occupato/liberato correttamente. Altrimenti false.
      */
-    public boolean setPosto(char lettera, int numero, boolean setReset) {
-        // se si vuole occupare il posto ma non è disponibile.
+    private boolean setPosto(String posto, boolean setReset) {
+        char lettera = posto.charAt(posto.length() - 1);
+        int numero = Integer.parseInt(posto.substring(0, posto.length() - 1));
+
         if (setReset && !isPostoDisponibile(lettera, numero))
             return false;
 
         int indice = (lettera - 'A') * 20 + (numero - 1);
         posti[indice] = setReset;
         return true;
+    }
+
+    public boolean occupaPosto(String posto){
+        return setPosto(posto, true);
+    }
+
+    public void liberaPosto(String posto){
+        setPosto(posto, false);
     }
 
     public int postiOccupati(){

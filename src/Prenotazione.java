@@ -1,30 +1,63 @@
 public class Prenotazione {
-    private static int codicePrenotazione = 0;
+    public static int ultimoCodicePrenotazione = CineMaxManager.getUltimoCodicePrenotazione();
+    private int codicePrenotazione;
     private Cliente cliente;
     private Proiezione proiezione;
     private String posti;
-    public Prenotazione(Cliente cliente, Proiezione proiezione, String posti) {
-        codicePrenotazione++;
+
+    public Prenotazione(Cliente cliente, Proiezione proiezione, String[] posti) {
+        this.codicePrenotazione = ultimoCodicePrenotazione++;
         this.cliente = cliente;
         this.proiezione = proiezione;
-        this.posti = posti;
-        if(!assegnaPosto(posti))
-            throw new IllegalArgumentException("Posto non valido");
+        if (posti.length == 1)
+            this.posti = posti[0];
+        else {
+            StringBuilder sb = new StringBuilder(posti[0]);
+            for (int i = 1; i < posti.length; i++) {
+                sb.append("-").append(posti[i]);
+            }
+            this.posti = sb.toString();
+        }
+        // TODO: meglio prima assegnare e poi creare la prenotazione (meglio) oppure mandare i posti e pregare che siano liberi (FA SCHIFO)
     }
+
+    public Prenotazione(int codicePrenotazione, String username, DataOra orarioProiezione, String[] posti) {
+        this.codicePrenotazione = codicePrenotazione;
+        this.cliente = (Cliente) LoginManager.cercaUtente(username);
+        this.proiezione = CineMaxManager.cercaProiezione(orarioProiezione);
+        if (posti.length == 1)
+            this.posti = posti[0];
+        else {
+            StringBuilder sb = new StringBuilder(posti[0]);
+            for (int i = 1; i < posti.length; i++) {
+                sb.append("-").append(posti[i]);
+            }
+            this.posti = sb.toString();
+        }
+    }
+
     public int getCodicePrenotazione() {
         return codicePrenotazione;
     }
+
     public String getNominativo(){
         return String.format(cliente.getNome() + " " + cliente.getCognome());
     }
+    public Cliente getCliente() { return cliente; }
+
     public DataOra getDataOra() {
         return proiezione.getDataOra();
     }
+    public Sala getSala() { return proiezione.getSala(); }
+
     public double getPrezzo(){
         return proiezione.getCostoBiglietto();
     }
 
+    public String[] getPosti() { return posti.split("-"); }
 
+/*
+    // TODO: zini: prima controlla la disponibilità, poi la termine, per ogni posto prenotalo.
     private boolean assegnaPosto(String posti){                                 // formato stringa "2G-3G-4G"
         String [] arrPosti = posti.split("-");
         for(String s : arrPosti){
@@ -35,21 +68,13 @@ public class Prenotazione {
             proiezione.prenotaPosto(lettera, numero);
         }
         return true;
-    }
-    public boolean modificaData(DataOra data){
-        Proiezione proiezioneNuova = CineMaxManager.cercaProiezione(data);
-        if(proiezioneNuova == null || proiezioneNuova.equals(proiezione))
-            return false;
-        if(assegnaPosto(this.posti)) {
-            this.proiezione = proiezioneNuova;
-            return true;
-        }
-        return false;
-    }
+    }*/
+
+    // TODO: zini: nel main devi gestire tu la modifica: past = cercaPrenotazione -> modifica dei posti nel nuovo -> se tutto ok -> eliminaPrenotazione(past)
 
     @Override
     public String toString() {
-        return String.format(codicePrenotazione + ";" + cliente.getUsername() + ";" + posti + ";" + proiezione.getDataOra());
+        return String.format(codicePrenotazione + ";" + cliente.getUsername() + ";" + proiezione.getDataOra() + ";" + posti);
     }
 
     public  String toInfo(){
