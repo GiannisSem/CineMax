@@ -18,20 +18,4 @@ public class Bigliettaio extends Utente {
         super(nome, cognome, username, password, domicilio, Ruolo.BIGLIETTAIO);
        // prenotazioni = CineMaxManager.getListaPrenotazioni();
     }
-
-    public String visuaPrenotazioniOggi(){
-        return null;
-    }
-    public Prenotazione cercaPrenotazione(int codPrenotazione){
-        return CineMaxManager.cercaPrenotazione(prenotazioni, codPrenotazione);
-    }
-    public boolean cercaPrenotazione(String nome, String cognome){
-        return true;
-    }
-    public boolean cercaPrenotazione(String titolo){
-        return true;
-    }
-    public boolean cercaPrenotazione(Data dataInizio, Data dataFine){
-        return true;
-    }
 }

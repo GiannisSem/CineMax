@@ -282,7 +282,7 @@ public  class UtentiMenu {
 
 
         if(proiezione.getSala().postiOccupati()==0) {
-            if(utente.eliminaProiezione(proiezione.getDataOra()))
+            if(CineMaxManager.eliminaProiezione(proiezione.getDataOra()))
                 System.out.println("Eliminazione riuscita.");
             else
                 System.out.println("Eliminazione non riuscita.");
@@ -301,7 +301,7 @@ public  class UtentiMenu {
             int ora = inputInt("Inserisci nuova ora:","Inserimento non valido. Riprova:",0,23);
             int minuti = inputInt("Inserisci nuovi minuti:","Inserimento non valido. Riprova:",0,59);
 
-            if(utente.modificaDataProiezione(proiezione.getDataOra(),new DataOra(anno,mese,giorno,ora,minuti,0)))
+            if(CineMaxManager.modificaDataProiezione(proiezione.getDataOra(),new DataOra(anno,mese,giorno,ora,minuti,0)))
                 System.out.println("Cambiamento data riuscito.");
             else
                 System.out.println("Cambiamento data non riuscito.");

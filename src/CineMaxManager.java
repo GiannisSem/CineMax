@@ -188,7 +188,7 @@ public class CineMaxManager {
         return sb.toString();
     }
 
-    /* MODIFICA DATA PRENOTAZIONE */
+    /* MODIFICA DATA PROIEZIONE */
     public static boolean modificaDataProiezione(DataOra old, DataOra nuova){
         Proiezione p = cercaProiezione(old);
         if (p == null)
@@ -248,11 +248,11 @@ public class CineMaxManager {
     }
 
     /* PRENOTAZIONI */
-    public void inserisciPrenotazione(Cliente cliente, Proiezione proiezione, String[] posti){
+    public static void inserisciPrenotazione(Cliente cliente, Proiezione proiezione, String[] posti){
         listaPrenotazioni.add(new Prenotazione(cliente, proiezione, posti));
     }
 
-    public List<Prenotazione> getPrenotazioniCliente(Cliente cliente){
+    public static List<Prenotazione> getPrenotazioniCliente(Cliente cliente){
         List<Prenotazione> prenotazioni = new ArrayList<>();
         for (Prenotazione p : listaPrenotazioni){
             if (p.getCliente().compareTo(cliente) == 0)
@@ -261,11 +261,11 @@ public class CineMaxManager {
         return prenotazioni;
     }
 
-    public List<Prenotazione> getPrenotazioniClienteAttuale(){
+    public static List<Prenotazione> getPrenotazioniClienteAttuale(){
         return getPrenotazioniCliente((Cliente) LoginManager.getutenteLoggato());
     }
 
-    public Prenotazione cercaPrenotazione(int codicePrenotazione){
+    public static Prenotazione cercaPrenotazione(int codicePrenotazione){
         int inizio = 0;
         int fine = listaPrenotazioni.size() -1;
 
@@ -283,7 +283,7 @@ public class CineMaxManager {
         return null;
     }
 
-    public boolean eliminaPrenotazione(int codicePrenotazione){
+    public static boolean eliminaPrenotazione(int codicePrenotazione){
         Prenotazione p = cercaPrenotazione(codicePrenotazione);
         boolean cancellato = listaPrenotazioni.remove(p);
         if (cancellato){
@@ -300,7 +300,7 @@ public class CineMaxManager {
      * Cerca tutte le prenotazioni di proiezioni di oggi.
      * @return
      */
-    public List<Prenotazione> cercaPrenotazioniOggi(){
+    public static List<Prenotazione> cercaPrenotazioniOggi(){
         List<Prenotazione> prenotazioni = new ArrayList<>();
 
         for (Prenotazione p : listaPrenotazioni){
