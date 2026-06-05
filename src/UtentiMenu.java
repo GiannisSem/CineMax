@@ -1,3 +1,4 @@
+import java.lang.classfile.CodeBuilder;
 import java.security.NoSuchAlgorithmException;
 import java.time.Year;
 import java.util.List;
@@ -171,7 +172,12 @@ public  class UtentiMenu {
             double costoMin;
             do{
                 System.out.println("Inserisci costo minimo del biglietto del film:");
-                costoMin = scanner.nextDouble();
+                try {
+                    costoMin = scanner.nextDouble();
+                }catch (Exception e) {
+                    scanner.next();
+                    costoMin=-1;
+                }
                 if(costoMin<0)
                     System.out.println("Inserimento non valido riprova:");
             }while (costoMin<0);
@@ -179,7 +185,14 @@ public  class UtentiMenu {
             double costoMax;
             do{
                 System.out.println("Inserisci costo massimo del biglietto del film:");
-                costoMax = scanner.nextDouble();
+                try
+                {
+                    costoMax = scanner.nextDouble();
+                }catch (Exception e)
+                {
+                    scanner.next();
+                    costoMax=costoMin-1;
+                }
                 if(costoMax<costoMin)
                     System.out.println("Inserimento non valido riprova:");
             }while (costoMax<costoMin);
@@ -196,7 +209,7 @@ public  class UtentiMenu {
         do {
 
 
-            System.out.println("Indice   DataOra   titolo   genere   regista   anno   durata   età minima   costo   nPostiLiberi");
+            System.out.println("Indice   DataOra          titolo    genere     regista     anno     durata     età minima     costo    nPostiLiberi");
             int i=1;
 
             for (Proiezione p: lista)
@@ -204,17 +217,17 @@ public  class UtentiMenu {
                 System.out.println(" " + i + "   " + p.toInfo());
                 i++;
             }
+            System.out.println("");
             risposta = inputInt("Inserisci l'indice della proiezione che vuoi vedere o 0 per tornare al menù principale.","Inserimento non valido riprova:",0,lista.size());
 
             if(risposta!=0)
             {
-                Proiezione proiezione=(Proiezione) lista.toArray()[risposta];
-                if(utente.getRuolo().equals("CLIENTE"))
+                Proiezione proiezione=(Proiezione) lista.toArray()[risposta-1];
+                if(utente.getRuolo().equals("CLIENTE") || utente.getRuolo().equals("NONREGISTRATO"))
                     visualizzaProiezioneCliente(proiezione);
                 if(utente.getRuolo().equals("PROIEZIONISTA"))
                     visualizzaProiezioneProiezionista((Proiezionista) utente,proiezione);
             }
-
         }while (risposta!=0);
     }
 
@@ -223,7 +236,6 @@ public  class UtentiMenu {
         System.out.println(proiezione.toInfo1());
         proiezione.getSala().stampa();
 
-        System.out.println("Numero posti liberi: " + proiezione.getSala().postiDisponibili());
         int scelta =inputInt((String.format("Numero posti liberi: " + proiezione.getSala().postiDisponibili())),"Posti liberi sono insufficienti:",1,proiezione.getSala().postiDisponibili());
 
         char lettera;
@@ -236,7 +248,14 @@ public  class UtentiMenu {
                 System.out.println("Inserisci posto della " + i + "^ prenotazione: es: A9");
                 posto=scanner.nextLine();
                 ritest=false;
-                numero=Integer.parseInt(posto.substring(1,posto.length()-1));
+                try {
+                    numero=Integer.parseInt(posto.substring(1,posto.length()));
+                }catch (Exception u)
+                {
+                    numero=21;
+                    lettera='R';
+                }
+
                 lettera=posto.charAt(0);
                 if(numero<1 || numero>20 || lettera<'A' || lettera>'J')
                 {
@@ -318,9 +337,17 @@ public  class UtentiMenu {
         int risposta;
         do {
             System.out.println(richiesta);
-            risposta = scanner.nextInt();
-            if(risposta<min || risposta>max)
+            try {
+                risposta = scanner.nextInt();
+            }catch (Exception e)
+            {
+                scanner.next();
+                risposta=min-1;
+            }
+            if(risposta<min || risposta>max) {
                 System.out.println(errore);
+                System.out.println();
+            }
         }while (risposta<min || risposta>max);
         return risposta;
     }
@@ -331,18 +358,19 @@ public  class UtentiMenu {
         String risposta;
         boolean valido;
         do {
-            valido=true;
+            valido = true;
             System.out.println(richiesta);
             risposta = scanner.nextLine();
-            for (char c : risposta.toCharArray())
-            {
-                if(caratteriNonValidi.indexOf(c) >=0) {
+            for (char c : risposta.toCharArray()) {
+                if (caratteriNonValidi.indexOf(c) >= 0) {
                     valido = false;
                     break;
                 }
             }
-            if(!valido || risposta.trim().isEmpty()|| risposta.contains(caratteriNonValidi))
+            if (!valido || risposta.trim().isEmpty() || risposta.contains(caratteriNonValidi)) {
                 System.out.println(errore);
+                System.out.println();
+            }
         }while (!valido || risposta.trim().isEmpty()|| risposta.contains(caratteriNonValidi));
         return risposta;
     }
@@ -385,20 +413,19 @@ public  class UtentiMenu {
 
             int scelta;
             do {
-                for (int i = 0; i < Ruolo.values().length - 2; i++) {
+                for (int i = 0; i < Ruolo.values().length - 1; i++) {
                     System.out.println(i + 1 + "   " + Ruolo.values()[i]);
                 }
-                System.out.println("0   Logout");
+                System.out.println("0   Torna alla home");
                 scelta = scanner.nextInt();
 
-                if (!(scelta < Ruolo.values().length - 2 && scelta >= 0))
-                    System.out.println("inserimento non valido riprova:");
-            } while (!(scelta < Ruolo.values().length - 2 && scelta >= 0));
-            if (scelta == 0)
-                utenteNonRegistrato();
-            else {
+                if (!(scelta < Ruolo.values().length - 1 && scelta >= 0))
+                    System.out.println("%ninserimento non valido riprova:%n");
+            } while (!(scelta < Ruolo.values().length - 1 && scelta >= 0));
+            if (scelta != 0)
+            {
 
-                switch (Ruolo.values()[scelta]) {
+                switch (Ruolo.values()[scelta-1]) {
                     case CLIENTE:
                         Cliente cliente;
                         if(data.equals("S"))
@@ -417,9 +444,9 @@ public  class UtentiMenu {
                         else
                             proiezionista = new Proiezionista(nome, cognome, username, password, domicilio);
                         if (LoginManager.signin(proiezionista)) {
-                            riprova = true;
-                        } else
                             proiezionistaRegistrato(proiezionista);
+                        } else
+                            riprova = true;
                         break;
                     case BIGLIETTAIO:
                         Bigliettaio bigliettaio;
@@ -428,9 +455,9 @@ public  class UtentiMenu {
                         else
                             bigliettaio = new Bigliettaio(nome, cognome, username, password, domicilio);
                         if (LoginManager.signin(bigliettaio)) {
-                            riprova = true;
-                        } else
                             bigliettaioRegistrato(bigliettaio);
+                        } else
+                            riprova = true;
                         break;
                 }
             }

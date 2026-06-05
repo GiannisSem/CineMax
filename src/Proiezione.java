@@ -49,7 +49,7 @@ public class Proiezione implements Serializable, Comparable<Proiezione> {
     }
 
     public String toInfo1(){
-        return String.format("Data e ora:%n" + dataOra + "%nTitolo:%n" + film.getTitolo() + "%nRegista:%n" + film.getRegista() + "%nAnno di uscita:%n" + film.annoUscita() + "%nDurata:%n" + film.getDurata() + "%nEtà minima:%n" + film.getVmeta() + "%nCosto biglietto:%n" + costoBiglietto);
+        return String.format("Data e ora:  " + dataOra + "%n%nTitolo:  " + film.getTitolo() + "%n%nRegista:  " + film.getRegista() + "%n%nAnno di uscita:  " + film.annoUscita() + "%n%nDurata:  " + film.getDurata() + "%n%nEtà minima:  " + film.getVmeta() + "%n%nCosto biglietto:  " + costoBiglietto);
     }
 
     public DataOra getDataOra(){
