@@ -49,10 +49,11 @@ public class LoginManager {
 
     public static Utente login(String username, String password) throws NoSuchAlgorithmException {
         Utente u = cercaUtente(username);
-        if (u != null && u.checkPassword(password))
+        if (u != null && u.checkPassword(password)) {
             utenteLoggato = u;
-
-        return utenteLoggato;
+            return u;
+        }
+        return null;
     }
 
     public static Utente cercaUtente(String username){

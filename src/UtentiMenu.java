@@ -21,7 +21,7 @@ public  class UtentiMenu {
                     registrazioneUtente();
                     break;
                 case 3:
-                    //login
+                    login();
                     break;
             }
         }while(scelta!=0);
@@ -35,9 +35,6 @@ public  class UtentiMenu {
             scelta = inputInt("1   Cerca proiezione\n2   Visualizzare prenotazioni\n3   Profilo\n0   Logout","Inserimento non valido. Riprova:",0,3);
             switch (scelta)
             {
-                case 0:
-                    utenteNonRegistrato();
-                    break;
                 case 1:
                     cercaProiezione(utente);
                     break;
@@ -59,11 +56,8 @@ public  class UtentiMenu {
             scelta = inputInt("1   Inserire proiezione\n2   Cerca proiezione\n3   Profilo\n0   Logout","Inserimento non valido. Riprova:",0,3);
             switch (scelta)
             {
-                case 0:
-                    utenteNonRegistrato();
-                    break;
                 case 1:
-                    //visualizza prenotazioni
+                    //inserisci proiezione
                     break;
                 case 2:
                     cercaProiezione(proiezionista);
@@ -83,9 +77,6 @@ public  class UtentiMenu {
             scelta=inputInt("1   Visualizza prenotazioni odierne\n2   Cerca proiezione\n3   Profilo\n0   Logout","Inserimento non valido. Riprova:",0,3);
             switch (scelta)
             {
-                case 0:
-                    utenteNonRegistrato();
-                    break;
                 case 1:
                     //visualizza prenotazioni odierne
                     break;
@@ -376,6 +367,40 @@ public  class UtentiMenu {
     }
 
 
+    public static void login() throws NoSuchAlgorithmException {
+        boolean esci;
+        do {
+            esci=true;
+            String username= inputString("Inserisci username:","Inserimento non valido. Riprova:","; ");
+            String password= inputString("Inserisci password:","Inserimento non valido. Riprova:",";");
+            Utente utente=LoginManager.login(username,password);
+            if(utente==null)
+            {
+                Scanner scanner = new Scanner(System.in);
+                String riprova;
+                do{
+                    System.out.println("Dati non corretti. Vuoi riprovare? (S o N)");
+                    riprova=scanner.nextLine();
+                    if(!(riprova.equals("S") || riprova.equals("N")))
+                        System.out.println("Inserimento non valido riprova:");
+                }while (!(riprova.equals("S") || riprova.equals("N")));
+                if(riprova.equals("S"))
+                    esci=false;
+            }
+            else
+            {
+                if(utente.getRuolo().equals("CLIENTE"))
+                    utenteRegistrato((Cliente) utente);
+                else if(utente.getRuolo().equals("PROIEZIONISTA"))
+                    proiezionistaRegistrato((Proiezionista) utente);
+                else if(utente.getRuolo().equals("BIGLIETTAIO"))
+                    bigliettaioRegistrato((Bigliettaio) utente);
+            }
+        }while (!esci);
+    }
+
+
+
     public static void registrazioneUtente() throws NoSuchAlgorithmException {
         Scanner scanner = new Scanner(System.in);
         boolean riprova;
@@ -499,12 +524,12 @@ public  class UtentiMenu {
         //set datanascita da fare
     }
 
+
     static public void modificaPassword(Utente utente) throws NoSuchAlgorithmException {
         String password = inputString("Inserisci nuova password o 0 per tornare indietro","Inserimento non valido. Riprova:",";");
         if(!password.equals("0"))
             utente.setHashPassword(password);
     }
-
 
     static public void modificaDomicilio(Utente utente)
     {
@@ -513,6 +538,7 @@ public  class UtentiMenu {
            utente.setDomicilio(domicilio);
     }
 
+    //problemi perchè il setUsername non cambia la posizione dell'utente nella lista quindi poi la ricerca non funziona
     static public void modificaUsername(Utente utente)
     {
         String username;

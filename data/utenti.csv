@@ -1,5 +1,6 @@
 Nome;Cognome;Username;Password;DataNascita;Domicilio;Ruolo
 a;a;a;ypeBEsobvcr6wjGzmiPcTaeG7/gUfE5yuYB3ha/uSLs=;null;a;CLIENTE
+a;a;b;PiPoFgA5WUoziU9lZOGxNIu9egCI1CxKy3PurtWcAJ0=;null;b;CLIENTE
 Mario;Rossi;mrossi;Tzvb0r++mDhsEkEu8gdTX6gsWYnN9ROWJgJaYbdtOoE=;1987-12-01;via Milano, 1, Varese;CLIENTE
 Luigi;Bianchi;luwhite0;/pcm18kLpzbq6afkhrENFgJSPPfU4va0/tJn6IADbN0=;2002-09-30;via Padova, 33, Milano;CLIENTE
 Tur;Taras;taras_va;16c6EZ2Gap1Ohl9ZK00dOf0mlNmi4PUfYtXuTIlOyAE=;null;via Ronchi, 4, Cavaria;BIGLIETTAIO
