@@ -56,7 +56,11 @@ public class Prenotazione {
 
     public String[] getPosti() { return posti.split("-"); }
 
-/*
+    public Proiezione getProiezione() {
+        return proiezione;
+    }
+
+    /*
     // TODO: zini: prima controlla la disponibilità, poi la termine, per ogni posto prenotalo.
     private boolean assegnaPosto(String posti){                                 // formato stringa "2G-3G-4G"
         String [] arrPosti = posti.split("-");
@@ -80,4 +84,10 @@ public class Prenotazione {
     public  String toInfo(){
         return String.format("codice prenotazione: " + codicePrenotazione, " username cliente " + cliente.getUsername() + " data proiezione " + proiezione.getDataOra() + " titolo film" + proiezione.getFilm().getTitolo());
     }
+
+    public String toInfoCliente()
+    {
+        return String.format(getCodicePrenotazione()+  "    " +getDataOra()+"    "+proiezione.getFilm().getTitolo()+  "    " +proiezione.getFilm().getGenere()+  "    " +proiezione.getFilm().getRegista()+  "    " +proiezione.getFilm().annoUscita()+  "    " +proiezione.getFilm().getDurata()+  "    " +proiezione.getFilm().getVmeta()+  "    " +proiezione.getCostoBiglietto()+  "    " +getPosti() );
+    }
+
 }

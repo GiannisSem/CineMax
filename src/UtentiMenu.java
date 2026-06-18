@@ -1,3 +1,4 @@
+import java.io.Console;
 import java.lang.classfile.CodeBuilder;
 import java.security.NoSuchAlgorithmException;
 import java.time.Year;
@@ -39,7 +40,7 @@ public  class UtentiMenu {
                     cercaProiezione(utente);
                     break;
                 case 2:
-                    //visualizza prenotazioni
+                    visualizzaPrenotazioneCliente(utente);
                     break;
                 case 3:
                     profilo(utente);
@@ -47,6 +48,10 @@ public  class UtentiMenu {
             }
         }while(scelta!=0);
     }
+
+
+
+
 
 
     public static void proiezionistaRegistrato(Proiezionista proiezionista) throws NoSuchAlgorithmException {
@@ -215,14 +220,14 @@ public  class UtentiMenu {
             {
                 Proiezione proiezione=(Proiezione) lista.toArray()[risposta-1];
                 if(utente.getRuolo().equals("CLIENTE") || utente.getRuolo().equals("NONREGISTRATO"))
-                    visualizzaProiezioneCliente(proiezione);
+                    visualizzaProiezioneCliente(proiezione,(Cliente)utente);
                 if(utente.getRuolo().equals("PROIEZIONISTA"))
                     visualizzaProiezioneProiezionista((Proiezionista) utente,proiezione);
             }
         }while (risposta!=0);
     }
 
-    public static void visualizzaProiezioneCliente(Proiezione proiezione) throws NoSuchAlgorithmException {
+    public static void visualizzaProiezioneCliente(Proiezione proiezione,Cliente utente) throws NoSuchAlgorithmException {
         Scanner scanner = new Scanner(System.in);
         System.out.println(proiezione.toInfo1());
         proiezione.getSala().stampa();
@@ -233,6 +238,7 @@ public  class UtentiMenu {
         int numero;
         String posto;
         boolean ritest;
+        String[] posti=new String[scelta];
         for (int i=0; i<scelta;i++) {
 
             do {
@@ -262,8 +268,10 @@ public  class UtentiMenu {
                 }
 
             }while(ritest);
-            System.out.println("Hai prenotato il Posto " + lettera + numero);
+            posti[i]=Character.toString(lettera)+Integer.toString(numero);
         }
+        CineMaxManager.inserisciPrenotazione(utente,proiezione,posti);
+        System.out.println("Hai prenotato i posti");
     }
 
 
@@ -549,6 +557,60 @@ public  class UtentiMenu {
         }while (!username.equals("0") && LoginManager.cercaUtente(username)!=null);
         if(!username.equals("0"))
             utente.setUsername(username);
+    }
+
+
+    public static void visualizzaPrenotazioneCliente(Cliente utente) throws NoSuchAlgorithmException {
+        //VISUALIZZA ANCHE PROIEZIONI PASSATE CHE NON DOVREBBERO ESSERE VISUALIZZATE
+        int scelta;
+        do {
+            System.out.println("Indice Codice prenotazione data   ora  titolo   genere    regista    anno  durata  eta minima  posti preso");
+
+            List<Prenotazione> prenotazioni=CineMaxManager.getPrenotazioniCliente(utente);
+            int i=1;
+            for (Prenotazione p: prenotazioni)
+            {
+                System.out.println(" "+ i+ "  "+p.toInfoCliente());
+                i++;
+            }
+            System.out.println("");
+            scelta = inputInt("Inserisci l'indice di quale vuoi modificare/eliminare o 0 per tornare al menù principale.","Inserimento non valido riprova:",0,prenotazioni.size());
+            if(scelta!=0)
+            {
+                Prenotazione p=(Prenotazione) prenotazioni.toArray()[scelta-1];
+                modificaEliminaPrenotazione(p,utente);
+            }
+
+        }while(scelta!=0);
+    }
+
+    public static void modificaEliminaPrenotazione(Prenotazione prenotazione,Cliente utente) throws NoSuchAlgorithmException {
+        int risposta;
+        do {
+            System.out.println("Indice Codice prenotazione data   ora  titolo   genere    regista    anno  durata  eta minima  posti preso");
+            System.out.println(prenotazione.toInfoCliente());
+
+            risposta = inputInt("1  elimina\n2   Modifica\n0   Torna al menù principale","Inserimento non valido. Riprova:",0,2);
+            switch (risposta) {
+                case 1:
+                    if(CineMaxManager.eliminaPrenotazione(prenotazione.getCodicePrenotazione()))
+                        System.out.println("Elimato la prenotazione");
+                    else
+                        System.out.println("C'è un problema. Eliminazione impossibile.");
+                    break;
+                case 2:
+                    List<Proiezione> lista=CineMaxManager.getListaProiezioni();
+                    //CI POSSONO ESSERE FILM CON LO STESSO TITOLO E GENERE
+                    lista=CineMaxManager.cercaProiezioni_Titolo(lista,prenotazione.getProiezione().getFilm().getTitolo());
+                    lista=CineMaxManager.cercaProiezioni_Genere(lista,prenotazione.getProiezione().getFilm().getGenere());
+                    Data dataOggi=Data.oggi;
+                    //PROBLEMA CHE DATA MASSIMA METTO
+                    //lista=CineMaxManager.cercaProiezioni_Date(lista,(dataOggi.toString(),);
+                    //PROBLEMA CHE MI DA PURE LE PROIEZIONI DOVE MAGARI NON CI SONO POSTI LIBERI
+                    visualizzaProiezioni(utente,lista);
+                    break;
+            }
+        }while(risposta==2);
     }
 
 }
