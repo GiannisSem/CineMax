@@ -6,6 +6,8 @@ import java.time.format.DateTimeFormatter;
 public class DataOra implements Serializable, Comparable<DataOra> {
     @Serial
     private static final long serialVersionUID = 1L;
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh HH:mm:ss");
+    public static final DataOra oggi = new DataOra(LocalDateTime.now().format(formatter));
 
     private final Data data;
     private final Ora ora;

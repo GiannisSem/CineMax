@@ -1,6 +1,8 @@
+import javax.swing.*;
 import java.io.Console;
 import java.lang.classfile.CodeBuilder;
 import java.security.NoSuchAlgorithmException;
+import java.time.Month;
 import java.time.Year;
 import java.util.List;
 import java.util.Scanner;
@@ -62,7 +64,7 @@ public  class UtentiMenu {
             switch (scelta)
             {
                 case 1:
-                    //inserisci proiezione
+                    inserisciProiezione();
                     break;
                 case 2:
                     cercaProiezione(proiezionista);
@@ -74,6 +76,98 @@ public  class UtentiMenu {
         }while(scelta!=0);
     }
 
+    public static void inserisciProiezione()
+    {
+        boolean rifare;
+        do {
+
+            rifare = false;
+
+            String titolo = inputString("Inserisci titolo:", "Inserimento non valido. Riprova:", ";");
+
+            Film film = CineMaxManager.cercaFilm(titolo);
+            if (film == null)
+                film=inserireFilm(titolo);
+            if(film!=null) {
+                Data data;
+                do {
+
+                    int anno = inputInt("Inserisci l'anno della data:", "Inserimento non valido. Riprova:", Year.now().getValue(), Year.now().getValue() + 5);
+                    int mese = inputInt("Inserisci il mese della data:", "Inserimento non valido. Riprova:", 1, 12);
+                    int giorno = inputInt("Inserisci il giorno della data:", "Inserimento non valido. Riprova:", 1, 31);
+                    data = new Data(anno, mese, giorno);
+                } while (data.compareTo(Data.oggi) < 0);
+                DataOra dataOra;
+                do {
+
+                    int ore = inputInt("Inserisci l'ora:", "Inserimento non valido. Riprova:", 0, 23);
+                    int minuti = inputInt("Inserisci i minuti:", "Inserimento non valido. Riprova:", 0, 59);
+                    Ora orario = new Ora(ore, minuti, 0);
+                    dataOra = new DataOra(data, orario);
+                } while (dataOra.compareTo(DataOra.oggi) < 0);
+
+                Scanner scanner = new Scanner(System.in);
+                double costo;
+                do {
+                    System.out.println("Inserisci il costo del biglietto:");
+
+                    try {
+                        costo = scanner.nextDouble();
+                    } catch (Exception e) {
+                        scanner.next();
+                        costo = -1;
+                    }
+                    if (costo < 0)
+                        System.out.println("Valore inserito non valido. Riprova");
+                } while (costo < 0);
+
+                rifare = !CineMaxManager.inserisciProiezione(dataOra, film, costo);
+
+                if (rifare)
+                    System.out.println("Inserimento della proiezione non valido");
+            }
+        }while (rifare);
+
+    }
+
+
+    public static Film inserireFilm(String titolo) {
+        boolean riprova;
+        do {
+            riprova = false;
+            String genere = inputString("Inserisci il genere del film:", "Inserimento non valido. Riprova:", ";");
+            if (genere.equals("0")) {
+                return null;
+            }
+            String regista = inputString("Inserisci il regista del film:o", "Inserimento non valido. Riprova:", ";");
+            int anno = inputInt("Inserisci l'anno del film:", "Inserimento non valido. Riprova:", 1800, Year.now().getValue());
+            int durata = inputInt("Inserisci la durata del film in minuti:", "Inserimento non valido. Riprova:", 1, 1000);
+            int eta = inputInt("Inserisci l'età minima di vision per il film:", "Inserimento non valido. Riprova:", 0, 18);
+
+            if (CineMaxManager.aggiungiFilm(titolo, genere, regista, anno, durata, eta)) {
+                System.out.println("Aggiunto il film");
+                return CineMaxManager.cercaFilm(titolo);
+            }
+            else {
+                System.out.println("Film non valido.");
+                System.out.println("Vuoi riprovare?(S/n)");
+
+
+                Scanner scanner = new Scanner(System.in);
+                String risposta;
+                do {
+                    System.out.println("Vuoi riprovare? (S o N)");
+                    risposta = scanner.nextLine();
+                    if (!(risposta.equals("S") || risposta.equals("N")))
+                        System.out.println("Inserimento non valido riprova:");
+                } while (!(risposta.equals("S") || risposta.equals("N")));
+                if (risposta.equals("S"))
+                    riprova = true;
+            }
+        } while (riprova);
+        return null;
+    }
+
 
     public static void bigliettaioRegistrato(Bigliettaio bigliettaio) throws NoSuchAlgorithmException {
         Scanner scanner = new Scanner(System.in);
@@ -83,10 +177,13 @@ public  class UtentiMenu {
             switch (scelta)
             {
                 case 1:
-                    //visualizza prenotazioni odierne
+                    if(!CineMaxManager.cercaPrenotazioniOggi().isEmpty())
+                        visualizzaPrenotazioni(CineMaxManager.cercaPrenotazioniOggi());
+                    else
+                        System.out.println("Non ci sono prenotazioni oggi.");
                     break;
                 case 2:
-                    //cerca prenotazioni
+                    cercaTipoPrenotazione();
                     break;
                 case 3:
                     profilo(bigliettaio);
@@ -97,6 +194,7 @@ public  class UtentiMenu {
 
 
     }
+
 
 
     public static void cercaProiezione(Utente utente) throws NoSuchAlgorithmException {
@@ -123,7 +221,6 @@ public  class UtentiMenu {
         }while (!(data.equals("S") || data.equals("N")));
         if(data.equals("S"))
         {
-            //da vedere se serve chiedere in input con il meno 0,1,2,3
             System.out.println("Inserisci genere del film:");
             lista=CineMaxManager.cercaProiezioni_Genere(lista,scanner.nextLine());
         }
@@ -250,7 +347,6 @@ public  class UtentiMenu {
                 }catch (Exception u)
                 {
                     numero=21;
-                    lettera='R';
                 }
 
                 lettera=posto.charAt(0);
@@ -268,7 +364,7 @@ public  class UtentiMenu {
                 }
 
             }while(ritest);
-            posti[i]=Character.toString(lettera)+Integer.toString(numero);
+            posti[i]=lettera+Integer.toString(numero);
         }
         CineMaxManager.inserisciPrenotazione(utente,proiezione,posti);
         System.out.println("Hai prenotato i posti");
@@ -296,7 +392,6 @@ public  class UtentiMenu {
     }
 
     public static void eliminaProiezione(Proiezionista utente,Proiezione proiezione) throws NoSuchAlgorithmException {
-
 
 
         if(proiezione.getSala().postiOccupati()==0) {
@@ -600,9 +695,7 @@ public  class UtentiMenu {
                     break;
                 case 2:
                     List<Proiezione> lista=CineMaxManager.getListaProiezioni();
-                    //CI POSSONO ESSERE FILM CON LO STESSO TITOLO E GENERE
                     lista=CineMaxManager.cercaProiezioni_Titolo(lista,prenotazione.getProiezione().getFilm().getTitolo());
-                    lista=CineMaxManager.cercaProiezioni_Genere(lista,prenotazione.getProiezione().getFilm().getGenere());
                     Data dataOggi=Data.oggi;
                     //PROBLEMA CHE DATA MASSIMA METTO
                     //lista=CineMaxManager.cercaProiezioni_Date(lista,(dataOggi.toString(),);
@@ -612,5 +705,146 @@ public  class UtentiMenu {
             }
         }while(risposta==2);
     }
+
+
+    public static void cercaTipoPrenotazione()
+    {
+        int risposta;
+        do {
+            risposta=inputInt("1   Cerca per codice\n2   Cerca per nome e cognome\n3   cerca per titolo film\n4   cerca per intervallo date\n0   torna al menù principale","Inserimento non valido. Riprova:",0,4);
+
+            switch (risposta)
+            {
+                case 1:
+                    cercaPerCodice();
+                    break;
+                case 2:
+                    cercaPerNominativo();
+                    break;
+                case 3:
+                    cercaPerTitolo();
+                    break;
+                case 4:
+                    cercaPerDate();
+                    break;
+            }
+        }while (risposta!=0);
+    }
+
+    public static void cercaPerCodice()
+    {
+        int risposta;
+        do {
+            risposta=inputInt("Inserisci il codice della prenotazione, 0 per tornare indietro.","Inserimento non valido. Riprova:",0,Integer.MAX_VALUE);
+
+            Prenotazione p=CineMaxManager.cercaPrenotazione(risposta);
+            if(p==null)
+                System.out.println("Il codice inserito non esiste. Riprova:");
+            else
+                visualizzaPrenotazione(p);
+        }while (risposta!=0);
+    }
+
+    public static void cercaPerNominativo()
+    {
+        //nome e cognome utente può non essere univoco quindi problema
+        boolean continua;
+        do {
+            continua=false;
+            String nome=inputString("Inserisci nome, 0 per tornare indietro.","Inserimento non valido. Riprova:",";");
+
+            if(!nome.equals("0"))
+            {
+                String cognome=inputString("Inserisci cognome, 0 per tornare indietro.","Inserimento non valido. Riprova:",";");
+                if(!cognome.equals("0")) {
+                    //cerca utente
+                    //controllo se utente viene trovato
+                    //e poi chiamo visualizzaPrenotazioni se la lista non è nulla
+                }
+            }
+
+        }while (continua);
+    }
+
+    public static void cercaPerTitolo()
+    {
+        boolean continua;
+        do {
+            continua=false;
+            String titolo=inputString("Inserisci il titolo del film, 0 per tornare indietro.","Inserimento non valido. Riprova:",";");
+
+            if(!titolo.equals("0"))
+            {
+                Film film=CineMaxManager.cercaFilm(titolo);
+                if(film==null) {
+                    System.out.println("Non esiste un film con questo titolo. Riprova:");
+                    continua=true;
+                }
+                else {
+                    //cerca prenotazione per film
+                    //e poi visualizzaPrenotazioni se la lista non è nulla
+                }
+
+            }
+
+        }while (continua);
+    }
+
+    public static void cercaPerDate()
+    {
+        int annoMin = inputInt("Inserisci l'anno della data minima:","Inserimento non valido. Riprova:",1900, Year.now().getValue());
+        int meseMin = inputInt("Inserisci il mese della data minima:","Inserimento non valido. Riprova:",1,12);
+        int giornoMin = inputInt("Inserisci il giorno della data minima:","Inserimento non valido. Riprova:",1,31);
+        int annoMax = inputInt("Inserisci l'anno della data massima:","Inserimento non valido. Riprova:",annoMin, Year.now().getValue());
+        int meseMax;
+        if (annoMax==annoMin)
+            meseMax = inputInt("Inserisci il mese della data massima:","Inserimento non valido. Riprova:",meseMin,12);
+        else
+            meseMax = inputInt("Inserisci il mese della data massima:","Inserimento non valido. Riprova:",1,12);
+        int giornoMax;
+        if(annoMax==annoMin && meseMax==meseMin)
+            giornoMax=inputInt("Inserisci il giorno della data massima:","Inserimento non valido. Riprova:",giornoMin,31);
+        else
+            giornoMax=inputInt("Inserisci il giorno della data massima:","Inserimento non valido. Riprova:",1,31);
+
+        Data dataMin = new Data(annoMin,meseMin,giornoMin);
+        Data dataMax = new Data(annoMax,meseMax,giornoMax);
+
+        //cerca prenotazione per intervallo date
+        //se lista non vuota chiamo visualizza prenotazioni
+
+    }
+
+
+    public static void visualizzaPrenotazioni(List<Prenotazione> prenotazioni)
+    {
+        int scelta;
+        do {
+
+            System.out.println("Indice Codice prenotazione data   ora  titolo   genere    regista    anno  durata  eta minima  posti preso");
+            int i = 1;
+            for (Prenotazione p : prenotazioni) {
+                System.out.println(" " + i + "  " + p.toInfoCliente());
+                i++;
+            }
+            System.out.println("");
+            scelta = inputInt("Inserisci indice della prenotazione che vuoi vedere, 0 per tornare indietro.", "Inserimento non valido. Riprova:", 0, prenotazioni.size());
+
+            if (scelta != 0)
+                visualizzaPrenotazione((Prenotazione) prenotazioni.toArray()[scelta - 1]);
+        }while (scelta!=0);
+    }
+
+
+    public static void visualizzaPrenotazione(Prenotazione p)
+    {
+        System.out.println("Codice prenotazione    data  ora   titolo   genere   regista    anno   durata   età minima   costo   posti presi");
+        System.out.println(p.toInfoCliente());
+        System.out.println("Inserisci 0 per tornare indietro.");
+        inputInt("","Devi inserire 0 se vuoi tornare indietro.",0,0);
+    }
+
+
+
 
 }
