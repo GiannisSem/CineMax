@@ -48,6 +48,7 @@ public class Prenotazione {
     public DataOra getDataOra() {
         return proiezione.getDataOra();
     }
+    public Film getFilm() { return proiezione.getFilm(); }
     public Sala getSala() { return proiezione.getSala(); }
 
     public double getPrezzo(){

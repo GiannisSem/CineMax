@@ -254,8 +254,18 @@ public class CineMaxManager {
 
     public static List<Prenotazione> getPrenotazioniCliente(Cliente cliente){
         List<Prenotazione> prenotazioni = new ArrayList<>();
-        for (Prenotazione p : listaPrenotazioni){
+        for (Prenotazione p : listaPrenotazioni) {
             if (p.getCliente().compareTo(cliente) == 0)
+                prenotazioni.add(p);
+        }
+        return prenotazioni;
+    }
+
+    public static List<Prenotazione> getPrenotazioniClienteAttive(Cliente cliente){
+        // attiva se now() < DataOra fine della proiezione.
+        List<Prenotazione> prenotazioni = new ArrayList<>();
+        for (Prenotazione p : listaPrenotazioni) {
+            if (p.getCliente().compareTo(cliente) == 0 && DataOra.oggi.compareTo(p.getDataOra().aggiungi(p.getFilm().getDurata())) < 0)
                 prenotazioni.add(p);
         }
         return prenotazioni;

@@ -50,10 +50,7 @@ public class DataOra implements Serializable, Comparable<DataOra> {
     }
 
     public DataOra aggiungi(int minuti){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        String dataStr = this.toString();
-        LocalDateTime tempoAttuale = LocalDateTime.parse(dataStr, formatter);
+        LocalDateTime tempoAttuale = LocalDateTime.parse(this.toString(), formatter);
         LocalDateTime tempoFuturo = tempoAttuale.plusMinutes(minuti);
         return new DataOra(tempoFuturo.format(formatter));
     }
