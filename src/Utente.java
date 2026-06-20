@@ -69,6 +69,13 @@ public class Utente implements Comparable<Utente> {
         this.domicilio = domicilio;
     }
 
+    public void setDataNascita(Data data) {
+        if(data == null)
+            throw new IllegalArgumentException("Data di nascita non valida");
+        this.dataNascita = data;
+    }
+
+
 
     public String getNome() {
         return nome;
@@ -107,7 +114,7 @@ public class Utente implements Comparable<Utente> {
 
     //zini se vuoi modifica
     public String toInfo(){
-        return String.format("Nome:\n" + nome + "\nCognome:\n" + cognome + "\nUsername:\n" +  username + "\nData di nascita:\n" + dataNascita + "\nDomicilio:\n " + domicilio);
+        return String.format("Nome:\n" + nome + "\nCognome:\n" + cognome + "\nUsername:\n" +  username + "\nData di nascita:\n" + dataNascita + "\nDomicilio:\n" + domicilio);
     }
 
     //fonte: https://stackoverflow.com/questions/5531455/how-to-hash-some-string-with-sha-256-in-java

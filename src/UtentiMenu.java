@@ -536,7 +536,7 @@ public  class UtentiMenu {
             if (data.equals("S")) {
                 giorno = inputInt("Giorno di nascita:","Inserimento non valido. Riprova:",1,31);
                 mese = inputInt("Mese di nascita:", "Inserimento non valido. Riprova:",1, 12);
-                anno = inputInt("Anno di nascita:", "inserimento non valido. Riprova:", 1900, Year.now().getValue());
+                anno = inputInt("Anno di nascita:", "inserimento non valido. Riprova:", 1900, Year.now().getValue()-1);
             }
 
             int scelta;
@@ -613,7 +613,7 @@ public  class UtentiMenu {
                     modificaDomicilio(utente);
                     break;
                 case 4:
-                    //set dataNascita
+                    modificaDataNascita(utente);
                     break;
             }
         }while(scelta!=0);
@@ -623,8 +623,10 @@ public  class UtentiMenu {
 
         int giorno = inputInt("Inserisci nuovo giorno di nascita:","Inserimento non valido. Riprova:",1,31);
         int mese = inputInt("Inserisci nuovo mese di nascita:", "Inserimento non valido. Riprova:",1, 12);
-        int anno = inputInt("Inserisci nuovo anno di nascita:", "inserimento non valido. Riprova:", 1900, Year.now().getValue());
-        //set datanascita da fare
+        int anno = inputInt("Inserisci nuovo anno di nascita:", "inserimento non valido. Riprova:", 1900, Year.now().getValue()-1);
+
+        Data data=new Data(anno,giorno,mese);
+        utente.setDataNascita(data);
     }
 
 
