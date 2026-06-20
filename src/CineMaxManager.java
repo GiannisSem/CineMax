@@ -293,6 +293,28 @@ public class CineMaxManager {
         return null;
     }
 
+    public static List<Prenotazione> cercaPrenotazioni(String titolo){
+        List<Prenotazione> lista = new ArrayList<>();
+
+        for (Prenotazione p : listaPrenotazioni){
+            if (p.getFilm().getTitolo().equals(titolo))
+                lista.add(p);
+        }
+
+        return lista;
+    }
+
+    public static List<Prenotazione> cercaPrenotazioni(Data min, Data max){
+        List<Prenotazione> lista = new ArrayList<>();
+
+        for (Prenotazione p : listaPrenotazioni){
+            if (p.getDataOra().getData().compareTo(min) >= 0 && p.getDataOra().getData().compareTo(max) <= 0)
+                lista.add(p);
+        }
+
+        return lista;
+    }
+
     public static boolean eliminaPrenotazione(int codicePrenotazione){
         Prenotazione p = cercaPrenotazione(codicePrenotazione);
         boolean cancellato = listaPrenotazioni.remove(p);
