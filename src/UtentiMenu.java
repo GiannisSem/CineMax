@@ -655,7 +655,6 @@ public  class UtentiMenu {
 
 
     public static void visualizzaPrenotazioneCliente(Cliente utente) throws NoSuchAlgorithmException {
-        //VISUALIZZA ANCHE PROIEZIONI PASSATE CHE NON DOVREBBERO ESSERE VISUALIZZATE
         int scelta;
         do {
             System.out.println("Indice Codice prenotazione data   ora  titolo   genere    regista    anno  durata  eta minima  posti preso");
@@ -695,11 +694,10 @@ public  class UtentiMenu {
                 case 2:
                     List<Proiezione> lista=CineMaxManager.getListaProiezioni();
                     lista=CineMaxManager.cercaProiezioni_Titolo(lista,prenotazione.getProiezione().getFilm().getTitolo());
-                    Data dataOggi=Data.oggi;
-                    //PROBLEMA CHE DATA MASSIMA METTO
-                    //lista=CineMaxManager.cercaProiezioni_Date(lista,(dataOggi.toString(),);
-                    //PROBLEMA CHE MI DA PURE LE PROIEZIONI DOVE MAGARI NON CI SONO POSTI LIBERI
+                    String dataM=Data.oggi.getAnno()+"-"+(Data.oggi.getMese()+1)+"-"+Data.oggi.getGiorno();
+                    lista=CineMaxManager.cercaProiezioni_Date(lista,Data.oggi.toString(),dataM);
                     visualizzaProiezioni(utente,lista);
+                    //capire come controllare che abbia prenotato e non sia tornato indietro
                     break;
             }
         }while(risposta==2);
@@ -746,7 +744,6 @@ public  class UtentiMenu {
 
     public static void cercaPerNominativo()
     {
-        //nome e cognome utente può non essere univoco quindi problema
         String nome, cognome;
         boolean continua;
         do {
@@ -757,16 +754,68 @@ public  class UtentiMenu {
             {
                 cognome=inputString("Inserisci cognome, 0 per tornare indietro.","Inserimento non valido. Riprova:",";");
                 if(!cognome.equals("0")) {
-                    //cerca utente
-                    //controllo se utente viene trovato
-                    //e poi chiamo visualizzaPrenotazioni se la lista non è nulla
+                    List<Utente> omonimi = LoginManager.cercaUtente(nome, cognome);
+                    if(!omonimi.isEmpty())
+                    {
+                        if(omonimi.size()==1) {
+                            List<Prenotazione> l = CineMaxManager.getPrenotazioniClienteAttive((Cliente) omonimi.get(0));
+                            if (!l.isEmpty()) {
+                                if (l.size() == 1)
+                                    visualizzaPrenotazione(l.get(0));
+                                else
+                                    visualizzaPrenotazioni(l);
+                            } else {
+                                System.out.println("Non ci sono prenotazioni per questo cliente. Riprova:");
+                                continua = true;
+                            }
+                        }
+                        else
+                        {
+                            listaUtenti(omonimi);
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("Non ci sono clienti con questo nome e cognome. Riprova:");
+                        continua = true;
+                    }
                 }
             }
 
         }while (continua);
-
-        // List<Cliente> omonimi = LoginManager.cercaUtente(nome, cognome);
     }
+
+    public static void listaUtenti(List<Utente> utenti)
+    {
+        int risposta;
+        StringBuilder s= new StringBuilder();
+        int c=0;
+        for (Utente v: utenti)
+        {
+            c++;
+            s.append(c).append(v.toInfo1()).append("\n");
+        }
+        s.append("\nInserisci 0 per tornare indietro.");
+        do {
+
+            risposta=inputInt(s.toString(),"Inserimento non valido. Riprova:",0,c);
+            if(risposta!=0)
+            {
+                List<Prenotazione> l = CineMaxManager.getPrenotazioniClienteAttive((Cliente) utenti.get(risposta-1));
+                if (!l.isEmpty()) {
+                    if (l.size() == 1)
+                        visualizzaPrenotazione(l.get(0));
+                    else
+                        visualizzaPrenotazioni(l);
+                } else {
+                    System.out.println("Non ci sono prenotazioni per questo cliente. Riprova:");
+                }
+
+            }
+        }while (risposta!=0);
+    }
+
+
 
     public static void cercaPerTitolo()
     {
@@ -777,16 +826,17 @@ public  class UtentiMenu {
 
             if(!titolo.equals("0"))
             {
-                Film film=CineMaxManager.cercaFilm(titolo);
-                if(film==null) {
-                    System.out.println("Non esiste un film con questo titolo. Riprova:");
-                    continua=true;
+                List<Prenotazione> l=CineMaxManager.cercaPrenotazioni(titolo);
+                if(!l.isEmpty()) {
+                    if (l.size() == 1)
+                        visualizzaPrenotazione(l.get(0));
+                    else
+                        visualizzaPrenotazioni(l);
                 }
                 else {
-                    //cerca prenotazione per film
-                    //e poi visualizzaPrenotazioni se la lista non è nulla
+                    System.out.println("Non ci sono prenotazioni per film con questo titolo. Riprova:");
+                    continua=true;
                 }
-
             }
 
         }while (continua);
@@ -812,8 +862,16 @@ public  class UtentiMenu {
         Data dataMin = new Data(annoMin,meseMin,giornoMin);
         Data dataMax = new Data(annoMax,meseMax,giornoMax);
 
-        //cerca prenotazione per intervallo date
-        //se lista non vuota chiamo visualizza prenotazioni
+        List<Prenotazione> l=CineMaxManager.cercaPrenotazioni(dataMin,dataMax);
+        if(!l.isEmpty())
+        {
+            if(l.size()==1)
+                visualizzaPrenotazione(l.get(0));
+            else
+                visualizzaPrenotazioni(l);
+        }
+        else
+            System.out.println("Non ci sono prenotazioni in quelle date");
 
     }
 
