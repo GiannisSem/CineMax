@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.io.Console;
-import java.lang.classfile.CodeBuilder;
 import java.security.NoSuchAlgorithmException;
 import java.time.Month;
 import java.time.Year;
@@ -644,16 +643,14 @@ public  class UtentiMenu {
     }
 
     //problemi perchè il setUsername non cambia la posizione dell'utente nella lista quindi poi la ricerca non funziona
-    static public void modificaUsername(Utente utente)
-    {
-        String username;
-        do {
-            username = inputString("Inserisci nuovo username o 0 per tornare indietro:","Inserimento non valido. Riprova:","; ");
-            if(!username.equals("0") && LoginManager.cercaUtente(username)!=null)
-                System.out.println("Username già usato");
-        }while (!username.equals("0") && LoginManager.cercaUtente(username)!=null);
-        if(!username.equals("0"))
-            utente.setUsername(username);
+    static public void modificaUsername(Utente utente) throws NoSuchAlgorithmException {
+        while (true){
+            String username = inputString("Inserisci nuovo username o 0 per tornare indietro:","Inserimento non valido. Riprova:","; ");
+            if(username.equals("0") || LoginManager.setUsername(utente, username))
+                break;
+
+            System.out.println("Username già usato");
+        }
     }
 
 
@@ -663,7 +660,7 @@ public  class UtentiMenu {
         do {
             System.out.println("Indice Codice prenotazione data   ora  titolo   genere    regista    anno  durata  eta minima  posti preso");
 
-            List<Prenotazione> prenotazioni=CineMaxManager.getPrenotazioniCliente(utente);
+            List<Prenotazione> prenotazioni=CineMaxManager.getPrenotazioniClienteAttive(utente);
             int i=1;
             for (Prenotazione p: prenotazioni)
             {
@@ -750,14 +747,15 @@ public  class UtentiMenu {
     public static void cercaPerNominativo()
     {
         //nome e cognome utente può non essere univoco quindi problema
+        String nome, cognome;
         boolean continua;
         do {
             continua=false;
-            String nome=inputString("Inserisci nome, 0 per tornare indietro.","Inserimento non valido. Riprova:",";");
+            nome=inputString("Inserisci nome, 0 per tornare indietro.","Inserimento non valido. Riprova:",";");
 
             if(!nome.equals("0"))
             {
-                String cognome=inputString("Inserisci cognome, 0 per tornare indietro.","Inserimento non valido. Riprova:",";");
+                cognome=inputString("Inserisci cognome, 0 per tornare indietro.","Inserimento non valido. Riprova:",";");
                 if(!cognome.equals("0")) {
                     //cerca utente
                     //controllo se utente viene trovato
@@ -766,6 +764,8 @@ public  class UtentiMenu {
             }
 
         }while (continua);
+
+        // List<Cliente> omonimi = LoginManager.cercaUtente(nome, cognome);
     }
 
     public static void cercaPerTitolo()

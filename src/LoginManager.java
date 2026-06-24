@@ -1,8 +1,5 @@
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 public class LoginManager {
@@ -22,7 +19,6 @@ public class LoginManager {
         return utenteLoggato;
     }
 
-    // todo: creare un passcode per utenti con permessi (Bigliettaio e Proiezionista)
     public static boolean signin(Utente utente) throws NoSuchAlgorithmException {
         int inizio = 0;
         int fine = listaUtenti.size() -1;
@@ -47,7 +43,7 @@ public class LoginManager {
         return true;
     }
 
-    public static void reinserisci(Utente utente) throws NoSuchAlgorithmException {
+    public static void reinserisci(Utente utente) {
         // funziona come signin ma è certo che lo user è nuovo e non va eseguito hash di password
         // serve per cambiare il nome, tenendo la lista binaria.
         int inizio = 0;
@@ -108,7 +104,7 @@ public class LoginManager {
         return omonimi;
     }
 
-    public boolean setUsername(Utente u, String nuovoUsername) throws NoSuchAlgorithmException {
+    public static boolean setUsername(Utente u, String nuovoUsername) throws NoSuchAlgorithmException {
         // todo: il nome utente nuovo DEVE essere validato e corretto.
         if (cercaUtente(nuovoUsername) != null)
             return false; // esiste già qualcuno con lo stesso username.

@@ -166,9 +166,10 @@ public class CineMaxManager {
      */
     public static boolean eliminaProiezione(DataOra dataOra){
         boolean cancellato = listaProiezioni.remove(cercaProiezione(dataOra));
-        // todo: Cancella SOLO SE non ci sono prenotazioni associate a questa proiezione. Oppure di deafault elimina tutte le prenotazioni associate.
-        //if (cancellato)
-            // FileManager.serializza_lista(listaProiezioni, FileManager.path_proiezioni);
+
+        if (cancellato)
+            FileManager.serializza_lista(listaProiezioni, FileManager.path_proiezioni);
+
         return cancellato;
     }
 
