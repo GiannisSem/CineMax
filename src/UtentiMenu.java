@@ -1,7 +1,5 @@
 import javax.swing.*;
-import java.io.Console;
 import java.security.NoSuchAlgorithmException;
-import java.time.Month;
 import java.time.Year;
 import java.util.List;
 import java.util.Scanner;
@@ -551,7 +549,7 @@ public  class UtentiMenu {
             } while (!(scelta < Ruolo.values().length - 1 && scelta >= 0));
             if (scelta != 0)
             {
-
+                //da mettere o solo cliente o una key se vuoi crearlo proiezionista o bigliettaio
                 switch (Ruolo.values()[scelta-1]) {
                     case CLIENTE:
                         Cliente cliente;
@@ -692,12 +690,14 @@ public  class UtentiMenu {
                         System.out.println("C'è un problema. Eliminazione impossibile.");
                     break;
                 case 2:
+                    int c = CineMaxManager.getPrenotazioniCliente(utente).size();
                     List<Proiezione> lista=CineMaxManager.getListaProiezioni();
                     lista=CineMaxManager.cercaProiezioni_Titolo(lista,prenotazione.getProiezione().getFilm().getTitolo());
                     String dataM=Data.oggi.getAnno()+"-"+(Data.oggi.getMese()+1)+"-"+Data.oggi.getGiorno();
                     lista=CineMaxManager.cercaProiezioni_Date(lista,Data.oggi.toString(),dataM);
                     visualizzaProiezioni(utente,lista);
-                    //capire come controllare che abbia prenotato e non sia tornato indietro
+                    if(c!=CineMaxManager.getPrenotazioniCliente(utente).size())
+                        CineMaxManager.eliminaPrenotazione(prenotazione.getCodicePrenotazione());
                     break;
             }
         }while(risposta==2);
