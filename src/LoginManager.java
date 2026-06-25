@@ -67,7 +67,7 @@ public class LoginManager {
 
     public static Utente login(String username, String password) throws NoSuchAlgorithmException {
         Utente u = cercaUtente(username);
-        if (u != null && u.checkPassword(password)) {
+        if (u != null && Security.checkPassword(password, u.getPassword())) {
             utenteLoggato = u;
             return u;
         }

@@ -109,7 +109,7 @@ public class Utente implements Comparable<Utente> {
     }
 
     public void setHashPassword(String password) throws NoSuchAlgorithmException {
-        this.password = getHash(password);
+        this.password = Security.getHash(password);
     }
 
     //zini se vuoi modifica
@@ -119,16 +119,6 @@ public class Utente implements Comparable<Utente> {
 
     public String toInfo1(){
         return String.format("Nome: " + nome + "  Cognome: " + cognome + "  Username: " +  username + "  Data di nascita: " + dataNascita + "  Domicilio: " + domicilio);
-    }
-
-    //fonte: https://stackoverflow.com/questions/5531455/how-to-hash-some-string-with-sha-256-in-java
-    private String getHash(String s) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(s.getBytes(StandardCharsets.UTF_8));
-        return Base64.getEncoder().encodeToString(hash);
-    }
-    public boolean checkPassword(String password) throws NoSuchAlgorithmException {
-        return this.password.equals(getHash(password));
     }
 
 }
