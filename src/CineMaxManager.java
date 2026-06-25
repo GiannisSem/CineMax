@@ -1,28 +1,83 @@
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Questa classe gestisce tutte le funzionalità quali:
+ * <ul>
+ * <li>Gestione delle <strong>Proiezioni</strong>.</li>
+ * <li>Gestione dei <strong>Film</strong>.</li>
+ * <li>Gestione delle <strong>Prenotazioni</strong>.</li>
+ * </ul>
+ * I dati iniziali vengono letti dai file e passati tramite la classe <strong>FileManager</strong>.<br>
+ * E' interfaccia tra le classi e il <strong>FileManager</strong>.
+ *
+ * @see Proiezione
+ * @see Film
+ * @see Prenotazione
+ * @see FileManager
+ */
 public class CineMaxManager {
-    // tutta ricerca e funzionalità
 
+    /**
+     * La <code>listaProiezioni</code> contiene tutte le proiezioni presenti nel file <em>proiezioni.dat</em>.
+     */
     private static List<Proiezione> listaProiezioni = FileManager.deserializza_proiezioni();
+
+    /**
+     * La <code>listaFilm</code> contiene tutti i film presenti nel file <em>film.dat</em>.
+     */
     private static List<Film> listaFilm = FileManager.deserializza_film();
+
+    /**
+     * La <code>listaPrenotazioni</code> contiene tutte le prenotazioni presenti nel file <em>prenotazioni.csv</em>.
+     */
     private static List<Prenotazione> listaPrenotazioni = FileManager.leggiPrenotazioni_csv();
 
+    /**
+     * Restituisce l'intera lista di proiezioni.
+     * @return tutta la lista di proiezioni.
+     */
     public static List<Proiezione> getListaProiezioni(){
         return listaProiezioni;
     }
+
+    /**
+     * Restituisce l'intera lista di film.
+     * @return tutta la lista di film.
+     */
     public static List<Film> getListaFilm(){
         return listaFilm;
     }
+
+    /**
+     * Restituisce l'intera lista di prenotazioni.
+     * @return tutta la lista di prenotazioni.
+     */
     public static List<Prenotazione> getListaPrenotazioni() {
         return listaPrenotazioni;
     }
+
+    /**
+     * Serve per tenere traccia del codice dell'ultima prenotazione tra esecuzioni del programma diverse.
+     * Il codice di ogni prenotazione è univoca.
+     * @return l'ultimo codice prenotazione usato.
+     * @see Prenotazione#ultimoCodicePrenotazione
+     */
     public static int getUltimoCodicePrenotazione(){
         return listaPrenotazioni.get(listaPrenotazioni.size()-1).getCodicePrenotazione();
     }
 
     /* INSERIMENTO */
+
+    /**
+     * Inserisce la <strong>Proiezione</strong> alla lista di proiezioni se lo slot orario scelto è libero.
+     * @param dataOra data e ora della proiezione.
+     * @param film film che verrà proiettato in sala.
+     * @param costoBiglietto costo del biglietto associato alla proiezione.
+     * @param sala tiene traccia dei posti occupati durante la proiezione.
+     * @return true se l'operazione è andata a buon fine, altrimenti false.
+     * Questo metodo funge da base ad altri metodi in overload.
+     */
     public static boolean inserisciProiezione(DataOra dataOra, Film film, Double costoBiglietto, Sala sala){
         // in ordine descrescente
         int inizio = 0;
@@ -60,20 +115,42 @@ public class CineMaxManager {
         if (okMin && okMax){
             Proiezione p = new Proiezione(dataOra, film, costoBiglietto, sala);
             listaProiezioni.add(index, p);
-            //FileManager.serializza_lista(listaProiezioni, FileManager.path_proiezioni);
+            FileManager.serializza_lista(listaProiezioni, FileManager.path_proiezioni);
             return true;
         }
         return false;
     }
 
+    /**
+     * Inserisce la <strong>Proiezione</strong> alla lista di proiezioni se lo slot orario scelto è libero.
+     * @param dataOra data e ora (espressi come <strong>String</strong> unica) della proiezione.
+     * @param film film che verrà proiettato in sala.
+     * @param costoBiglietto costo del biglietto associato alla proiezione.
+     * @param sala tiene traccia dei posti occupati durante la proiezione.
+     * @return true se l'operazione è andata a buon fine, altrimenti false.
+     */
     public static boolean inserisciProiezione(String dataOra, Film film, Double costoBiglietto, Sala sala){
         return inserisciProiezione(new DataOra(dataOra), film, costoBiglietto, sala);
     }
 
+    /**
+     * Inserisce una nuova <strong>Proiezione</strong> alla lista di proiezioni se lo slot orario scelto è libero.
+     * @param dataOra data e ora della proiezione.
+     * @param film film che verrà proiettato in sala.
+     * @param costoBiglietto costo del biglietto associato alla proiezione.
+     * @return true se l'operazione è andata a buon fine, altrimenti false.
+     */
     public static boolean inserisciProiezione(DataOra dataOra, Film film, Double costoBiglietto){
         return inserisciProiezione(dataOra, film, costoBiglietto, new Sala());
     }
 
+    /**
+     * Inserisce una nuova <strong>Proiezione</strong> alla lista di proiezioni se lo slot orario scelto è libero.
+     * @param dataOra data e ora (espressi come <strong>String</strong> unica) della proiezione.
+     * @param film film che verrà proiettato in sala.
+     * @param costoBiglietto costo del biglietto associato alla proiezione.
+     * @return true se l'operazione è andata a buon fine, altrimenti false.
+     */
     public static boolean inserisciProiezione(String dataOra, Film film, Double costoBiglietto){
         return inserisciProiezione(new DataOra(dataOra), film, costoBiglietto, new Sala());
     }
@@ -226,7 +303,7 @@ public class CineMaxManager {
 
         // Punto dove si sono incrociati
         listaFilm.add(inizio, new Film(titolo, genere, regista, annoUscita, durata, vmeta));
-        //FileManager.serializza_lista(listaFilm, FileManager.path_film);
+        FileManager.serializza_lista(listaFilm, FileManager.path_film);
         return true;
     }
 
