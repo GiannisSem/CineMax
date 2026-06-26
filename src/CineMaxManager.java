@@ -15,6 +15,8 @@ import java.util.List;
  * @see Film
  * @see Prenotazione
  * @see FileManager
+ *
+ * @author Samuele Baragiola
  */
 public class CineMaxManager {
 
@@ -157,8 +159,12 @@ public class CineMaxManager {
 
     /* CERCA PROIEZIONE */
 
+    /**
+     * Ricerca dicotomica sulla lista di proiezioni.
+     * @param dataOra data e ora della proiezione.
+     * @return la proiezione con l'orario indicato dal parametro, null se non è presente. 
+     */
     public static Proiezione cercaProiezione(DataOra dataOra) {
-        // in ordine descrescente
         int inizio = 0;
         int fine = listaProiezioni.size() -1;
 
@@ -177,11 +183,22 @@ public class CineMaxManager {
 
         return null;
     }
-
+    
+    /**
+     * Ricerca dicotomica sulla lista di proiezioni.
+     * @param dataOra data e ora (espressi come <strong>String</strong> unica) della proiezione.
+     * @return la proiezione con l'orario indicato dal parametro, null se non è presente.
+     */
     public static Proiezione cercaProiezione(String dataOra){
         return cercaProiezione(new DataOra(dataOra));
     }
 
+    /**
+     * Questo metodo serve a selezionare in una lista solo le <strong>Proiezioni</strong> di un certo <strong>Film</strong>.
+     * @param lista lista di proiezioni iniziale.
+     * @param titolo titolo del film da filtrare.
+     * @return una lista di proiezioni che contiene solo quelle del film specificato dal titolo.
+     */
     public static List<Proiezione> cercaProiezioni_Titolo(List<Proiezione> lista, String titolo) {
         List<Proiezione> filtrata = new ArrayList<>();
         for (Proiezione proiezione : lista){
@@ -191,6 +208,12 @@ public class CineMaxManager {
         return filtrata;
     }
 
+    /**
+     * Questo metodo serve a selezionare in una lista solo le <strong>Proiezioni</strong> di un certo <strong>Genere</strong>.
+     * @param lista lista di proiezioni iniziale.
+     * @param genere genere dei film da filtrare.
+     * @return una lista di proiezioni che contiene solo quelle dei film di un certo genere.
+     */
     public static List<Proiezione> cercaProiezioni_Genere(List<Proiezione> lista, String genere) {
         List<Proiezione> filtrata = new ArrayList<>();
         for (Proiezione proiezione : lista){
@@ -200,6 +223,13 @@ public class CineMaxManager {
         return filtrata;
     }
 
+    /**
+     * Questo metodo serve a selezionare in una lista solo le <strong>Proiezioni</strong> comprese tra due date.
+     * @param lista lista di proiezioni iniziale.
+     * @param dataMin data più piccola del range.
+     * @param dataMax data più grande del range.
+     * @return la lista delle Proiezioni comprese tra due date.
+     */
     public static List<Proiezione> cercaProiezioni_Date(List<Proiezione> lista, Data dataMin, Data dataMax) {
         if (dataMin.compareTo(dataMax) > 0)
             return null;
@@ -214,10 +244,24 @@ public class CineMaxManager {
         return filtrata;
     }
 
+    /**
+     * Questo metodo serve a selezionare in una lista solo le <strong>Proiezioni</strong> comprese tra due date.
+     * @param lista lista di proiezioni iniziale.
+     * @param dataMin data (espressa come <strong>String</strong>) più piccola del range.
+     * @param dataMax data (espressa come <strong>String</strong>) più grande del range.
+     * @return la lista delle proiezioni comprese tra due date.
+     */
     public static List<Proiezione> cercaProiezioni_Date(List<Proiezione> lista, String dataMin, String dataMax) {
         return cercaProiezioni_Date(lista, new Data(dataMin), new Data(dataMax));
     }
 
+    /**
+     * Questo metodo serve a selezionare in una lista solo le <strong>Proiezioni</strong> comprese tra due costi di biglietto.
+     * @param lista lista di proiezioni iniziale.
+     * @param costoMin costo minore del range.
+     * @param costoMax costo maggiore del range.
+     * @return la lista delle proiezioni comprese tra due costi di biglietto.
+     */
     public static List<Proiezione> cercaProiezioni_CostoBiglietto(List<Proiezione> lista, Double costoMin, Double costoMax) {
         if (costoMin > costoMax || costoMin < 0)
             return null;
@@ -230,6 +274,11 @@ public class CineMaxManager {
         return filtrata;
     }
 
+    /**
+     * Resetta la lista filtrata.
+     * @return lista di proiezioni di partenza.
+     * @see #getListaPrenotazioni()
+     */
     public static List<Proiezione> resetFiltri(){
         return getListaProiezioni();
     }
@@ -237,9 +286,9 @@ public class CineMaxManager {
     /* ELIMINA PROIEZIONE */
 
     /**
-     *
-     * @param dataOra Data e ora della Proiezione da cancellare.
-     * @return True se l'ha cancellato, altrimenti false. Restituisce false anche se la Proiezione non è presente.
+     * Elimina una proiezione dato il suo orario.
+     * @param dataOra data e ora della proiezione da cancellare.
+     * @return true se l'ha cancellato, altrimenti false. Restituisce false anche se la Proiezione non è presente.
      */
     public static boolean eliminaProiezione(DataOra dataOra){
         boolean cancellato = listaProiezioni.remove(cercaProiezione(dataOra));
@@ -250,11 +299,23 @@ public class CineMaxManager {
         return cancellato;
     }
 
+    /**
+     * Elimina una proiezione dato il suo orario.
+     * @param dataOra data e ora (espressi come <strong>String</strong> unica) della proiezione da cancellare.
+     * @return true se l'ha cancellato, altrimenti false. Restituisce false anche se la Proiezione non è presente.
+     */
     public static boolean eliminaProiezione(String dataOra){
         return eliminaProiezione(new DataOra(dataOra));
     }
 
     /* VISUALIZZA PROIEZIONE */
+
+    /**
+     * Prepara una stringa da stampare.
+     * @param lista lista di proiezioni da stampare.
+     * @return una stringa che contiene le informazioni delle proiezioni nella lista.
+     * @see Proiezione#toInfo() 
+     */
     public static String visualizzaProiezioni(List<Proiezione> lista){
         if (lista == null)
             return "";
@@ -267,6 +328,14 @@ public class CineMaxManager {
     }
 
     /* MODIFICA DATA PROIEZIONE */
+
+    /**
+     * Cambia la data e l'ora di una proiezione. In caso di errore il vecchio orario rimane tale.
+     * @param old vecchio orario, serve per identificare la proiezione da modificare.
+     * @param nuova nuovo orario.
+     * @return false se l'orario <code>old</code> non esiste oppure lo slot è troppo piccolo per la proiezione. Altrimenti true.
+     * @see #inserisciProiezione(DataOra, Film, Double, Sala) 
+     */
     public static boolean modificaDataProiezione(DataOra old, DataOra nuova){
         Proiezione p = cercaProiezione(old);
         if (p == null)
@@ -281,10 +350,27 @@ public class CineMaxManager {
         return false;
     }
 
+    /**
+     Cambia la data e l'ora di una proiezione. In caso di errore il vecchio orario rimane tale.
+     * @param old vecchio orario (espresso come <strong>String</strong> unica), serve per identificare la proiezione da modificare.
+     * @param nuova nuovo orario (espresso come <strong>String</strong> unica).
+     * @return false se l'orario <code>old</code> non esiste oppure lo slot è troppo piccolo per la proiezione. Altrimenti true.
+     * @see #inserisciProiezione(DataOra, Film, Double, Sala)
+     */
     public static boolean modificaDataProiezione(String old, String nuova){
         return modificaDataProiezione(new DataOra(old), new DataOra(nuova));
     }
 
+    /**
+     * Aggiunge un <strong>Film</strong> alla lista dei Film
+     * @param titolo titolo del film.
+     * @param genere genere del film.
+     * @param regista regista del film.
+     * @param annoUscita anno di uscita del film.
+     * @param durata durata in minuti del film.
+     * @param vmeta indica l'età sotto il quale non si può entrare.
+     * @return false se il film è già presente, altrimenti true.
+     */
     public static boolean aggiungiFilm(String titolo, String genere, String regista, int annoUscita, int durata, int vmeta){
         int inizio = 0;
         int fine = listaFilm.size() -1;
@@ -307,6 +393,11 @@ public class CineMaxManager {
         return true;
     }
 
+    /**
+     * Ricerca dicotomica sulla lista dei film in base a un titolo dato.
+     * @param titolo titolo del film da cercare.
+     * @return il film con quel titolo, altrimenti null.
+     */
     public static Film cercaFilm(String titolo){
         int inizio = 0;
         int fine = listaFilm.size() -1;
@@ -326,10 +417,23 @@ public class CineMaxManager {
     }
 
     /* PRENOTAZIONI */
+
+    /**
+     * Inserisce alla lista una <strong>Prenotazione</strong> associata ad un <strong>Cliente</strong>.
+     * @param cliente cliente associato alla prenotazione.
+     * @param proiezione proiezione selezionata dal cliente.
+     * @param posti posti in sala scelti.
+     * @see Sala
+     */
     public static void inserisciPrenotazione(Cliente cliente, Proiezione proiezione, String[] posti){
         listaPrenotazioni.add(new Prenotazione(cliente, proiezione, posti));
     }
 
+    /**
+     * Cerca tutte <strong>Prenotazioni</strong> associate al <strong>Cliente</strong>.
+     * @param cliente cliente selezionato per la ricerca.
+     * @return lista di prenotazioni effettuate dal cliente.
+     */
     public static List<Prenotazione> getPrenotazioniCliente(Cliente cliente){
         List<Prenotazione> prenotazioni = new ArrayList<>();
         for (Prenotazione p : listaPrenotazioni) {
@@ -339,6 +443,12 @@ public class CineMaxManager {
         return prenotazioni;
     }
 
+    /**
+     * Cerca tutte le <strong>Prenotazioni</strong> attive associate ad un <strong>Cliente</strong>.<br>
+     * Per attive si intende che il film della proiezione non è ancora terminato.
+     * @param cliente cliente selezionato per la ricerca.
+     * @return lista di prenotazioni attive effettuate dal cliente.
+     */
     public static List<Prenotazione> getPrenotazioniClienteAttive(Cliente cliente){
         // attiva se now() < DataOra fine della proiezione.
         List<Prenotazione> prenotazioni = new ArrayList<>();
@@ -349,10 +459,19 @@ public class CineMaxManager {
         return prenotazioni;
     }
 
+    /**
+     * Prende le prenotazioni del cliente attuale nel menù.
+     * @return lista delle prenotazioni di un cliente.
+     */
     public static List<Prenotazione> getPrenotazioniClienteAttuale(){
         return getPrenotazioniCliente((Cliente) LoginManager.getutenteLoggato());
     }
 
+    /**
+     * Ricerca dicotomica sulla lista di prenotazioni in base al codice di prenotazione.
+     * @param codicePrenotazione codice univoco della prenotazione.
+     * @return la prenotazione con il codice dato, altrimenti null se non esiste.
+     */
     public static Prenotazione cercaPrenotazione(int codicePrenotazione){
         int inizio = 0;
         int fine = listaPrenotazioni.size() -1;
@@ -371,6 +490,11 @@ public class CineMaxManager {
         return null;
     }
 
+    /**
+     * Ricerca delle prenotazioni che proiettano un certo <strong>Film</strong>.
+     * @param titolo titolo del film da cercare.
+     * @return lista delle prenotazioni che proiettano un certo <strong>Film</strong>
+     */
     public static List<Prenotazione> cercaPrenotazioni(String titolo){
         List<Prenotazione> lista = new ArrayList<>();
 
@@ -382,6 +506,12 @@ public class CineMaxManager {
         return lista;
     }
 
+    /**
+     * Ricerca delle prenotazioni comprese tra due date.
+     * @param min data minore del range.
+     * @param max data maggiore del range.
+     * @return lista che contiene le prenotazioni comprese tra due date.
+     */
     public static List<Prenotazione> cercaPrenotazioni(Data min, Data max){
         List<Prenotazione> lista = new ArrayList<>();
 
@@ -393,6 +523,12 @@ public class CineMaxManager {
         return lista;
     }
 
+    /**
+     * Elimina una <strong>Prenotazione</strong> dato il relativo codice.<br>
+     * I posti associati vengono liberati.
+     * @param codicePrenotazione codice della prenotazione.
+     * @return false se il <code>codicePrenotazione</code> non è associato ad alcuna prenotazione, altrimenti true.
+     */
     public static boolean eliminaPrenotazione(int codicePrenotazione){
         Prenotazione p = cercaPrenotazione(codicePrenotazione);
         boolean cancellato = listaPrenotazioni.remove(p);
@@ -408,7 +544,7 @@ public class CineMaxManager {
 
     /**
      * Cerca tutte le prenotazioni di proiezioni di oggi.
-     * @return
+     * @return lista di prenotazioni con la proiezione in data odierna.
      */
     public static List<Prenotazione> cercaPrenotazioniOggi(){
         List<Prenotazione> prenotazioni = new ArrayList<>();
