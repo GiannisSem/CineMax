@@ -2,7 +2,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
- * Questa classe estende la classe <em>Utente</em> e si occupa dell'incapsulamento dei dati del <strong>Bigliettaio</strong> in modo corretto.
+ * Questa classe estende la classe <em>Utente</em> e si occupa dell'incapsulamento dei dati del Bigliettaio in modo corretto.
  * @see Utente
  *
  * @author Matteo Germani
@@ -20,7 +20,6 @@ public class Bigliettaio extends Utente {
      */
     public Bigliettaio(String nome, String cognome, String username, String password, Data dataNascita, String domicilio) throws NoSuchAlgorithmException {
         super(nome, cognome, username, password, dataNascita, domicilio, Ruolo.BIGLIETTAIO);
-        //prenotazioni = CineMaxManager.getListaPrenotazioni();
     }
 
     /**
@@ -37,7 +36,6 @@ public class Bigliettaio extends Utente {
      */
     public Bigliettaio(String nome, String cognome, String username, String password, int giorno, int mese, int anno, String domicilio) throws NoSuchAlgorithmException {
         super(nome, cognome, username, password, giorno, mese, anno, domicilio, Ruolo.BIGLIETTAIO);
-        //prenotazioni = CineMaxManager.getListaPrenotazioni();
     }
 
     /**
@@ -51,6 +49,5 @@ public class Bigliettaio extends Utente {
      */
     public Bigliettaio(String nome, String cognome, String username, String password, String domicilio) throws NoSuchAlgorithmException {
         super(nome, cognome, username, password, domicilio, Ruolo.BIGLIETTAIO);
-       // prenotazioni = CineMaxManager.getListaPrenotazioni();
     }
 }

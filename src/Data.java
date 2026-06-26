@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
  * Questa classe crea e gestisce una Data con giorno, mese e anno.
  * @see DataOra
  *
- * @author Baragiola Samuele
+ * @author Samuele Baragiola
  */
 public class Data implements Serializable, Comparable<Data> {
     /**
@@ -51,7 +51,7 @@ public class Data implements Serializable, Comparable<Data> {
 
     /**
      * Questo metodo costruisce una <strong>Data</strong>.
-     * @param data sotto forma di stringa: yyyy/mm/dd.
+     * @param data sotto forma di stringa: yyyy-MM-dd.
      */
     public Data(String data){
         String[] attributi = data.split("-");

@@ -4,9 +4,9 @@ import java.util.List;
 /**
  * Questa classe gestisce tutte le funzionalità quali:
  * <ul>
- * <li>Gestione delle <strong>Proiezioni</strong>.</li>
- * <li>Gestione dei <strong>Film</strong>.</li>
- * <li>Gestione delle <strong>Prenotazioni</strong>.</li>
+ *     <li>Gestione delle <strong>Proiezioni</strong>.</li>
+ *     <li>Gestione dei <strong>Film</strong>.</li>
+ *     <li>Gestione delle <strong>Prenotazioni</strong>.</li>
  * </ul>
  * I dati iniziali vengono letti dai file e passati tramite la classe <strong>FileManager</strong>.<br>
  * E' interfaccia tra le classi e il <strong>FileManager</strong>.
@@ -36,24 +36,24 @@ public class CineMaxManager {
     private static List<Prenotazione> listaPrenotazioni = FileManager.leggiPrenotazioni_csv();
 
     /**
-     * Restituisce l'intera lista di proiezioni.
-     * @return tutta la lista di proiezioni.
+     * Metodo <em>getter</em> della <code>lista delle proiezioni</code>.
+     * @return <code>lista delle proiezioni</code>
      */
     public static List<Proiezione> getListaProiezioni(){
         return listaProiezioni;
     }
 
     /**
-     * Restituisce l'intera lista di film.
-     * @return tutta la lista di film.
+     * Metodo <em>getter</em> della <code>lista dei film</code>.
+     * @return <code>lista dei film</code>
      */
     public static List<Film> getListaFilm(){
         return listaFilm;
     }
 
     /**
-     * Restituisce l'intera lista di prenotazioni.
-     * @return tutta la lista di prenotazioni.
+     * Metodo <em>getter</em> della <code>lista delle prenotazioni</code>.
+     * @return <code>lista delle prenotazioni</code>
      */
     public static List<Prenotazione> getListaPrenotazioni() {
         return listaPrenotazioni;
@@ -66,7 +66,7 @@ public class CineMaxManager {
      * @see Prenotazione#ultimoCodicePrenotazione
      */
     public static int getUltimoCodicePrenotazione(){
-        return listaPrenotazioni.get(listaPrenotazioni.size()-1).getCodicePrenotazione();
+        return listaPrenotazioni.isEmpty() ? 1 : listaPrenotazioni.get(listaPrenotazioni.size()-1).getCodicePrenotazione();
     }
 
     /* INSERIMENTO */

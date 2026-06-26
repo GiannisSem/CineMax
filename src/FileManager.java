@@ -5,14 +5,39 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Questa classe è l'interfaccia tra il programma e il file system.
+ *
+ * @author Samuele Baragiola
+ */
 public class FileManager {
     // paths
+    /**
+     * Indica il <em>path</em> per il file binario delle <strong>Proiezioni</strong>.
+     */
     public static final String path_proiezioni = "data/proiezioni.dat";
+
+    /**
+     * Indica il <em>path</em> per il file binario dei <strong>Film</strong>.
+     */
     public static final String path_film = "data/film.dat";
+
+    /**
+     * Indica il <em>path</em> per il file csv degli <strong>Utenti</strong>.
+     */
     public static final String path_utenti = "data/utenti.csv";
+
+    /**
+     * Indica il <em>path</em> per il file csv delle <strong>Prenotazioni</strong>.
+     */
     public static final String path_prenotazioni = "data/prenotazioni.csv";
 
     // metodi
+
+    /**
+     * <strong>Metodo di backup:</strong> da attivare manualmente in caso di errore, legge da un file csv delle <strong>Proiezioni di default</strong>.
+     * @return lista di proiezioni letta dal file csv.
+     */
     public static List<Proiezione> leggiProiezioni_csv() {
         List<Proiezione> lista = new ArrayList<>();
         File f = new File("data/proiezioni.csv");
@@ -35,6 +60,10 @@ public class FileManager {
         return lista;
     }
 
+    /**
+     * Legge dal file csv degli <strong>Utenti</strong> e li istanzia in base al ruolo.
+     * @return lista di utenti letta dal file csv.
+     */
     public static List<Utente> leggiUtenti_csv() {
         List<Utente> lista = new ArrayList<>();
         File f = new File(path_utenti);
@@ -75,6 +104,10 @@ public class FileManager {
         return lista;
     }
 
+    /**
+     * Legge dal file csv delle <strong>Prenotazioni</strong>.
+     * @return lista di prenotazioni letta dal file csv.
+     */
     public static List<Prenotazione> leggiPrenotazioni_csv() {
         List<Prenotazione> lista = new ArrayList<>();
         File f = new File(path_prenotazioni);
@@ -97,6 +130,11 @@ public class FileManager {
         return lista;
     }
 
+    /**
+     * Data una lista e il relativo <em>path</em>, carica la prima riga (intestazione del file) e la lista in formato csv.
+     * @param lista lista generica {@literal <?>} da caricare come csv.
+     * @param path percorso del file csv.
+     */
     public static void carica_csv(List<?> lista, String path){
         File f = new File(path);
 
@@ -123,6 +161,12 @@ public class FileManager {
         }
     }
 
+    /**
+     * Data una riga del file csv delle proiezioni, ne estrae correttamente i dati e crea un'istanza di <strong>Proiezione</strong>.
+     * @param riga riga del file csv delle proiezioni.
+     * @return istanza di tipo Proiezione con i dati parsati.
+     * @see #leggiProiezioni_csv()
+     */
     private static Proiezione getProiezione(String riga) {
         String[] attributi = splitAttributi(riga);
         DataOra dataOra = new DataOra(attributi[0]);
@@ -131,6 +175,11 @@ public class FileManager {
         return new Proiezione(dataOra, film, Double.parseDouble(attributi[7]), new Sala());
     }
 
+    /**
+     * Data una riga del file csv delle proiezioni, divide i dati e li inserisce in un array temporaneo.
+     * @param riga riga del file csv delle proiezioni.
+     * @return array temporaneo che contiene, per ogni i, un attributo diverso della proiezione.
+     */
     private static String[] splitAttributi(String riga){
         String[] attributi = new String[8];
         int attr = 0;
@@ -153,10 +202,15 @@ public class FileManager {
         return attributi;
     }
 
+    /**
+     * Serializza una lista, scrivendo in un file binario.
+     * @param lista lista generica {@literal <?>} da caricare come file binario.
+     * @param path percorso del file binario.
+     */
     // fonte: https://www.iprogrammatori.it/forum-programmazione/java/arraylist-con-file-binari-t37366.html
-    public static void serializza_lista(List<?> lista, String file){
+    public static void serializza_lista(List<?> lista, String path){
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path));
             oos.writeObject(lista);
             oos.close();
         } catch (IOException ex){
@@ -164,6 +218,10 @@ public class FileManager {
         }
     }
 
+    /**
+     * Deserializza il file binario delle <strong>Proiezioni</strong>.
+     * @return lista di proiezioni letta dal file binario.
+     */
     // fonte: https://www.iprogrammatori.it/forum-programmazione/java/arraylist-con-file-binari-t37366.html
     public static List<Proiezione> deserializza_proiezioni(){
         try {
@@ -177,6 +235,10 @@ public class FileManager {
         return null;
     }
 
+    /**
+     * Deserializza il file binario dei <strong>Film</strong>.
+     * @return lista di film letta dal file binario.
+     */
     public static List<Film> deserializza_film(){
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path_film));
@@ -189,6 +251,11 @@ public class FileManager {
         return null;
     }
 
+    /**
+     * Stampa a video una lista.<br>
+     * <em>Questo metodo è stato usato in fase di test.</em>
+     * @param lista lista generica {@literal <?>}.
+     */
     public static void stampaLista(List<?> lista){
         int id = 1;
         for(Object p : lista){
