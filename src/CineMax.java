@@ -175,7 +175,7 @@ public class CineMax {
                 String risposta;
                 do {
                     System.out.println("Vuoi riprovare? (S o N)");
-                    risposta = scanner.nextLine();
+                    risposta = scanner.nextLine().toUpperCase();
                     if (!(risposta.equals("S") || risposta.equals("N")))
                         System.out.println("Inserimento non valido riprova:");
                 } while (!(risposta.equals("S") || risposta.equals("N")));
@@ -229,7 +229,7 @@ public class CineMax {
         List<Proiezione> lista=CineMaxManager.getListaProiezioni();
         do{
             System.out.println("Vuoi cercare per il titolo? (S o N)");
-            data=scanner.nextLine();
+            data=scanner.nextLine().toUpperCase();
             if(!(data.equals("S") || data.equals("N")))
                 System.out.println("Inserimento non valido riprova:");
         }while (!(data.equals("S") || data.equals("N")));
@@ -241,7 +241,7 @@ public class CineMax {
 
         do{
             System.out.println("Vuoi cercare per genere? (S o N)");
-            data=scanner.nextLine();
+            data=scanner.nextLine().toUpperCase();
             if(!(data.equals("S") || data.equals("N")))
                 System.out.println("Inserimento non valido riprova:");
         }while (!(data.equals("S") || data.equals("N")));
@@ -253,7 +253,7 @@ public class CineMax {
 
         do{
             System.out.println("Vuoi cercare per intervallo di date? (S o N)");
-            data=scanner.nextLine();
+            data=scanner.nextLine().toUpperCase();
             if(!(data.equals("S") || data.equals("N")))
                 System.out.println("Inserimento non valido riprova:");
         }while (!(data.equals("S") || data.equals("N")));
@@ -282,7 +282,7 @@ public class CineMax {
 
         do{
             System.out.println("Vuoi cercare per il costo del biglietto? (S o N)");
-            data=scanner.nextLine();
+            data=scanner.nextLine().toUpperCase();
             if(!(data.equals("S") || data.equals("N")))
                 System.out.println("Inserimento non valido riprova:");
         }while (!(data.equals("S") || data.equals("N")));
@@ -555,7 +555,7 @@ public class CineMax {
                 String riprova;
                 do{
                     System.out.println("Dati non corretti. Vuoi riprovare? (S o N)");
-                    riprova=scanner.nextLine();
+                    riprova=scanner.nextLine().toUpperCase();
                     if(!(riprova.equals("S") || riprova.equals("N")))
                         System.out.println("Inserimento non valido riprova:");
                 }while (!(riprova.equals("S") || riprova.equals("N")));
@@ -601,7 +601,7 @@ public class CineMax {
 
             do {
                 System.out.println("Vuoi inserire la data di nascita. Scrivi S o N:");
-                data = scanner.nextLine();
+                data = scanner.nextLine().toUpperCase();
                 if (!(data.equals("S") || data.equals("N")))
                     System.out.println("Inserimento non valido riprova:");
             } while (!(data.equals("S") || data.equals("N")));
@@ -620,7 +620,7 @@ public class CineMax {
                 ritorna = false;
                 do {
                     System.out.println("Vuoi avere un ruolo diverso da cliente? Scrivi S o N:");
-                    ruolo = scanner.nextLine();
+                    ruolo = scanner.nextLine().toUpperCase();
                     if (!(ruolo.equals("S") || ruolo.equals("N")))
                         System.out.println("Inserimento non valido riprova:");
                 } while (!(ruolo.equals("S") || ruolo.equals("N")));
