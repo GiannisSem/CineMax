@@ -358,13 +358,21 @@ public class CineMax {
         do {
             clearConsole();
 
-            System.out.println("Indice   DataOra                  titolo    genere     regista     anno     durata     età minima     costo    nPostiLiberi");
+            System.out.println("INDICE      DATAORA                   TITOLO               GENERE            REGISTA                  ANNO     DURATA    ETA' MINIMA   COSTO       NUMERO POSTI LIBERI");
             int i=1;
-
+            String space="      ";
             for (Proiezione p: lista)
             {
-                System.out.println(" " + i + "   " + p.toInfo());
+                System.out.println(" " + i + space + p.toInfo2());
                 i++;
+                if(i==10)
+                    space="     ";
+                if(i==100)
+                    space="    ";
+                if(i==1000)
+                    space="   ";
+                if(i==10000)
+                    space="  ";
             }
             System.out.println("");
             risposta = inputInt("Inserisci l'indice della proiezione che vuoi vedere o 0 per tornare al menù principale.","\nInserimento non valido riprova:",0,lista.size());
@@ -407,7 +415,7 @@ public class CineMax {
                 for (int i = 0; i < scelta; i++) {
 
                     do {
-                        System.out.println("\nInserisci posto della " + i+1 + "^ prenotazione: es: A9");
+                        System.out.println("\nInserisci posto della " + (i+1) + "^ prenotazione: es: A9");
                         posto = scanner.nextLine();
                         ritest = false;
                         try {
@@ -444,7 +452,7 @@ public class CineMax {
         clearConsole();
         Scanner scanner = new Scanner(System.in);
         System.out.println(proiezione.toInfo1()+"\n");
-        System.out.println("Posti disponibili:   " + proiezione.getSala().postiDisponibili());
+        System.out.println("Posti disponibili:   " + proiezione.getSala().postiDisponibili() + "\n");
         proiezione.getSala().stampa();
         inputInt("\nPremere 0 per tornare indietro", "\ninserimento non valido. Riprova:",0,0);
 

@@ -132,6 +132,47 @@ public class Proiezione implements Serializable, Comparable<Proiezione> {
         return String.format(dataOra + "       " + film.getTitolo() + "   " + film.getGenere() + "   " + film.getRegista() + "   " + film.annoUscita() + "      " + film.getDurata() + "         " + film.getVmeta() + "          " + costoBiglietto + "           " + sala.postiDisponibili());
     }
 
+    public String toInfo2(){
+        String plus="                     ";
+        String titolo=film.getTitolo();
+        if(titolo.length()>19)
+            titolo=titolo.substring(0,19)+"...";
+        else
+            titolo=(titolo+plus).substring(0,22);
+
+
+        String genere=film.getGenere();
+        if(genere.length()>12)
+            genere=genere.substring(0,12)+"...";
+        else
+            genere=(genere+plus).substring(0,15);
+
+        String regista=film.getRegista();
+        if(regista.length()>19)
+            regista=regista.substring(0,19)+"...";
+        else
+            regista=(regista+plus).substring(0,22);
+
+        String bufferDurata;
+        if(film.getDurata()<10)
+            bufferDurata="  ";
+        else {
+            if (film.getDurata() <100)
+                bufferDurata = " ";
+            else
+                bufferDurata = "";
+        }
+        String bufferEta=" ";
+        if(film.getVmeta()>9)
+            bufferEta="";
+
+        String bufferCosto=" ";
+        if(costoBiglietto>9.99)
+            bufferCosto="";
+        return String.format(dataOra + "       " + titolo + "   " + genere + "   " + regista + "   " + film.annoUscita() + "      " + film.getDurata() + bufferDurata + "         " + film.getVmeta() + bufferEta + "          " + costoBiglietto + bufferCosto +"               " + sala.postiDisponibili());
+    }
+
+
     /**
      * Questo metodo crea la stringa associata all'istanza, da stampare a video.
      * @return stringa associata all'istanza.

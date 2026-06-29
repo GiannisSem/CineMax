@@ -427,6 +427,9 @@ public class CineMaxManager {
      */
     public static void inserisciPrenotazione(Cliente cliente, Proiezione proiezione, String[] posti){
         listaPrenotazioni.add(new Prenotazione(cliente, proiezione, posti));
+        for (String s : posti) {
+            proiezione.getSala().occupaPosto(s);
+        }
     }
 
     /**

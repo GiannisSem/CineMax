@@ -76,8 +76,8 @@ public class Sala implements Serializable {
      * @return Restituisce true se il posto è stato occupato/liberato correttamente, altrimenti false.
      */
     private boolean setPosto(String posto, boolean setReset) {
-        char lettera = posto.charAt(posto.length() - 1);
-        int numero = Integer.parseInt(posto.substring(0, posto.length() - 1));
+        char lettera = posto.charAt(0);
+        int numero = Integer.parseInt(posto.substring(1, posto.length()));
 
         if (setReset && !isPostoDisponibile(lettera, numero))
             return false;
