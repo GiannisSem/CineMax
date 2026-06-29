@@ -31,6 +31,7 @@ public class Sala implements Serializable {
      */
     public Sala(){
         this.posti = new boolean[200];
+        svuotaSala();
     }
 
     /**

@@ -252,7 +252,7 @@ public class Utente implements Comparable<Utente> {
      * @return stringa associata all'istanza da mostrare a schermo.
      */
     public String toInfo(){
-        return String.format("Nome:\n" + nome + "\nCognome:\n" + cognome + "\nUsername:\n" +  username + "\nData di nascita:\n" + dataNascita + "\nDomicilio:\n" + domicilio);
+        return String.format("Nome:   " + nome + "\n\nCognome:   " + cognome + "\n\nUsername:   " +  username + "\n\nData di nascita:   " + dataNascita + "\n\nDomicilio:   " + domicilio);
     }
 
     /**

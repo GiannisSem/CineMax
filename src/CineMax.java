@@ -1,3 +1,4 @@
+import java.io.Console;
 import java.security.NoSuchAlgorithmException;
 import java.time.Year;
 import java.util.List;
@@ -17,7 +18,8 @@ public class CineMax {
         Scanner scanner = new Scanner(System.in);
         int scelta;
         do {
-            scelta = inputInt("1   Cerca proiezione\n2   Registrazione\n3   Login\n0    Esci","Inserimento non valido. Riprova:",0,3);
+            clearConsole();
+            scelta = inputInt("1   Cerca proiezione\n2   Registrazione\n3   Login\n0    Esci","\nInserimento non valido. Riprova:",0,3);
             switch (scelta)
             {
                 case 1:
@@ -35,6 +37,13 @@ public class CineMax {
 
     }
 
+    public static void clearConsole() {
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
+        }
+    }
+
+
 
     /**
      * questo metodo gestisce il menù del cliente registrato.
@@ -45,7 +54,8 @@ public class CineMax {
         Scanner scanner = new Scanner(System.in);
         int scelta;
         do {
-            scelta = inputInt("1   Cerca proiezione\n2   Visualizzare prenotazioni\n3   Profilo\n0   Logout","Inserimento non valido. Riprova:",0,3);
+            clearConsole();
+            scelta = inputInt("1   Cerca proiezione\n2   Visualizzare prenotazioni\n3   Profilo\n0   Logout","\nInserimento non valido. Riprova:",0,3);
             switch (scelta)
             {
                 case 1:
@@ -71,7 +81,8 @@ public class CineMax {
         Scanner scanner = new Scanner(System.in);
         int scelta;
         do {
-            scelta = inputInt("1   Inserire proiezione\n2   Cerca proiezione\n3   Profilo\n0   Logout","Inserimento non valido. Riprova:",0,3);
+            clearConsole();
+            scelta = inputInt("1   Inserire proiezione\n2   Cerca proiezione\n3   Profilo\n0   Logout","\nInserimento non valido. Riprova:",0,3);
             switch (scelta)
             {
                 case 1:
@@ -92,12 +103,13 @@ public class CineMax {
      */
     public static void inserisciProiezione()
     {
+        clearConsole();
         boolean rifare;
         do {
 
             rifare = false;
 
-            String titolo = inputString("Inserisci titolo:", "Inserimento non valido. Riprova:", ";");
+            String titolo = inputString("Inserisci titolo:", "\nInserimento non valido. Riprova:", ";");
 
             Film film = CineMaxManager.cercaFilm(titolo);
             if (film == null)
@@ -106,16 +118,16 @@ public class CineMax {
                 Data data;
                 do {
 
-                    int anno = inputInt("Inserisci l'anno della data:", "Inserimento non valido. Riprova:", Year.now().getValue(), Year.now().getValue() + 5);
-                    int mese = inputInt("Inserisci il mese della data:", "Inserimento non valido. Riprova:", 1, 12);
-                    int giorno = inputInt("Inserisci il giorno della data:", "Inserimento non valido. Riprova:", 1, 31);
+                    int anno = inputInt("Inserisci l'anno della data:", "\nInserimento non valido. Riprova:", Year.now().getValue(), Year.now().getValue() + 5);
+                    int mese = inputInt("Inserisci il mese della data:", "\nInserimento non valido. Riprova:", 1, 12);
+                    int giorno = inputInt("Inserisci il giorno della data:", "\nInserimento non valido. Riprova:", 1, 31);
                     data = new Data(anno, mese, giorno);
                 } while (data.compareTo(Data.oggi) < 0);
                 DataOra dataOra;
                 do {
 
-                    int ore = inputInt("Inserisci l'ora:", "Inserimento non valido. Riprova:", 0, 23);
-                    int minuti = inputInt("Inserisci i minuti:", "Inserimento non valido. Riprova:", 0, 59);
+                    int ore = inputInt("Inserisci l'ora:", "\nInserimento non valido. Riprova:", 0, 23);
+                    int minuti = inputInt("Inserisci i minuti:", "\nInserimento non valido. Riprova:", 0, 59);
                     Ora orario = new Ora(ore, minuti, 0);
                     dataOra = new DataOra(data, orario);
                 } while (dataOra.compareTo(DataOra.oggi) < 0);
@@ -123,7 +135,7 @@ public class CineMax {
                 Scanner scanner = new Scanner(System.in);
                 double costo;
                 do {
-                    System.out.println("Inserisci il costo del biglietto:");
+                    System.out.println("\nInserisci il costo del biglietto:");
 
                     try {
                         costo = scanner.nextDouble();
@@ -132,13 +144,16 @@ public class CineMax {
                         costo = -1;
                     }
                     if (costo < 0)
-                        System.out.println("Valore inserito non valido. Riprova");
+                        System.out.println("\nValore inserito non valido. Riprova");
                 } while (costo < 0);
 
                 rifare = !CineMaxManager.inserisciProiezione(dataOra, film, costo);
 
-                if (rifare)
-                    System.out.println("Inserimento della proiezione non valido");
+                if (rifare) {
+                    clearConsole();
+                    System.out.println("\nInserimento della proiezione non eseguito perchè a quel orario di quella data la sala è occupata.");
+                    inputInt("premere 0 per riprovare:", "\ninserimento non valido. Riprova:",0,0);
+                }
             }
         }while (rifare);
 
@@ -150,34 +165,36 @@ public class CineMax {
      * @return ritorna il film appena inserito o null nel caso non si voglia inserire il film.
      */
     public static Film inserireFilm(String titolo) {
+        clearConsole();
         boolean riprova;
         do {
             riprova = false;
-            String genere = inputString("Inserisci il genere del film:", "Inserimento non valido. Riprova:", ";");
+            String genere = inputString("Inserisci il genere del film:", "\nInserimento non valido. Riprova:", ";");
             if (genere.equals("0")) {
                 return null;
             }
-            String regista = inputString("Inserisci il regista del film:o", "Inserimento non valido. Riprova:", ";");
-            int anno = inputInt("Inserisci l'anno del film:", "Inserimento non valido. Riprova:", 1800, Year.now().getValue());
-            int durata = inputInt("Inserisci la durata del film in minuti:", "Inserimento non valido. Riprova:", 1, 1000);
-            int eta = inputInt("Inserisci l'età minima di vision per il film:", "Inserimento non valido. Riprova:", 0, 18);
+            String regista = inputString("Inserisci il regista del film:o", "\nInserimento non valido. Riprova:", ";");
+            int anno = inputInt("Inserisci l'anno del film:", "\nInserimento non valido. Riprova:", 1800, Year.now().getValue());
+            int durata = inputInt("Inserisci la durata del film in minuti:", "\nInserimento non valido. Riprova:", 1, 1000);
+            int eta = inputInt("Inserisci l'età minima di vision per il film:", "\nInserimento non valido. Riprova:", 0, 18);
 
             if (CineMaxManager.aggiungiFilm(titolo, genere, regista, anno, durata, eta)) {
-                System.out.println("Aggiunto il film");
+                System.out.println("\nAggiunto il film");
                 return CineMaxManager.cercaFilm(titolo);
             }
             else {
-                System.out.println("Film non valido.");
-                System.out.println("Vuoi riprovare?(S/n)");
+                clearConsole();
+                System.out.println("\nFilm non valido.");
+                System.out.println("\nVuoi riprovare?(S/n)");
 
 
                 Scanner scanner = new Scanner(System.in);
                 String risposta;
                 do {
-                    System.out.println("Vuoi riprovare? (S o N)");
+                    System.out.println("\nVuoi riprovare? (S o N)");
                     risposta = scanner.nextLine().toUpperCase();
                     if (!(risposta.equals("S") || risposta.equals("N")))
-                        System.out.println("Inserimento non valido riprova:");
+                        System.out.println("\nInserimento non valido riprova:");
                 } while (!(risposta.equals("S") || risposta.equals("N")));
                 if (risposta.equals("S"))
                     riprova = true;
@@ -195,14 +212,15 @@ public class CineMax {
         Scanner scanner = new Scanner(System.in);
         int scelta;
         do {
-            scelta=inputInt("1   Visualizza prenotazioni odierne\n2   Cerca proiezione\n3   Profilo\n0   Logout","Inserimento non valido. Riprova:",0,3);
+            clearConsole();
+            scelta=inputInt("1   Visualizza prenotazioni odierne\n2   Cerca prenotazioni\n3   Profilo\n0   Logout","\nInserimento non valido. Riprova:",0,3);
             switch (scelta)
             {
                 case 1:
                     if(!CineMaxManager.cercaPrenotazioniOggi().isEmpty())
                         visualizzaPrenotazioni(CineMaxManager.cercaPrenotazioniOggi());
                     else
-                        System.out.println("Non ci sono prenotazioni oggi.");
+                        System.out.println("\nNon ci sono prenotazioni oggi.");
                     break;
                 case 2:
                     cercaTipoPrenotazione();
@@ -224,56 +242,57 @@ public class CineMax {
      * @throws NoSuchAlgorithmException
      */
     public static void cercaProiezione(Utente utente) throws NoSuchAlgorithmException {
+        clearConsole();
         String data;
         Scanner scanner = new Scanner(System.in);
         List<Proiezione> lista=CineMaxManager.getListaProiezioni();
         do{
-            System.out.println("Vuoi cercare per il titolo? (S o N)");
+            System.out.println("\nVuoi cercare per il titolo? (S o N)");
             data=scanner.nextLine().toUpperCase();
             if(!(data.equals("S") || data.equals("N")))
-                System.out.println("Inserimento non valido riprova:");
+                System.out.println("\nInserimento non valido riprova:");
         }while (!(data.equals("S") || data.equals("N")));
         if(data.equals("S"))
         {
-            System.out.println("Inserisci titolo film, anche parziale:");
+            System.out.println("\nInserisci titolo film, anche parziale:");
             lista=CineMaxManager.cercaProiezioni_Titolo(lista,scanner.nextLine());
         }
 
         do{
-            System.out.println("Vuoi cercare per genere? (S o N)");
+            System.out.println("\nVuoi cercare per genere? (S o N)");
             data=scanner.nextLine().toUpperCase();
             if(!(data.equals("S") || data.equals("N")))
-                System.out.println("Inserimento non valido riprova:");
+                System.out.println("\nInserimento non valido riprova:");
         }while (!(data.equals("S") || data.equals("N")));
         if(data.equals("S"))
         {
-            System.out.println("Inserisci genere del film:");
+            System.out.println("\nInserisci genere del film:");
             lista=CineMaxManager.cercaProiezioni_Genere(lista,scanner.nextLine());
         }
 
         do{
-            System.out.println("Vuoi cercare per intervallo di date? (S o N)");
+            System.out.println("\nVuoi cercare per intervallo di date? (S o N)");
             data=scanner.nextLine().toUpperCase();
             if(!(data.equals("S") || data.equals("N")))
-                System.out.println("Inserimento non valido riprova:");
+                System.out.println("\nInserimento non valido riprova:");
         }while (!(data.equals("S") || data.equals("N")));
         if(data.equals("S"))
         {
-            int annoMin = inputInt("Inserisci l'anno della data minima:","Inserimento non valido. Riprova:",1900, Year.now().getValue());
-            int meseMin = inputInt("Inserisci il mese della data minima:","Inserimento non valido. Riprova:",1,12);
-            int giornoMin = inputInt("Inserisci il giorno della data minima:","Inserimento non valido. Riprova:",1,31);
+            int annoMin = inputInt("Inserisci l'anno della data minima:","\nInserimento non valido. Riprova:",1900, Year.now().getValue());
+            int meseMin = inputInt("Inserisci il mese della data minima:","\nInserimento non valido. Riprova:",1,12);
+            int giornoMin = inputInt("Inserisci il giorno della data minima:","\nInserimento non valido. Riprova:",1,31);
 
-            int annoMax = inputInt("Inserisci l'anno della data massima:","Inserimento non valido. Riprova:",annoMin, Year.now().getValue());
+            int annoMax = inputInt("Inserisci l'anno della data massima:","\nInserimento non valido. Riprova:",annoMin, Year.now().getValue());
             int meseMax;
             if (annoMax==annoMin)
-                meseMax = inputInt("Inserisci il mese della data massima:","Inserimento non valido. Riprova:",meseMin,12);
+                meseMax = inputInt("Inserisci il mese della data massima:","\nInserimento non valido. Riprova:",meseMin,12);
             else
-                meseMax = inputInt("Inserisci il mese della data massima:","Inserimento non valido. Riprova:",1,12);
+                meseMax = inputInt("Inserisci il mese della data massima:","\nInserimento non valido. Riprova:",1,12);
             int giornoMax;
             if(annoMax==annoMin && meseMax==meseMin)
-                giornoMax=inputInt("Inserisci il giorno della data massima:","Inserimento non valido. Riprova:",giornoMin,31);
+                giornoMax=inputInt("Inserisci il giorno della data massima:","\nInserimento non valido. Riprova:",giornoMin,31);
             else
-                giornoMax=inputInt("Inserisci il giorno della data massima:","Inserimento non valido. Riprova:",1,31);
+                giornoMax=inputInt("Inserisci il giorno della data massima:","\nInserimento non valido. Riprova:",1,31);
 
             Data dataMin = new Data(annoMin,meseMin,giornoMin);
             Data dataMax = new Data(annoMax,meseMax,giornoMax);
@@ -281,16 +300,16 @@ public class CineMax {
         }
 
         do{
-            System.out.println("Vuoi cercare per il costo del biglietto? (S o N)");
+            System.out.println("\nVuoi cercare per l'intervallo di costo del biglietto? (S o N)");
             data=scanner.nextLine().toUpperCase();
             if(!(data.equals("S") || data.equals("N")))
-                System.out.println("Inserimento non valido riprova:");
+                System.out.println("\nInserimento non valido riprova:");
         }while (!(data.equals("S") || data.equals("N")));
         if(data.equals("S"))
         {
             double costoMin;
             do{
-                System.out.println("Inserisci costo minimo del biglietto del film:");
+                System.out.println("\nInserisci costo minimo del biglietto del film in euro:");
                 try {
                     costoMin = scanner.nextDouble();
                 }catch (Exception e) {
@@ -298,12 +317,12 @@ public class CineMax {
                     costoMin=-1;
                 }
                 if(costoMin<0)
-                    System.out.println("Inserimento non valido riprova:");
+                    System.out.println("\nInserimento non valido riprova:");
             }while (costoMin<0);
 
             double costoMax;
             do{
-                System.out.println("Inserisci costo massimo del biglietto del film:");
+                System.out.println("\nInserisci costo massimo del biglietto del film in euro:");
                 try
                 {
                     costoMax = scanner.nextDouble();
@@ -313,12 +332,17 @@ public class CineMax {
                     costoMax=costoMin-1;
                 }
                 if(costoMax<costoMin)
-                    System.out.println("Inserimento non valido riprova:");
+                    System.out.println("\nInserimento non valido riprova:");
             }while (costoMax<costoMin);
 
             lista=CineMaxManager.cercaProiezioni_CostoBiglietto(lista,costoMin,costoMax);
         }
-        visualizzaProiezioni(utente,lista);
+        if(lista.isEmpty()) {
+            System.out.println("\nNon ci sono proiezioni con queste richieste.");
+            inputInt("premere 0 per tornare al menù", "\ninserimento non valido. Riprova:",0,0);
+        }
+        else
+            visualizzaProiezioni(utente,lista);
 
     }
 
@@ -332,9 +356,9 @@ public class CineMax {
         Scanner scanner = new Scanner(System.in);
         int risposta;
         do {
+            clearConsole();
 
-
-            System.out.println("Indice   DataOra          titolo    genere     regista     anno     durata     età minima     costo    nPostiLiberi");
+            System.out.println("Indice   DataOra                  titolo    genere     regista     anno     durata     età minima     costo    nPostiLiberi");
             int i=1;
 
             for (Proiezione p: lista)
@@ -343,15 +367,17 @@ public class CineMax {
                 i++;
             }
             System.out.println("");
-            risposta = inputInt("Inserisci l'indice della proiezione che vuoi vedere o 0 per tornare al menù principale.","Inserimento non valido riprova:",0,lista.size());
+            risposta = inputInt("Inserisci l'indice della proiezione che vuoi vedere o 0 per tornare al menù principale.","\nInserimento non valido riprova:",0,lista.size());
 
             if(risposta!=0)
             {
                 Proiezione proiezione=(Proiezione) lista.toArray()[risposta-1];
-                if(utente.getRuolo().equals("CLIENTE") || utente.getRuolo().equals("NONREGISTRATO"))
+                if(utente.getRuolo().equals("NONREGISTRATO"))
+                    visualizzaProiezioneUtenteNR(proiezione);
+                if(utente.getRuolo().equals("CLIENTE"))
                     visualizzaProiezioneCliente(proiezione,(Cliente)utente);
                 if(utente.getRuolo().equals("PROIEZIONISTA"))
-                    visualizzaProiezioneProiezionista((Proiezionista) utente,proiezione);
+                    visualizzaProiezioneProiezionista(proiezione);
             }
 
         }while (risposta!=0);
@@ -365,64 +391,82 @@ public class CineMax {
      * @throws NoSuchAlgorithmException
      */
     public static void visualizzaProiezioneCliente(Proiezione proiezione,Cliente utente) throws NoSuchAlgorithmException {
+        clearConsole();
         Scanner scanner = new Scanner(System.in);
-        System.out.println(proiezione.toInfo1());
+        System.out.println(proiezione.toInfo1()+"\n");
         proiezione.getSala().stampa();
 
         if(proiezione.getSala().postiDisponibili()!=0) {
-            int scelta = inputInt((String.format("Numero posti liberi: " + proiezione.getSala().postiDisponibili() +"\nInserisci quanti posti vuoi prenotare")), "Posti liberi sono insufficienti:", 1, proiezione.getSala().postiDisponibili());
+            int scelta = inputInt((String.format("Numero posti liberi: " + proiezione.getSala().postiDisponibili() + "\nInserisci quanti posti vuoi prenotare, 0 per tornare indietro")), "\nPosti liberi sono insufficienti:", 0, proiezione.getSala().postiDisponibili());
+            if (scelta != 0) {
+                char lettera;
+                int numero;
+                String posto;
+                boolean ritest;
+                String[] posti = new String[scelta];
+                for (int i = 0; i < scelta; i++) {
 
-            char lettera;
-            int numero;
-            String posto;
-            boolean ritest;
-            String[] posti = new String[scelta];
-            for (int i = 0; i < scelta; i++) {
-
-                do {
-                    System.out.println("Inserisci posto della " + i + "^ prenotazione: es: A9");
-                    posto = scanner.nextLine();
-                    ritest = false;
-                    try {
-                        numero = Integer.parseInt(posto.substring(1, posto.length()));
-                    } catch (Exception u) {
-                        numero = 21;
-                    }
-
-                    lettera = posto.charAt(0);
-                    if (numero < 1 || numero > 20 || lettera < 'A' || lettera > 'J') {
-                        System.out.println("Inserimento del posto non valido. Riprova");
-                        ritest = true;
-                    } else {
-                        if (proiezione.getSala().isPostoDisponibile(lettera, numero)) {
-                            System.out.println("Il posto scelto è già occupato. Riprova:");
-                            ritest = true;
+                    do {
+                        System.out.println("\nInserisci posto della " + i+1 + "^ prenotazione: es: A9");
+                        posto = scanner.nextLine();
+                        ritest = false;
+                        try {
+                            numero = Integer.parseInt(posto.substring(1, posto.length()));
+                        } catch (Exception u) {
+                            numero = 21;
                         }
-                    }
 
-                } while (ritest);
-                posti[i] = lettera + Integer.toString(numero);
+                        lettera = posto.charAt(0);
+                        if (numero < 1 || numero > 20 || lettera < 'A' || lettera > 'J') {
+                            System.out.println("\nInserimento del posto non valido. Riprova");
+                            ritest = true;
+                        } else {
+                            if (!proiezione.getSala().isPostoDisponibile(lettera, numero)) {
+                                System.out.println("\nIl posto scelto è già occupato. Riprova:");
+                                ritest = true;
+                            }
+                        }
+
+                    } while (ritest);
+                    posti[i] = lettera + Integer.toString(numero);
+                }
+                CineMaxManager.inserisciPrenotazione(utente, proiezione, posti);
+                System.out.println("\nHai prenotato i posti");
             }
-            CineMaxManager.inserisciPrenotazione(utente, proiezione, posti);
-            System.out.println("Hai prenotato i posti");
-        }
-        else
-            System.out.println("Nessun posto disponibile, la proiezione è piena.");
+        } else
+            System.out.println("\nNessun posto disponibile, la proiezione è piena.");
+        inputInt("premere 0 per tornare indietro", "\ninserimento non valido. Riprova:",0,0);
+
     }
+
+
+    public static void visualizzaProiezioneUtenteNR(Proiezione proiezione) throws NoSuchAlgorithmException {
+        clearConsole();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(proiezione.toInfo1()+"\n");
+        System.out.println("Posti disponibili:   " + proiezione.getSala().postiDisponibili());
+        proiezione.getSala().stampa();
+        inputInt("\nPremere 0 per tornare indietro", "\ninserimento non valido. Riprova:",0,0);
+
+    }
+
+
+
 
     /**
      * questo metodo visualizza la proiezione e gestisce un menù per eliminazione e modifica della proiezione.
-     * @param utente è l'utente proiezionista loggato.
      * @param proiezione è la proiezione da visualizzare.
      * @throws NoSuchAlgorithmException
      */
-    public static void visualizzaProiezioneProiezionista(Proiezionista utente,Proiezione proiezione) throws NoSuchAlgorithmException {
+    public static void visualizzaProiezioneProiezionista(Proiezione proiezione) throws NoSuchAlgorithmException {
+
         Scanner scanner = new Scanner(System.in);
         int scelta;
         do {
+            clearConsole();
             System.out.println(proiezione.toInfo1());
 
-            scelta = inputInt("1   Elimina proiezione\n2   Modifica proiezione\n0   Torna indietro", "Inserimento non valido. Riprova:", 0, 2);
+            scelta = inputInt("1   Elimina proiezione\n2   Modifica proiezione\n0   Torna indietro", "\nInserimento non valido. Riprova:", 0, 2);
 
 
             switch (scelta) {
@@ -443,15 +487,15 @@ public class CineMax {
      */
     public static void eliminaProiezione(Proiezione proiezione) throws NoSuchAlgorithmException {
 
-
         if(proiezione.getSala().postiOccupati()==0) {
             if(CineMaxManager.eliminaProiezione(proiezione.getDataOra()))
-                System.out.println("Eliminazione riuscita.");
+                System.out.println("\nEliminazione riuscita.");
             else
-                System.out.println("Eliminazione non riuscita.");
+                System.out.println("\nEliminazione non riuscita.");
         }
         else
-            System.out.println("Non è modificabile perchè ci sono delle prenotazioni");
+            System.out.println("\nNon è modificabile perchè ci sono delle prenotazioni");
+        inputInt("premere 0 per tornare indietro", "\ninserimento non valido. Riprova:",0,0);
     }
 
     /**
@@ -461,21 +505,24 @@ public class CineMax {
      */
     public static void modificaProiezione(Proiezione proiezione) throws NoSuchAlgorithmException {
         Scanner scanner = new Scanner(System.in);
+        clearConsole();
         if(proiezione.getSala().postiOccupati()==0) {
 
-            int anno = inputInt("Inserisci nuovo anno:", "inserimento non valido. Riprova:", 1900, Year.now().getValue());
-            int mese = inputInt("Inserisci nuovo mese:", "Inserimento non valido. Riprova:",1, 12);
-            int giorno = inputInt("Inserisci nuovo giorno:","Inserimento non valido. Riprova:",1,31);
-            int ora = inputInt("Inserisci nuova ora:","Inserimento non valido. Riprova:",0,23);
-            int minuti = inputInt("Inserisci nuovi minuti:","Inserimento non valido. Riprova:",0,59);
+            int anno = inputInt("Inserisci nuovo anno:", "\ninserimento non valido. Riprova:", 1900, Year.now().getValue());
+            int mese = inputInt("Inserisci nuovo mese:", "\nInserimento non valido. Riprova:",1, 12);
+            int giorno = inputInt("Inserisci nuovo giorno:","\nInserimento non valido. Riprova:",1,31);
+            int ora = inputInt("Inserisci nuova ora:","\nInserimento non valido. Riprova:",0,23);
+            int minuti = inputInt("Inserisci nuovi minuti:","\nInserimento non valido. Riprova:",0,59);
 
             if(CineMaxManager.modificaDataProiezione(proiezione.getDataOra(),new DataOra(anno,mese,giorno,ora,minuti,0)))
-                System.out.println("Cambiamento data riuscito.");
+                System.out.println("\nCambiamento data riuscito.");
             else
-                System.out.println("Cambiamento data non riuscito.");
+                System.out.println("\nCambiamento data non riuscito.");
         }
         else
-            System.out.println("Non è modificabile perchè ci sono delle prenotazioni");
+            System.out.println("\nNon è modificabile perchè ci sono delle prenotazioni");
+
+        inputInt("premere 0 per tornare al menù", "\ninserimento non valido. Riprova:",0,0);
 
     }
 
@@ -491,7 +538,9 @@ public class CineMax {
     {
         Scanner scanner = new Scanner(System.in);
         int risposta;
+        String erroreWr;
         do {
+            erroreWr=errore;
             System.out.println(richiesta);
             try {
                 risposta = scanner.nextInt();
@@ -499,12 +548,14 @@ public class CineMax {
             {
                 scanner.next();
                 risposta=min-1;
+                erroreWr="Dato inserito non valido. Riprova:";
             }
             if(risposta<min || risposta>max) {
-                System.out.println(errore);
+                System.out.println(erroreWr);
                 System.out.println();
             }
         }while (risposta<min || risposta>max);
+        System.out.println();
         return risposta;
     }
 
@@ -535,6 +586,7 @@ public class CineMax {
                 System.out.println();
             }
         }while (!valido || risposta.trim().isEmpty()|| risposta.contains(caratteriNonValidi));
+        System.out.println();
         return risposta;
     }
 
@@ -543,27 +595,30 @@ public class CineMax {
      * @throws NoSuchAlgorithmException
      */
     public static void login() throws NoSuchAlgorithmException {
+        clearConsole();
         boolean esci;
         do {
+            clearConsole();
             esci=true;
-            String username= inputString("Inserisci username:","Inserimento non valido. Riprova:","; ");
-            String password= inputString("Inserisci password:","Inserimento non valido. Riprova:",";");
+            String username= inputString("Inserisci username:","\nInserimento non valido. Riprova:","; ");
+            String password= inputString("Inserisci password:","\nInserimento non valido. Riprova:",";");
             Utente utente=LoginManager.login(username,password);
             if(utente==null)
             {
                 Scanner scanner = new Scanner(System.in);
                 String riprova;
                 do{
-                    System.out.println("Dati non corretti. Vuoi riprovare? (S o N)");
+                    System.out.println("Username o password sono errati. Vuoi riprovare? (S o N)");
                     riprova=scanner.nextLine().toUpperCase();
                     if(!(riprova.equals("S") || riprova.equals("N")))
-                        System.out.println("Inserimento non valido riprova:");
+                        System.out.println("\nInserimento non valido riprova:\n");
                 }while (!(riprova.equals("S") || riprova.equals("N")));
                 if(riprova.equals("S"))
                     esci=false;
             }
             else
             {
+                System.out.println("Ciao " + utente.getNome());
                 if(utente.getRuolo().equals("CLIENTE"))
                     utenteRegistrato((Cliente) utente);
                 else if(utente.getRuolo().equals("PROIEZIONISTA"))
@@ -583,35 +638,35 @@ public class CineMax {
         Scanner scanner = new Scanner(System.in);
         boolean riprova;
         do {
-
+            clearConsole();
             riprova = false;
-            String nome = inputString("Nome:", "Inserimento non valido. Riprova:", ";");
-            String cognome = inputString("Cognome:", "Inserimento non valido. Riprova:", ";");
+            String nome = inputString("Nome:", "\nInserimento non valido. Riprova:", ";");
+            String cognome = inputString("Cognome:", "\nInserimento non valido. Riprova:", ";");
 
             String username;
             do {
-                username = inputString("Username:", "Inserimento non valido. Riprova:", "; ");
+                username = inputString("Username:", "\nInserimento non valido. Riprova:", "; ");
                 if (LoginManager.cercaUtente(username) != null)
-                    System.out.println("Username già usato");
+                    System.out.println("\nUsername già usato");
             } while (LoginManager.cercaUtente(username) != null);
 
-            String password = inputString("Password:", "Inserimento non valido. Riprova:", ";");
-            String domicilio = inputString("Luogo di domicilio", "Inserimento non valido. Riprova:", ";");
+            String password = inputString("Password:", "\nInserimento non valido. Riprova:", ";");
+            String domicilio = inputString("Luogo di domicilio", "\nInserimento non valido. Riprova:", ";");
             String data;
 
             do {
-                System.out.println("Vuoi inserire la data di nascita. Scrivi S o N:");
+                System.out.println("\nVuoi inserire la data di nascita. Scrivi S o N:");
                 data = scanner.nextLine().toUpperCase();
                 if (!(data.equals("S") || data.equals("N")))
-                    System.out.println("Inserimento non valido riprova:");
+                    System.out.println("\nInserimento non valido riprova:");
             } while (!(data.equals("S") || data.equals("N")));
             int giorno = 0;
             int mese = 0;
             int anno = 0;
             if (data.equals("S")) {
-                giorno = inputInt("Giorno di nascita:", "Inserimento non valido. Riprova:", 1, 31);
-                mese = inputInt("Mese di nascita:", "Inserimento non valido. Riprova:", 1, 12);
-                anno = inputInt("Anno di nascita:", "inserimento non valido. Riprova:", 1900, Year.now().getValue() - 1);
+                giorno = inputInt("Giorno di nascita:", "\nInserimento non valido. Riprova:", 1, 31);
+                mese = inputInt("Mese di nascita:", "\nInserimento non valido. Riprova:", 1, 12);
+                anno = inputInt("Anno di nascita:", "\ninserimento non valido. Riprova:", 1900, Year.now().getValue() - 1);
             }
 
             boolean ritorna;
@@ -619,24 +674,24 @@ public class CineMax {
             do {
                 ritorna = false;
                 do {
-                    System.out.println("Vuoi avere un ruolo diverso da cliente? Scrivi S o N:");
+                    System.out.println("\nVuoi avere un ruolo diverso da cliente? Scrivi S o N:");
                     ruolo = scanner.nextLine().toUpperCase();
                     if (!(ruolo.equals("S") || ruolo.equals("N")))
-                        System.out.println("Inserimento non valido riprova:");
+                        System.out.println("\nInserimento non valido riprova:");
                 } while (!(ruolo.equals("S") || ruolo.equals("N")));
                 if (ruolo.equals("S")) {
                     String passwordRouloInserita;
                     do {
-                        passwordRouloInserita = inputString("Inserisci la password per poter scegliere il ruolo o 0 per tornare indietro.", "inserimento non valido. Riprova:", ";");
+                        passwordRouloInserita = inputString("Inserisci la password per poter scegliere il ruolo o 0 per tornare indietro.", "\ninserimento non valido. Riprova:", ";");
                         if (!passwordRouloInserita.equals("0") && !Security.checkPassword(passwordRuolo, passwordRouloInserita))
-                            System.out.println("Password inserita è sbagliata. Riprova:");
+                            System.out.println("\nPassword inserita è sbagliata. Riprova:");
                     }
                     while (!passwordRouloInserita.equals("0") && !Security.checkPassword(passwordRuolo, passwordRouloInserita));
                     if (passwordRouloInserita.equals("0"))
                         ritorna = true;
                     else {
                         int scelta;
-                        scelta = inputInt("Inserisci l'indice del ruolo che vuoi:\n1   Proiezionista\n2   Bigliettaio", "inserimento non valido. Riprova:", 1, 2);
+                        scelta = inputInt("Inserisci l'indice del ruolo che vuoi:\n1   Proiezionista\n2   Bigliettaio", "\ninserimento non valido. Riprova:", 1, 2);
                         switch (scelta) {
                             case 1:
                                 Proiezionista proiezionista;
@@ -675,8 +730,10 @@ public class CineMax {
                 }
             }
             while(ritorna);
-            if(riprova)
-                System.out.println("Registrazione non valida. Riprova.");
+            if(riprova) {
+                System.out.println("\nRegistrazione non valida.");
+                inputInt("premere 0 per riprovare:", "\ninserimento non valido. Riprova:", 0, 0);
+            }
         }while (riprova);
     }
 
@@ -687,17 +744,19 @@ public class CineMax {
      * @throws NoSuchAlgorithmException
      */
     public static void profilo(Utente utente) throws NoSuchAlgorithmException {
+
         Scanner scanner = new Scanner(System.in);
         int scelta;
         do {
+            clearConsole();
             System.out.println(utente.toInfo());
-            scelta = inputInt("1   Modifica password\n2   Modifica username\n3   Modifica domicilio\n4   Modifica data di nascita\n0   Torna al menù principale","Inserimento non valido. Riprova:",0,4);
+            scelta = inputInt("\n1   Modifica password\n2   Modifica username\n3   Modifica domicilio\n4   Modifica data di nascita\n0   Torna al menù principale","\nInserimento non valido. Riprova:",0,4);
             switch (scelta) {
                 case 1:
                     modificaPassword(utente);
                     break;
                 case 2:
-                    modificaUsername(utente);
+                    utente=modificaUsername(utente);
                     break;
                 case 3:
                     modificaDomicilio(utente);
@@ -715,10 +774,10 @@ public class CineMax {
      * @throws NoSuchAlgorithmException
      */
     static public void modificaDataNascita(Utente utente) throws NoSuchAlgorithmException {
-
-        int giorno = inputInt("Inserisci nuovo giorno di nascita:","Inserimento non valido. Riprova:",1,31);
-        int mese = inputInt("Inserisci nuovo mese di nascita:", "Inserimento non valido. Riprova:",1, 12);
-        int anno = inputInt("Inserisci nuovo anno di nascita:", "inserimento non valido. Riprova:", 1900, Year.now().getValue()-1);
+        clearConsole();
+        int giorno = inputInt("Inserisci nuovo giorno di nascita:","\nInserimento non valido. Riprova:",1,31);
+        int mese = inputInt("Inserisci nuovo mese di nascita:", "\nInserimento non valido. Riprova:",1, 12);
+        int anno = inputInt("Inserisci nuovo anno di nascita:", "\ninserimento non valido. Riprova:", 1900, Year.now().getValue()-1);
 
         Data data=new Data(anno,giorno,mese);
         utente.setDataNascita(data);
@@ -730,7 +789,8 @@ public class CineMax {
      * @throws NoSuchAlgorithmException
      */
     static public void modificaPassword(Utente utente) throws NoSuchAlgorithmException {
-        String password = inputString("Inserisci nuova password o 0 per tornare indietro","Inserimento non valido. Riprova:",";");
+        clearConsole();
+        String password = inputString("Inserisci nuova password o 0 per tornare indietro","\nInserimento non valido. Riprova:",";");
         if(!password.equals("0"))
             utente.setHashPassword(password);
     }
@@ -741,7 +801,8 @@ public class CineMax {
      */
     static public void modificaDomicilio(Utente utente)
     {
-        String domicilio = inputString("Inserisci nuovo domicilio o 0 per tornare indietro","Inserimento non valido. Riprova:",";");
+        clearConsole();
+        String domicilio = inputString("Inserisci nuovo domicilio o 0 per tornare indietro","\nInserimento non valido. Riprova:",";");
         if(!domicilio.equals("0"))
             utente.setDomicilio(domicilio);
     }
@@ -752,14 +813,17 @@ public class CineMax {
      * @param utente è l'utente a cui si vuole cambiare l'username.
      * @throws NoSuchAlgorithmException
      */
-    static public void modificaUsername(Utente utente) throws NoSuchAlgorithmException {
+    static public Utente modificaUsername(Utente utente) throws NoSuchAlgorithmException {
+
         while (true){
-            String username = inputString("Inserisci nuovo username o 0 per tornare indietro:","Inserimento non valido. Riprova:","; ");
+            clearConsole();
+            String username = inputString("Inserisci nuovo username o 0 per tornare indietro:","\nInserimento non valido. Riprova:","; ");
             if(username.equals("0") || LoginManager.setUsername(utente, username))
                 break;
-
             System.out.println("Username già usato");
+            inputInt("premere 0 per riprovare:", "\ninserimento non valido. Riprova:", 0, 0);
         }
+        return utente;
     }
 
     /**
@@ -768,23 +832,30 @@ public class CineMax {
      * @throws NoSuchAlgorithmException
      */
     public static void visualizzaPrenotazioneCliente(Cliente utente) throws NoSuchAlgorithmException {
-        int scelta;
+        int scelta=0;
         do {
-            System.out.println("Indice Codice prenotazione data   ora  titolo   genere    regista    anno  durata  eta minima  posti preso");
+            clearConsole();
 
             List<Prenotazione> prenotazioni=CineMaxManager.getPrenotazioniClienteAttive(utente);
-            int i=1;
-            for (Prenotazione p: prenotazioni)
-            {
-                System.out.println(" "+ i+ "  "+p.toInfoCliente());
-                i++;
+            if(!prenotazioni.isEmpty()) {
+                System.out.println("Indice Codice prenotazione data   ora  titolo   genere    regista    anno  durata  eta minima  posti preso");
+
+                int i = 1;
+                for (Prenotazione p : prenotazioni) {
+                    System.out.println(" " + i + "  " + p.toInfoCliente());
+                    i++;
+                }
+                System.out.println("");
+                scelta = inputInt("Inserisci l'indice di quale vuoi modificare/eliminare o 0 per tornare al menù principale.", "\nInserimento non valido riprova:", 0, prenotazioni.size());
+                if (scelta != 0) {
+                    Prenotazione p = (Prenotazione) prenotazioni.toArray()[scelta - 1];
+                    modificaEliminaPrenotazione(p, utente);
+                }
             }
-            System.out.println("");
-            scelta = inputInt("Inserisci l'indice di quale vuoi modificare/eliminare o 0 per tornare al menù principale.","Inserimento non valido riprova:",0,prenotazioni.size());
-            if(scelta!=0)
+            else
             {
-                Prenotazione p=(Prenotazione) prenotazioni.toArray()[scelta-1];
-                modificaEliminaPrenotazione(p,utente);
+                System.out.println("Nessuna prenotazione.");
+                inputInt("premere 0 per tornare al menù:", "\nInserimento non valido. Riprova:", 0, 0);
             }
 
         }while(scelta!=0);
@@ -799,15 +870,17 @@ public class CineMax {
     public static void modificaEliminaPrenotazione(Prenotazione prenotazione,Cliente utente) throws NoSuchAlgorithmException {
         int risposta;
         do {
+            clearConsole();
             System.out.println("Indice Codice prenotazione data   ora  titolo   genere    regista    anno  durata  eta minima  posti preso");
             System.out.println(prenotazione.toInfoCliente());
-            risposta = inputInt("1  elimina\n2   Modifica\n0   Torna al menù principale","Inserimento non valido. Riprova:",0,2);
+            risposta = inputInt("1  elimina\n2   Modifica\n0   Torna al menù principale","\nInserimento non valido. Riprova:",0,2);
             switch (risposta) {
                 case 1:
                     if(CineMaxManager.eliminaPrenotazione(prenotazione.getCodicePrenotazione()))
-                        System.out.println("Elimato la prenotazione");
+                        System.out.println("\nEliminata la prenotazione");
                     else
-                        System.out.println("C'è un problema. Eliminazione impossibile.");
+                        System.out.println("\nC'è un problema. Eliminazione impossibile.");
+                    inputInt("premere 0 per visualizzare il menù:", "\ninserimento non valido. Riprova:", 0, 0);
                     break;
                 case 2:
                     int c = CineMaxManager.getPrenotazioniCliente(utente).size();
@@ -830,7 +903,8 @@ public class CineMax {
     {
         int risposta;
         do {
-            risposta=inputInt("1   Cerca per codice\n2   Cerca per nome e cognome\n3   cerca per titolo film\n4   cerca per intervallo date\n0   torna al menù principale","Inserimento non valido. Riprova:",0,4);
+            clearConsole();
+            risposta=inputInt("1   Cerca per codice\n2   Cerca per nome e cognome\n3   cerca per titolo film\n4   cerca per intervallo date\n0   torna al menù principale","\nInserimento non valido. Riprova:",0,4);
 
             switch (risposta)
             {
@@ -857,13 +931,16 @@ public class CineMax {
     {
         int risposta;
         do {
-            risposta=inputInt("Inserisci il codice della prenotazione, 0 per tornare indietro.","Inserimento non valido. Riprova:",0,Integer.MAX_VALUE);
-
-            Prenotazione p=CineMaxManager.cercaPrenotazione(risposta);
-            if(p==null)
-                System.out.println("Il codice inserito non esiste. Riprova:");
-            else
-                visualizzaPrenotazione(p);
+            clearConsole();
+            risposta=inputInt("Inserisci il codice della prenotazione, 0 per tornare indietro.","\nInserimento non valido. Riprova:",0,Integer.MAX_VALUE);
+            if(risposta!=0) {
+                Prenotazione p = CineMaxManager.cercaPrenotazione(risposta);
+                if (p == null) {
+                    System.out.println("\nIl codice inserito non esiste.");
+                    inputInt("premere 0 per riprovare:", "\ninserimento non valido. Riprova:", 0, 0);
+                } else
+                    visualizzaPrenotazione(p);
+            }
         }while (risposta!=0);
     }
 
@@ -876,12 +953,13 @@ public class CineMax {
         String nome, cognome;
         boolean continua;
         do {
+            clearConsole();
             continua=false;
-            nome=inputString("Inserisci nome, 0 per tornare indietro.","Inserimento non valido. Riprova:",";");
+            nome=inputString("Inserisci nome, 0 per tornare indietro.","\nInserimento non valido. Riprova:",";");
 
             if(!nome.equals("0"))
             {
-                cognome=inputString("Inserisci cognome, 0 per tornare indietro.","Inserimento non valido. Riprova:",";");
+                cognome=inputString("Inserisci cognome, 0 per tornare indietro.","\nInserimento non valido. Riprova:",";");
                 if(!cognome.equals("0")) {
                     List<Utente> omonimi = LoginManager.cercaUtente(nome, cognome);
                     if(!omonimi.isEmpty())
@@ -894,7 +972,7 @@ public class CineMax {
                                 else
                                     visualizzaPrenotazioni(l);
                             } else {
-                                System.out.println("Non ci sono prenotazioni per questo cliente. Riprova:");
+                                System.out.println("\nNon ci sono prenotazioni per questo cliente. Riprova:");
                                 continua = true;
                             }
                         }
@@ -905,12 +983,13 @@ public class CineMax {
                     }
                     else
                     {
-                        System.out.println("Non ci sono clienti con questo nome e cognome. Riprova:");
+                        System.out.println("\nNon ci sono clienti con questo nome e cognome. Riprova:");
                         continua = true;
                     }
                 }
             }
-
+            if(continua)
+                inputInt("premere 0 per riprovare:", "\ninserimento non valido. Riprova:", 0, 0);
         }while (continua);
     }
 
@@ -930,8 +1009,8 @@ public class CineMax {
         }
         s.append("\nInserisci 0 per tornare indietro.");
         do {
-
-            risposta=inputInt(s.toString(),"Inserimento non valido. Riprova:",0,c);
+            clearConsole();
+            risposta=inputInt(s.toString(),"\nInserimento non valido. Riprova:",0,c);
             if(risposta!=0)
             {
                 List<Prenotazione> l = CineMaxManager.getPrenotazioniClienteAttive((Cliente) utenti.get(risposta-1));
@@ -941,7 +1020,8 @@ public class CineMax {
                     else
                         visualizzaPrenotazioni(l);
                 } else {
-                    System.out.println("Non ci sono prenotazioni per questo cliente. Riprova:");
+                    System.out.println("\nNon ci sono prenotazioni per questo cliente. Riprova:");
+                    inputInt("premere 0 per riprovare:", "\ninserimento non valido. Riprova:", 0, 0);
                 }
 
             }
@@ -956,8 +1036,9 @@ public class CineMax {
     {
         boolean continua;
         do {
+            clearConsole();
             continua=false;
-            String titolo=inputString("Inserisci il titolo del film, 0 per tornare indietro.","Inserimento non valido. Riprova:",";");
+            String titolo=inputString("Inserisci il titolo del film, 0 per tornare indietro.","\nInserimento non valido. Riprova:",";");
 
             if(!titolo.equals("0"))
             {
@@ -969,7 +1050,8 @@ public class CineMax {
                         visualizzaPrenotazioni(l);
                 }
                 else {
-                    System.out.println("Non ci sono prenotazioni per film con questo titolo. Riprova:");
+                    System.out.println("\nNon ci sono prenotazioni per film con questo titolo. Riprova:");
+                    inputInt("premere 0 per riprovare:", "\ninserimento non valido. Riprova:", 0, 0);
                     continua=true;
                 }
             }
@@ -982,20 +1064,21 @@ public class CineMax {
      */
     public static void cercaPerDate()
     {
-        int annoMin = inputInt("Inserisci l'anno della data minima:","Inserimento non valido. Riprova:",1900, Year.now().getValue());
-        int meseMin = inputInt("Inserisci il mese della data minima:","Inserimento non valido. Riprova:",1,12);
-        int giornoMin = inputInt("Inserisci il giorno della data minima:","Inserimento non valido. Riprova:",1,31);
-        int annoMax = inputInt("Inserisci l'anno della data massima:","Inserimento non valido. Riprova:",annoMin, Year.now().getValue());
+        clearConsole();
+        int annoMin = inputInt("Inserisci l'anno della data minima:","\nInserimento non valido. Riprova:",1900, Year.now().getValue());
+        int meseMin = inputInt("Inserisci il mese della data minima:","\nInserimento non valido. Riprova:",1,12);
+        int giornoMin = inputInt("Inserisci il giorno della data minima:","\nInserimento non valido. Riprova:",1,31);
+        int annoMax = inputInt("Inserisci l'anno della data massima:","\nInserimento non valido. Riprova:",annoMin, Year.now().getValue());
         int meseMax;
         if (annoMax==annoMin)
-            meseMax = inputInt("Inserisci il mese della data massima:","Inserimento non valido. Riprova:",meseMin,12);
+            meseMax = inputInt("Inserisci il mese della data massima:","\nInserimento non valido. Riprova:",meseMin,12);
         else
-            meseMax = inputInt("Inserisci il mese della data massima:","Inserimento non valido. Riprova:",1,12);
+            meseMax = inputInt("Inserisci il mese della data massima:","\nInserimento non valido. Riprova:",1,12);
         int giornoMax;
         if(annoMax==annoMin && meseMax==meseMin)
-            giornoMax=inputInt("Inserisci il giorno della data massima:","Inserimento non valido. Riprova:",giornoMin,31);
+            giornoMax=inputInt("Inserisci il giorno della data massima:","\nInserimento non valido. Riprova:",giornoMin,31);
         else
-            giornoMax=inputInt("Inserisci il giorno della data massima:","Inserimento non valido. Riprova:",1,31);
+            giornoMax=inputInt("Inserisci il giorno della data massima:","\nInserimento non valido. Riprova:",1,31);
 
         Data dataMin = new Data(annoMin,meseMin,giornoMin);
         Data dataMax = new Data(annoMax,meseMax,giornoMax);
@@ -1008,8 +1091,10 @@ public class CineMax {
             else
                 visualizzaPrenotazioni(l);
         }
-        else
-            System.out.println("Non ci sono prenotazioni in quelle date");
+        else {
+            System.out.println("\nNon ci sono prenotazioni in quelle date");
+            inputInt("premere 0 per tornare al menù:", "\ninserimento non valido. Riprova:", 0, 0);
+        }
 
     }
 
@@ -1021,7 +1106,7 @@ public class CineMax {
     {
         int scelta;
         do {
-
+            clearConsole();
             System.out.println("Indice Codice prenotazione data   ora  titolo   genere    regista    anno  durata  eta minima  posti preso");
             int i = 1;
             for (Prenotazione p : prenotazioni) {
@@ -1029,7 +1114,7 @@ public class CineMax {
                 i++;
             }
             System.out.println("");
-            scelta = inputInt("Inserisci indice della prenotazione che vuoi vedere, 0 per tornare indietro.", "Inserimento non valido. Riprova:", 0, prenotazioni.size());
+            scelta = inputInt("Inserisci indice della prenotazione che vuoi vedere, 0 per tornare indietro.", "\nInserimento non valido. Riprova:", 0, prenotazioni.size());
 
             if (scelta != 0)
                 visualizzaPrenotazione((Prenotazione) prenotazioni.toArray()[scelta - 1]);
@@ -1042,10 +1127,10 @@ public class CineMax {
      */
     public static void visualizzaPrenotazione(Prenotazione p)
     {
+        clearConsole();
         System.out.println("Codice prenotazione    data  ora   titolo   genere   regista    anno   durata   età minima   costo   posti presi");
         System.out.println(p.toInfoCliente());
-        System.out.println("Inserisci 0 per tornare indietro.");
-        inputInt("","Devi inserire 0 se vuoi tornare indietro.",0,0);
+        inputInt("\nInserisci 0 per tornare indietro.","\nDevi inserire 0 se vuoi tornare indietro.",0,0);
     }
 }
 

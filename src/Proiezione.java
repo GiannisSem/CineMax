@@ -129,7 +129,7 @@ public class Proiezione implements Serializable, Comparable<Proiezione> {
      * @return stringa associata all'istanza.
      */
     public String toInfo(){
-        return String.format(dataOra + "   " + film.getTitolo() + "   " + film.getRegista() + "   " + film.annoUscita() + "   " + film.getDurata() + "   " + film.getVmeta() + "   " + costoBiglietto + "   " + sala.postiDisponibili());
+        return String.format(dataOra + "       " + film.getTitolo() + "   " + film.getGenere() + "   " + film.getRegista() + "   " + film.annoUscita() + "      " + film.getDurata() + "         " + film.getVmeta() + "          " + costoBiglietto + "           " + sala.postiDisponibili());
     }
 
     /**
@@ -137,7 +137,7 @@ public class Proiezione implements Serializable, Comparable<Proiezione> {
      * @return stringa associata all'istanza.
      */
     public String toInfo1(){
-        return String.format("Data e ora:  " + dataOra + "%n%nTitolo:  " + film.getTitolo() + "%n%nRegista:  " + film.getRegista() + "%n%nAnno di uscita:  " + film.annoUscita() + "%n%nDurata:  " + film.getDurata() + "%n%nEtà minima:  " + film.getVmeta() + "%n%nCosto biglietto:  " + costoBiglietto);
+        return String.format("Data e ora:  " + dataOra + "%n%nTitolo:  " + film.getTitolo() + "%n%nGenere:  " + film.getGenere() +"%n%nRegista:  " + film.getRegista() + "%n%nAnno di uscita:  " + film.annoUscita() + "%n%nDurata:  " + film.getDurata() + "%n%nEtà minima:  " + film.getVmeta() + "%n%nCosto biglietto:  " + costoBiglietto);
     }
 
     /**
