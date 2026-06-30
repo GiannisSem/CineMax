@@ -374,7 +374,7 @@ public class CineMax {
                 if(i==10000)
                     space="  ";
             }
-            System.out.println("");
+            System.out.println();
             risposta = inputInt("Inserisci l'indice della proiezione che vuoi vedere o 0 per tornare al menù principale.","\nInserimento non valido riprova:",0,lista.size());
 
             if(risposta!=0)
@@ -438,8 +438,12 @@ public class CineMax {
                     } while (ritest);
                     posti[i] = lettera + Integer.toString(numero);
                 }
-                CineMaxManager.inserisciPrenotazione(utente, proiezione, posti);
-                System.out.println("\nHai prenotato i posti");
+                if (Data.getEta(utente.getDataNascita()) >= proiezione.getFilm().getVmeta()){
+                    CineMaxManager.inserisciPrenotazione(utente, proiezione, posti);
+                    System.out.println("\nHai prenotato i posti");
+                } else {
+                    System.out.println("\nSei troppo piccolo per questo film, devi avere almeno" + proiezione.getFilm().getVmeta() + " anni");
+                }
             }
         } else
             System.out.println("\nNessun posto disponibile, la proiezione è piena.");
@@ -450,7 +454,6 @@ public class CineMax {
 
     public static void visualizzaProiezioneUtenteNR(Proiezione proiezione) throws NoSuchAlgorithmException {
         clearConsole();
-        Scanner scanner = new Scanner(System.in);
         System.out.println(proiezione.toInfo1()+"\n");
         System.out.println("Posti disponibili:   " + proiezione.getSala().postiDisponibili() + "\n");
         proiezione.getSala().stampa();

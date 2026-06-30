@@ -109,4 +109,19 @@ public class Data implements Serializable, Comparable<Data> {
     public int getGiorno() {
         return giorno;
     }
+
+    /**
+     * Data una <code>data di nascita</code> calcola quanti anni hai.
+     * @param dataNascita data di nascita.
+     * @return età espressa come numero intero.
+     */
+    public static int getEta(Data dataNascita){
+        if (dataNascita == null) return 0;
+
+        int eta = oggi.anno - dataNascita.anno;
+        if (oggi.mese < dataNascita.mese) eta--;
+        else if (oggi.mese == dataNascita.mese && oggi.giorno < dataNascita.giorno) eta--;
+
+        return eta;
+    }
 }

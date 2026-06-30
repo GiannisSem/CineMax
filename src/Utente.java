@@ -195,11 +195,19 @@ public class Utente implements Comparable<Utente> {
     }
 
     /**
-     * Metodo <em>getter</em> dell'attributo <code>passsword</code>.
+     * Metodo <em>getter</em> dell'attributo <code>password</code>.
      * @return <code>password</code>
      */
     public String getPassword() {
         return  password;
+    }
+
+    /**
+     * Metodo <em>getter</em> dell'attributo <code>data di nascita</code>.
+     * @return <code>data di nascita</code>
+     */
+    public Data getDataNascita(){
+        return dataNascita;
     }
 
     /**
