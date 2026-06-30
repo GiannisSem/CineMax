@@ -6,13 +6,6 @@
  */
 public class Prenotazione {
     /**
-     * Tiene traccia dell'<code>ultimo codice prenotazione</code> usato.<br>
-     * Il valore iniziale è dato staticamente.
-     * @see CineMaxManager#getUltimoCodicePrenotazione()
-     */
-    public static int ultimoCodicePrenotazione = CineMaxManager.getUltimoCodicePrenotazione();
-
-    /**
      * Il <code>codice</code> della prenotazione.
      */
     private int codicePrenotazione;
@@ -34,12 +27,13 @@ public class Prenotazione {
 
     /**
      * Questo metodo costruisce un nuovo oggetto <strong>Prenotazione</strong>.
+     * @param codicePrenotazione codice della prenotazione.
      * @param cliente cliente che ha creato la prenotazione.
      * @param proiezione proiezione associata alla prenotazione.
      * @param posti vettore di posti prenotati.
      */
-    public Prenotazione(Cliente cliente, Proiezione proiezione, String[] posti) {
-        this.codicePrenotazione = ++ultimoCodicePrenotazione;
+    public Prenotazione(int codicePrenotazione, Cliente cliente, Proiezione proiezione, String[] posti) {
+        this.codicePrenotazione = codicePrenotazione;
         this.cliente = cliente;
         this.proiezione = proiezione;
         if (posti.length == 1)
@@ -161,10 +155,11 @@ public class Prenotazione {
 
     /**
      * TODO: Dario per favore cambia questo toinfo orribile, dagli tu una descrizione...
+     * @return stringa associata all'istanza da mostrare a schermo.
      */
     public String toInfoCliente()
     {
-        return String.format(getCodicePrenotazione()+  "    " +getDataOra()+"    "+proiezione.getFilm().getTitolo()+  "    " +proiezione.getFilm().getGenere()+  "    " +proiezione.getFilm().getRegista()+  "    " +proiezione.getFilm().annoUscita()+  "    " +proiezione.getFilm().getDurata()+  "    " +proiezione.getFilm().getVmeta()+  "    " +proiezione.getCostoBiglietto()+  "    " +getPosti() );
+        return String.format(getCodicePrenotazione()+  "    " +getDataOra()+"    "+proiezione.getFilm().getTitolo()+  "    " +proiezione.getFilm().getGenere()+  "    " +proiezione.getFilm().getRegista()+  "    " +proiezione.getFilm().annoUscita()+  "    " +proiezione.getFilm().getDurata()+  "    " +proiezione.getFilm().getVmeta()+  "    " +proiezione.getCostoBiglietto()+  "    " + posti );
     }
 
 }

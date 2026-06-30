@@ -20,7 +20,7 @@ public class DataOra implements Serializable, Comparable<DataOra> {
     /**
      * Il <code>formatter</code> serve per dare una formattazione personalizzata alla data e ora <code>LocalDateTime.now()</code>.
      */
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     /**
      * Contiene le informazioni riguardo la data e l'ora di <code>oggi</code> (in questo momento) nel formato imposto dalla classe.

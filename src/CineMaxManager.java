@@ -63,10 +63,9 @@ public class CineMaxManager {
      * Serve per tenere traccia del codice dell'ultima prenotazione tra esecuzioni del programma diverse.
      * Il codice di ogni prenotazione è univoca.
      * @return l'ultimo codice prenotazione usato.
-     * @see Prenotazione#ultimoCodicePrenotazione
      */
     public static int getUltimoCodicePrenotazione(){
-        return listaPrenotazioni.isEmpty() ? 1 : listaPrenotazioni.get(listaPrenotazioni.size()-1).getCodicePrenotazione();
+        return listaPrenotazioni.isEmpty() ? 0 : listaPrenotazioni.get(listaPrenotazioni.size()-1).getCodicePrenotazione();
     }
 
     /* INSERIMENTO */
@@ -202,7 +201,7 @@ public class CineMaxManager {
     public static List<Proiezione> cercaProiezioni_Titolo(List<Proiezione> lista, String titolo) {
         List<Proiezione> filtrata = new ArrayList<>();
         for (Proiezione proiezione : lista){
-            if (proiezione.getFilm().getTitolo().contains(titolo))
+            if (proiezione.getFilm().getTitolo().toLowerCase().contains(titolo.toLowerCase()))
                 filtrata.add(proiezione);
         }
         return filtrata;
@@ -217,7 +216,7 @@ public class CineMaxManager {
     public static List<Proiezione> cercaProiezioni_Genere(List<Proiezione> lista, String genere) {
         List<Proiezione> filtrata = new ArrayList<>();
         for (Proiezione proiezione : lista){
-            if (proiezione.getFilm().getGenere().equals(genere))
+            if (proiezione.getFilm().getGenere().equalsIgnoreCase(genere))
                 filtrata.add(proiezione);
         }
         return filtrata;
@@ -426,10 +425,12 @@ public class CineMaxManager {
      * @see Sala
      */
     public static void inserisciPrenotazione(Cliente cliente, Proiezione proiezione, String[] posti){
-        listaPrenotazioni.add(new Prenotazione(cliente, proiezione, posti));
+        listaPrenotazioni.add(new Prenotazione(getUltimoCodicePrenotazione() +1, cliente, proiezione, posti));
         for (String s : posti) {
             proiezione.getSala().occupaPosto(s);
         }
+
+        FileManager.carica_csv(listaPrenotazioni, FileManager.path_prenotazioni);
     }
 
     /**

@@ -416,10 +416,10 @@ public class CineMax {
 
                     do {
                         System.out.println("\nInserisci posto della " + (i+1) + "^ prenotazione: es: A9");
-                        posto = scanner.nextLine();
+                        posto = scanner.nextLine().toUpperCase();
                         ritest = false;
                         try {
-                            numero = Integer.parseInt(posto.substring(1, posto.length()));
+                            numero = Integer.parseInt(posto.substring(1));
                         } catch (Exception u) {
                             numero = 21;
                         }

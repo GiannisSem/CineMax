@@ -77,7 +77,7 @@ public class Sala implements Serializable {
      */
     private boolean setPosto(String posto, boolean setReset) {
         char lettera = posto.charAt(0);
-        int numero = Integer.parseInt(posto.substring(1, posto.length()));
+        int numero = Integer.parseInt(posto.substring(1));
 
         if (setReset && !isPostoDisponibile(lettera, numero))
             return false;

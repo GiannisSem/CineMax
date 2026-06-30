@@ -47,13 +47,13 @@ public class Utente implements Comparable<Utente> {
 
     /**
      * Costruisce un nuovo <strong>Utente</strong>.
-     * @param nome il nome del utente.
-     * @param cognome il cognome del utente.
-     * @param username lo username del utente.
-     * @param password la password del utente.
-     * @param dataNascita la data di nasciata del utente.
-     * @param domicilio l'indirizzo del domicilio del utente.
-     * @param ruolo il ruolo del utente.
+     * @param nome il nome dell'utente.
+     * @param cognome il cognome dell'utente.
+     * @param username lo username dell'utente.
+     * @param password la password dell'utente.
+     * @param dataNascita la data di nasciata dell'utente.
+     * @param domicilio l'indirizzo del domicilio dell'utente.
+     * @param ruolo il ruolo dell'utente.
      * @throws NoSuchAlgorithmException se l'algoritmo di cifratura della password non è disponibile.
      */
     public Utente(String nome, String cognome, String username, String password, Data dataNascita, String domicilio, Ruolo ruolo) throws NoSuchAlgorithmException {
@@ -71,15 +71,15 @@ public class Utente implements Comparable<Utente> {
 
     /**
      * Costruisce un nuovo <strong>Utente</strong>.
-     * @param nome il nome del utente.
-     * @param cognome il cognome del utente.
-     * @param username lo username del utente.
-     * @param password la password del utente.
-     * @param giorno il giorno di nasciata del utente.
-     * @param mese il mese di nasciata del utente.
-     * @param anno l'anno di nasciata del utente.
-     * @param domicilio l'indirizzo del domicilio del utente.
-     * @param ruolo il ruolo del utente.
+     * @param nome il nome dell'utente.
+     * @param cognome il cognome dell'utente.
+     * @param username lo username dell'utente.
+     * @param password la password dell'utente.
+     * @param giorno il giorno di nasciata dell'utente.
+     * @param mese il mese di nasciata dell'utente.
+     * @param anno l'anno di nasciata dell'utente.
+     * @param domicilio l'indirizzo del domicilio dell'utente.
+     * @param ruolo il ruolo dell'utente.
      * @throws NoSuchAlgorithmException se l'algoritmo di cifratura della password non è disponibile.
      */
     public Utente(String nome, String cognome, String username, String password, int giorno, int mese, int anno, String domicilio, Ruolo ruolo) throws NoSuchAlgorithmException {
@@ -88,12 +88,12 @@ public class Utente implements Comparable<Utente> {
 
     /**
      * Costruisce un nuovo <strong>Utente</strong>.
-     * @param nome il nome del utente.
-     * @param cognome il cognome del utente.
-     * @param username lo username del utente.
-     * @param password la password del utente.
-     * @param domicilio l'indirizzo del domicilio del utente.
-     * @param ruolo il ruolo del utente.
+     * @param nome il nome dell'utente.
+     * @param cognome il cognome dell'utente.
+     * @param username lo username dell'utente.
+     * @param password la password dell'utente.
+     * @param domicilio l'indirizzo del domicilio dell'utente.
+     * @param ruolo il ruolo dell'utente.
      * @throws NoSuchAlgorithmException se l'algoritmo di cifratura della password non è disponibile.
      */
     public Utente (String nome, String cognome, String username, String password, String domicilio, Ruolo ruolo) throws NoSuchAlgorithmException {
@@ -102,7 +102,7 @@ public class Utente implements Comparable<Utente> {
 
     /**
      * Costruisce un nuovo <strong>Utente</strong>.
-     * @param ruolo il ruolo del utente.
+     * @param ruolo il ruolo dell'utente.
      * @throws NoSuchAlgorithmException se l'algoritmo di cifratura della password non è disponibile.
      */
     public Utente(Ruolo ruolo) throws NoSuchAlgorithmException {
