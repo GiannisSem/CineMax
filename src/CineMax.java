@@ -278,19 +278,28 @@ public class CineMax {
         }while (!(data.equals("S") || data.equals("N")));
         if(data.equals("S"))
         {
-            int annoMin = inputInt("Inserisci l'anno della data minima:","\nInserimento non valido. Riprova:",Year.now().getValue(), 2126);
-            int meseMin = inputInt("Inserisci il mese della data minima:","\nInserimento non valido. Riprova:",1,12);
-            int giornoMin = inputInt("Inserisci il giorno della data minima:","\nInserimento non valido. Riprova:",1,31);
+            int annoMin = inputInt("Inserisci l'anno della data minima:","\nInserimento non valido, l'anno deve essere uguale o maggiore a quello odierno. Riprova:",Year.now().getValue(), 2126);
+            int meseMin;
+            if(annoMin==Year.now().getValue())
+                meseMin = inputInt("Inserisci il mese della data minima:","\nInserimento non valido, il mese deve essere uguale o maggiore a quello odierno. Riprova:",Data.oggi.getMese(),12);
+            else
+                meseMin = inputInt("Inserisci il mese della data minima:","\nInserimento non valido. Riprova:",1,12);
+            int giornoMin;
+            if(annoMin==Year.now().getValue() && meseMin==Data.oggi.getMese())
+                giornoMin = inputInt("Inserisci il giorno della data minima:","\nInserimento non valido, il giorno deve essere uguale o maggiore a quello odierno. Riprova:",Data.oggi.getGiorno(),31);
+            else
+                giornoMin = inputInt("Inserisci il giorno della data minima:","\nInserimento non valido. Riprova:",1,31);
 
-            int annoMax = inputInt("Inserisci l'anno della data massima:","\nInserimento non valido. Riprova:",annoMin, 2126);
+
+            int annoMax = inputInt("Inserisci l'anno della data massima:","\nInserimento non valido, l'anno deve essere uguale o maggiore a quello minimo. Riprova:",annoMin, 2126);
             int meseMax;
             if (annoMax==annoMin)
-                meseMax = inputInt("Inserisci il mese della data massima:","\nInserimento non valido. Riprova:",meseMin,12);
+                meseMax = inputInt("Inserisci il mese della data massima:","\nInserimento non valido, il mese deve essere uguale o maggiore a quello minimo. Riprova:",meseMin,12);
             else
                 meseMax = inputInt("Inserisci il mese della data massima:","\nInserimento non valido. Riprova:",1,12);
             int giornoMax;
             if(annoMax==annoMin && meseMax==meseMin)
-                giornoMax=inputInt("Inserisci il giorno della data massima:","\nInserimento non valido. Riprova:",giornoMin,31);
+                giornoMax=inputInt("Inserisci il giorno della data massima:","\nInserimento non valido, il giorno deve essere uguale o maggiore a quello minimo. Riprova:",giornoMin,31);
             else
                 giornoMax=inputInt("Inserisci il giorno della data massima:","\nInserimento non valido. Riprova:",1,31);
 
@@ -403,7 +412,10 @@ public class CineMax {
         System.out.println(proiezione.toInfo1()+"\n");
         proiezione.getSala().stampa();
         if (Data.getEta(utente.getDataNascita()) < proiezione.getFilm().getVmeta())
+        {
             System.out.println("\nSei troppo piccolo per questo film, devi avere almeno " + proiezione.getFilm().getVmeta() + " anni");
+            inputInt("premere 0 per tornare indietro", "\ninserimento non valido. Riprova:", 0, 0);
+        }
         else if(proiezione.getSala().postiDisponibili()!=0) {
             int scelta = inputInt((String.format("Numero posti liberi: " + proiezione.getSala().postiDisponibili() + "\nInserisci quanti posti vuoi prenotare, 0 per tornare indietro")), "\nPosti liberi sono insufficienti:", 0, proiezione.getSala().postiDisponibili());
             if (scelta != 0) {
@@ -448,10 +460,12 @@ public class CineMax {
                 }
                 CineMaxManager.inserisciPrenotazione(utente, proiezione, posti);
                 System.out.println("\nHai prenotato i posti");
+                inputInt("premere 0 per tornare indietro", "\ninserimento non valido. Riprova:", 0, 0);
             }
-        } else
+        } else {
             System.out.println("\nNessun posto disponibile, la proiezione è piena.");
-        inputInt("premere 0 per tornare indietro", "\ninserimento non valido. Riprova:",0,0);
+            inputInt("premere 0 per tornare indietro", "\ninserimento non valido. Riprova:", 0, 0);
+        }
     }
 
 
@@ -473,12 +487,10 @@ public class CineMax {
      */
     public static void visualizzaProiezioneProiezionista(Proiezione proiezione){
         int scelta;
-        do {
             clearConsole();
             System.out.println(proiezione.toInfo1());
 
             scelta = inputInt("1   Elimina proiezione\n2   Modifica proiezione\n0   Torna indietro", "\nInserimento non valido. Riprova:", 0, 2);
-
 
             switch (scelta) {
                 case 1:
@@ -488,7 +500,6 @@ public class CineMax {
                     modificaProiezione(proiezione);
                     break;
             };
-        }while(scelta!=0);
     }
 
     /**
@@ -785,7 +796,7 @@ public class CineMax {
         int mese = inputInt("Inserisci nuovo mese di nascita:", "\nInserimento non valido. Riprova:",1, 12);
         int anno = inputInt("Inserisci nuovo anno di nascita:", "\ninserimento non valido. Riprova:", 1900, Year.now().getValue()-1);
 
-        Data data=new Data(anno,giorno,mese);
+        Data data=new Data(anno,mese,giorno);
         utente.setDataNascita(data);
     }
 
@@ -882,10 +893,10 @@ public class CineMax {
      */
     public static void modificaEliminaPrenotazione(Prenotazione prenotazione,Cliente utente) throws NoSuchAlgorithmException {
         int risposta;
-        do {
             clearConsole();
-            System.out.println("Indice Codice prenotazione data   ora  titolo   genere    regista    anno  durata  eta minima  posti preso");
-            System.out.println(prenotazione.toInfoCliente());
+            System.out.println("CODICE          DATAORA             TITOLO                             GENERE            REGISTA                  ANNO      DURATA   ETA' MINIMA   COSTO TOTALE   POSTI PRESI");
+
+            System.out.println("  " + prenotazione.toInfoCliente());
             risposta = inputInt("1   Elimina\n2   Modifica\n0   Torna al menù principale","\nInserimento non valido. Riprova:",0,2);
             switch (risposta) {
                 case 1:
@@ -912,7 +923,6 @@ public class CineMax {
                     }
                     break;
             }
-        }while(risposta==2);
     }
 
     /**
@@ -1084,10 +1094,10 @@ public class CineMax {
     public static void cercaPerDate()
     {
         clearConsole();
-        int annoMin = inputInt("Inserisci l'anno della data minima:","\nInserimento non valido. Riprova:",1900, Year.now().getValue());
+        int annoMin = inputInt("Inserisci l'anno della data minima:","\nInserimento non valido. Riprova:",1900, 2126);
         int meseMin = inputInt("Inserisci il mese della data minima:","\nInserimento non valido. Riprova:",1,12);
         int giornoMin = inputInt("Inserisci il giorno della data minima:","\nInserimento non valido. Riprova:",1,31);
-        int annoMax = inputInt("Inserisci l'anno della data massima:","\nInserimento non valido. Riprova:",annoMin, Year.now().getValue());
+        int annoMax = inputInt("Inserisci l'anno della data massima:","\nInserimento non valido. Riprova:",annoMin, 2126);
         int meseMax;
         if (annoMax==annoMin)
             meseMax = inputInt("Inserisci il mese della data massima:","\nInserimento non valido. Riprova:",meseMin,12);
@@ -1126,11 +1136,22 @@ public class CineMax {
         int scelta;
         do {
             clearConsole();
-            System.out.println("Indice Codice prenotazione data   ora  titolo   genere    regista    anno  durata  eta minima  posti preso");
+            System.out.println("INDICE  CODICE          DATAORA             TITOLO                             GENERE            REGISTA                  ANNO      DURATA   ETA' MINIMA   COSTO TOTALE   POSTI PRESI");
+
             int i = 1;
+            String space="      ";
             for (Prenotazione p : prenotazioni) {
-                System.out.println(" " + i + "  " + p.toInfoCliente());
+                System.out.println("   " + i + space + p.toInfoCliente());
                 i++;
+                if (i == 10)
+                    space = "     ";
+                if (i == 100)
+                    space = "    ";
+                if (i == 1000)
+                    space = "   ";
+                if (i == 10000)
+                    space = "  ";
+
             }
             System.out.println();
             scelta = inputInt("Inserisci indice della prenotazione che vuoi vedere, 0 per tornare indietro.", "\nInserimento non valido. Riprova:", 0, prenotazioni.size());
@@ -1147,8 +1168,8 @@ public class CineMax {
     public static void visualizzaPrenotazione(Prenotazione p)
     {
         clearConsole();
-        System.out.println("Codice prenotazione    data  ora   titolo   genere   regista    anno   durata   età minima   costo   posti presi");
-        System.out.println(p.toInfoCliente());
+        System.out.println("CODICE          DATAORA             TITOLO                             GENERE            REGISTA                  ANNO      DURATA   ETA' MINIMA   COSTO TOTALE   POSTI PRESI");
+        System.out.println("  " + p.toInfoCliente());
         inputInt("\nInserisci 0 per tornare indietro.","\nDevi inserire 0 se vuoi tornare indietro.",0,0);
     }
 }

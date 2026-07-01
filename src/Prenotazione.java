@@ -207,14 +207,32 @@ public class Prenotazione {
 
 
 
+        String bufferCodice;
+        if(getCodicePrenotazione()<10)
+            bufferCodice="    ";
+        else {
+            if (getCodicePrenotazione() <100) {
+                bufferCodice = "   ";
+            }
+            else {
+                if (getCodicePrenotazione() < 1000) {
+                    bufferCodice = "  ";
+                } else {
+                    if (getCodicePrenotazione() < 10000) {
+                        bufferCodice = " ";
+                    }
+                    else
+                        bufferCodice="";
+                }
+            }
+        }
 
 
 
 
 
 
-
-        return String.format(getCodicePrenotazione()+  "       " +getDataOra()+"       " + titolo + "   " + genere + "   " + regista + "   " + getFilm().annoUscita() + "      " + getFilm().getDurata() + bufferDurata + "          " + getFilm().getVmeta()  + bufferEta+ "            " +costoTot+ bufferCosto + "     " + posti );
+        return String.format(getCodicePrenotazione()+ bufferCodice +  "   " +getDataOra()+"       " + titolo + "   " + genere + "   " + regista + "   " + getFilm().annoUscita() + "      " + getFilm().getDurata() + bufferDurata + "          " + getFilm().getVmeta()  + bufferEta+ "            " +costoTot+ bufferCosto + "     " + posti );
     }
 
 }
