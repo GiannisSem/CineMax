@@ -700,10 +700,10 @@ public class CineMax {
                     String passwordRouloInserita;
                     do {
                         passwordRouloInserita = inputString("Inserisci la password per poter scegliere il ruolo o 0 per tornare indietro.", "\ninserimento non valido. Riprova:", ";");
-                        if (!passwordRouloInserita.equals("0") && !Security.checkPassword(passwordRuolo, passwordRouloInserita))
+                        if (!passwordRouloInserita.equals("0") && !Security.checkPassword(passwordRouloInserita, passwordRuolo))
                             System.out.println("\nPassword inserita è sbagliata. Riprova:");
                     }
-                    while (!passwordRouloInserita.equals("0") && !Security.checkPassword(passwordRuolo, passwordRouloInserita));
+                    while (!passwordRouloInserita.equals("0") && !Security.checkPassword(passwordRouloInserita, passwordRuolo));
                     if (passwordRouloInserita.equals("0"))
                         ritorna = true;
                     else {
