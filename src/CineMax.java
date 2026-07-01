@@ -55,6 +55,7 @@ public class CineMax {
         int scelta;
         do {
             clearConsole();
+            System.out.println("Ciao " + utente.getNome());
             scelta = inputInt("1   Cerca proiezione\n2   Visualizzare prenotazioni\n3   Profilo\n0   Logout","\nInserimento non valido. Riprova:",0,3);
             switch (scelta)
             {
@@ -82,6 +83,7 @@ public class CineMax {
         int scelta;
         do {
             clearConsole();
+            System.out.println("Ciao " + proiezionista.getNome());
             scelta = inputInt("1   Inserire proiezione\n2   Cerca proiezione\n3   Profilo\n0   Logout","\nInserimento non valido. Riprova:",0,3);
             switch (scelta)
             {
@@ -213,6 +215,7 @@ public class CineMax {
         int scelta;
         do {
             clearConsole();
+            System.out.println("Ciao " + bigliettaio.getNome());
             scelta=inputInt("1   Visualizza prenotazioni odierne\n2   Cerca prenotazioni\n3   Profilo\n0   Logout","\nInserimento non valido. Riprova:",0,3);
             switch (scelta)
             {
@@ -358,7 +361,7 @@ public class CineMax {
         do {
             clearConsole();
 
-            System.out.println("INDICE      DATAORA                   TITOLO               GENERE            REGISTA                  ANNO     DURATA    ETA' MINIMA   COSTO       NUMERO POSTI LIBERI");
+            System.out.println("INDICE      DATAORA                   TITOLO                         GENERE            REGISTA                  ANNO     DURATA    ETA' MINIMA   COSTO       NUMERO POSTI LIBERI");
             int i=1;
             String space="      ";
             for (Proiezione p: lista)
@@ -403,8 +406,9 @@ public class CineMax {
         Scanner scanner = new Scanner(System.in);
         System.out.println(proiezione.toInfo1()+"\n");
         proiezione.getSala().stampa();
-
-        if(proiezione.getSala().postiDisponibili()!=0) {
+        if (Data.getEta(utente.getDataNascita()) < proiezione.getFilm().getVmeta())
+            System.out.println("\nSei troppo piccolo per questo film, devi avere almeno " + proiezione.getFilm().getVmeta() + " anni");
+        else if(proiezione.getSala().postiDisponibili()!=0) {
             int scelta = inputInt((String.format("Numero posti liberi: " + proiezione.getSala().postiDisponibili() + "\nInserisci quanti posti vuoi prenotare, 0 per tornare indietro")), "\nPosti liberi sono insufficienti:", 0, proiezione.getSala().postiDisponibili());
             if (scelta != 0) {
                 char lettera;
@@ -426,7 +430,7 @@ public class CineMax {
 
                         lettera = posto.charAt(0);
                         if (numero < 1 || numero > 20 || lettera < 'A' || lettera > 'J') {
-                            System.out.println("\nInserimento del posto non valido. Riprova");
+                            System.out.println("\nInserimento del posto non valido. Riprova:");
                             ritest = true;
                         } else {
                             if (!proiezione.getSala().isPostoDisponibile(lettera, numero)) {
@@ -435,20 +439,23 @@ public class CineMax {
                             }
                         }
 
+                        for (int j = 0; j < i; j++) {
+                            if (posti[j].equals(lettera + Integer.toString(numero))) {
+                                ritest = true;
+                                System.out.println("\nIl posto scelto è già stato selezionato. Riprova:");
+                                break;
+                            }
+                        }
+
                     } while (ritest);
                     posti[i] = lettera + Integer.toString(numero);
                 }
-                if (Data.getEta(utente.getDataNascita()) >= proiezione.getFilm().getVmeta()){
-                    CineMaxManager.inserisciPrenotazione(utente, proiezione, posti);
-                    System.out.println("\nHai prenotato i posti");
-                } else {
-                    System.out.println("\nSei troppo piccolo per questo film, devi avere almeno" + proiezione.getFilm().getVmeta() + " anni");
-                }
+                CineMaxManager.inserisciPrenotazione(utente, proiezione, posti);
+                System.out.println("\nHai prenotato i posti");
             }
         } else
             System.out.println("\nNessun posto disponibile, la proiezione è piena.");
         inputInt("premere 0 per tornare indietro", "\ninserimento non valido. Riprova:",0,0);
-
     }
 
 
@@ -629,7 +636,6 @@ public class CineMax {
             }
             else
             {
-                System.out.println("Ciao " + utente.getNome());
                 if(utente.getRuolo().equals("CLIENTE"))
                     utenteRegistrato((Cliente) utente);
                 else if(utente.getRuolo().equals("PROIEZIONISTA"))
@@ -856,7 +862,7 @@ public class CineMax {
                     System.out.println(" " + i + "  " + p.toInfoCliente());
                     i++;
                 }
-                System.out.println("");
+                System.out.println();
                 scelta = inputInt("Inserisci l'indice di quale vuoi modificare/eliminare o 0 per tornare al menù principale.", "\nInserimento non valido riprova:", 0, prenotazioni.size());
                 if (scelta != 0) {
                     Prenotazione p = (Prenotazione) prenotazioni.toArray()[scelta - 1];
@@ -866,7 +872,7 @@ public class CineMax {
             else
             {
                 System.out.println("Nessuna prenotazione.");
-                inputInt("premere 0 per tornare al menù:", "\nInserimento non valido. Riprova:", 0, 0);
+                scelta = inputInt("premere 0 per tornare al menù:", "\nInserimento non valido. Riprova:", 0, 0);
             }
 
         }while(scelta!=0);
@@ -1124,7 +1130,7 @@ public class CineMax {
                 System.out.println(" " + i + "  " + p.toInfoCliente());
                 i++;
             }
-            System.out.println("");
+            System.out.println();
             scelta = inputInt("Inserisci indice della prenotazione che vuoi vedere, 0 per tornare indietro.", "\nInserimento non valido. Riprova:", 0, prenotazioni.size());
 
             if (scelta != 0)

@@ -133,12 +133,12 @@ public class Proiezione implements Serializable, Comparable<Proiezione> {
     }
 
     public String toInfo2(){
-        String plus="                     ";
+        String plus="                               ";
         String titolo=film.getTitolo();
-        if(titolo.length()>19)
-            titolo=titolo.substring(0,19)+"...";
+        if(titolo.length()>29)
+            titolo=titolo.substring(0,29)+"...";
         else
-            titolo=(titolo+plus).substring(0,22);
+            titolo=(titolo+plus).substring(0,32);
 
 
         String genere=film.getGenere();

@@ -154,7 +154,7 @@ public class Prenotazione {
     }
 
     /**
-     * TODO: Dario per favore cambia questo toinfo orribile, dagli tu una descrizione...
+     * Questo metodo crea la stringa associata all'istanza da mostrare a schermo.
      * @return stringa associata all'istanza da mostrare a schermo.
      */
     public String toInfoCliente()
