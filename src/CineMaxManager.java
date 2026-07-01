@@ -503,7 +503,7 @@ public class CineMaxManager {
         List<Prenotazione> lista = new ArrayList<>();
 
         for (Prenotazione p : listaPrenotazioni){
-            if (p.getFilm().getTitolo().equals(titolo))
+            if (p.getFilm().getTitolo().equalsIgnoreCase(titolo))
                 lista.add(p);
         }
 
