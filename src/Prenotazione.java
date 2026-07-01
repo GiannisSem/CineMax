@@ -159,7 +159,62 @@ public class Prenotazione {
      */
     public String toInfoCliente()
     {
-        return String.format(getCodicePrenotazione()+  "    " +getDataOra()+"    "+proiezione.getFilm().getTitolo()+  "    " +proiezione.getFilm().getGenere()+  "    " +proiezione.getFilm().getRegista()+  "    " +proiezione.getFilm().annoUscita()+  "    " +proiezione.getFilm().getDurata()+  "    " +proiezione.getFilm().getVmeta()+  "    " +proiezione.getCostoBiglietto()+  "    " + posti );
+
+        String plus="                               ";
+        String titolo=proiezione.getFilm().getTitolo();
+        if(titolo.length()>29)
+            titolo=titolo.substring(0,29)+"...";
+        else
+            titolo=(titolo+plus).substring(0,32);
+
+
+        String genere=proiezione.getFilm().getGenere();
+        if(genere.length()>12)
+            genere=genere.substring(0,12)+"...";
+        else
+            genere=(genere+plus).substring(0,15);
+
+        String regista=proiezione.getFilm().getRegista();
+        if(regista.length()>19)
+            regista=regista.substring(0,19)+"...";
+        else
+            regista=(regista+plus).substring(0,22);
+
+        String bufferDurata;
+        if(proiezione.getFilm().getDurata()<10)
+            bufferDurata="  ";
+        else {
+            if (proiezione.getFilm().getDurata() <100)
+                bufferDurata = " ";
+            else
+                bufferDurata = "";
+        }
+        String bufferEta=" ";
+        if(proiezione.getFilm().getVmeta()>9)
+            bufferEta="";
+
+        String bufferCosto="      ";
+
+        double costoTot=getPrezzo()*getPosti().length;
+        if(costoTot<10)
+            bufferCosto="   ";
+        else if(costoTot<100)
+            bufferCosto="  ";
+        else if(costoTot<1000)
+            bufferCosto=" ";
+        else
+            bufferCosto="";
+
+
+
+
+
+
+
+
+
+
+        return String.format(getCodicePrenotazione()+  "       " +getDataOra()+"       " + titolo + "   " + genere + "   " + regista + "   " + getFilm().annoUscita() + "      " + getFilm().getDurata() + bufferDurata + "          " + getFilm().getVmeta()  + bufferEta+ "            " +costoTot+ bufferCosto + "     " + posti );
     }
 
 }

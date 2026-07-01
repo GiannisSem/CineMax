@@ -1,4 +1,3 @@
-import java.io.Console;
 import java.security.NoSuchAlgorithmException;
 import java.time.Year;
 import java.util.List;
@@ -10,12 +9,9 @@ public class CineMax {
 
     /**
      * metodo main che contiene il menù dell'utente non registrato.
-     * @param args
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException  se l'algoritmo di cifratura della password non è disponibile.
      */
-    public static void main(String[] args) throws NoSuchAlgorithmException {
-
-        Scanner scanner = new Scanner(System.in);
+    public static void main() throws NoSuchAlgorithmException {
         int scelta;
         do {
             clearConsole();
@@ -37,6 +33,9 @@ public class CineMax {
 
     }
 
+    /**
+     * permette di creare 50 righe vuote cosi da dare l'illusione che si sia pulita la schermata
+     */
     public static void clearConsole() {
         for (int i = 0; i < 50; i++) {
             System.out.println();
@@ -48,14 +47,13 @@ public class CineMax {
     /**
      * questo metodo gestisce il menù del cliente registrato.
      * @param utente è l'utente cliente che è loggato.
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException  se l'algoritmo di cifratura della password non è disponibile.
      */
     public static void utenteRegistrato(Cliente utente) throws NoSuchAlgorithmException {
-        Scanner scanner = new Scanner(System.in);
         int scelta;
         do {
             clearConsole();
-            System.out.println("Ciao " + utente.getNome());
+            System.out.println("Ciao " + utente.getNome() + "!");
             scelta = inputInt("1   Cerca proiezione\n2   Visualizzare prenotazioni\n3   Profilo\n0   Logout","\nInserimento non valido. Riprova:",0,3);
             switch (scelta)
             {
@@ -76,10 +74,9 @@ public class CineMax {
     /**
      * questo metodo gestisce il menù del proiezionista
      * @param proiezionista è utente proiezionista che è loggato.
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException  se l'algoritmo di cifratura della password non è disponibile.
      */
     public static void proiezionistaRegistrato(Proiezionista proiezionista) throws NoSuchAlgorithmException {
-        Scanner scanner = new Scanner(System.in);
         int scelta;
         do {
             clearConsole();
@@ -175,7 +172,7 @@ public class CineMax {
             if (genere.equals("0")) {
                 return null;
             }
-            String regista = inputString("Inserisci il regista del film:o", "\nInserimento non valido. Riprova:", ";");
+            String regista = inputString("Inserisci il regista del film:", "\nInserimento non valido. Riprova:", ";");
             int anno = inputInt("Inserisci l'anno del film:", "\nInserimento non valido. Riprova:", 1800, Year.now().getValue());
             int durata = inputInt("Inserisci la durata del film in minuti:", "\nInserimento non valido. Riprova:", 1, 1000);
             int eta = inputInt("Inserisci l'età minima di vision per il film:", "\nInserimento non valido. Riprova:", 0, 18);
@@ -208,10 +205,9 @@ public class CineMax {
     /**
      * questo metodo gestisce il menù dei bigliettai.
      * @param bigliettaio è l'utente bigliettaio che è loggato.
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException  se l'algoritmo di cifratura della password non è disponibile.
      */
     public static void bigliettaioRegistrato(Bigliettaio bigliettaio) throws NoSuchAlgorithmException {
-        Scanner scanner = new Scanner(System.in);
         int scelta;
         do {
             clearConsole();
@@ -222,8 +218,10 @@ public class CineMax {
                 case 1:
                     if(!CineMaxManager.cercaPrenotazioniOggi().isEmpty())
                         visualizzaPrenotazioni(CineMaxManager.cercaPrenotazioniOggi());
-                    else
+                    else {
                         System.out.println("\nNon ci sono prenotazioni oggi.");
+                        inputInt("premere 0 per ritornare al menù:", "\ninserimento non valido. Riprova:",0,0);
+                    }
                     break;
                 case 2:
                     cercaTipoPrenotazione();
@@ -242,9 +240,8 @@ public class CineMax {
     /**
      * questo metodo permette di cercare una proiezione per titolo, genere, intervallo date e costo biglietto.
      * @param utente è l'utente loggato.
-     * @throws NoSuchAlgorithmException
      */
-    public static void cercaProiezione(Utente utente) throws NoSuchAlgorithmException {
+    public static void cercaProiezione(Utente utente){
         clearConsole();
         String data;
         Scanner scanner = new Scanner(System.in);
@@ -281,11 +278,11 @@ public class CineMax {
         }while (!(data.equals("S") || data.equals("N")));
         if(data.equals("S"))
         {
-            int annoMin = inputInt("Inserisci l'anno della data minima:","\nInserimento non valido. Riprova:",1900, Year.now().getValue());
+            int annoMin = inputInt("Inserisci l'anno della data minima:","\nInserimento non valido. Riprova:",Year.now().getValue(), 2126);
             int meseMin = inputInt("Inserisci il mese della data minima:","\nInserimento non valido. Riprova:",1,12);
             int giornoMin = inputInt("Inserisci il giorno della data minima:","\nInserimento non valido. Riprova:",1,31);
 
-            int annoMax = inputInt("Inserisci l'anno della data massima:","\nInserimento non valido. Riprova:",annoMin, Year.now().getValue());
+            int annoMax = inputInt("Inserisci l'anno della data massima:","\nInserimento non valido. Riprova:",annoMin, 2126);
             int meseMax;
             if (annoMax==annoMin)
                 meseMax = inputInt("Inserisci il mese della data massima:","\nInserimento non valido. Riprova:",meseMin,12);
@@ -301,6 +298,8 @@ public class CineMax {
             Data dataMax = new Data(annoMax,meseMax,giornoMax);
             lista=CineMaxManager.cercaProiezioni_Date(lista,dataMin,dataMax);
         }
+        else
+            lista=CineMaxManager.cercaProiezioni_Date(lista,Data.oggi.toString(),"2126-01-01");
 
         do{
             System.out.println("\nVuoi cercare per l'intervallo di costo del biglietto? (S o N)");
@@ -353,10 +352,8 @@ public class CineMax {
      * questo metodo permette di visualizzare una lista di proiezioni e scegliere in quale entrare.
      * @param utente è l'utente loggato.
      * @param lista è la lista di proiezioni da visualizzare.
-     * @throws NoSuchAlgorithmException
      */
-    public static void visualizzaProiezioni(Utente utente, List<Proiezione> lista) throws NoSuchAlgorithmException {
-        Scanner scanner = new Scanner(System.in);
+    public static void visualizzaProiezioni(Utente utente, List<Proiezione> lista){
         int risposta;
         do {
             clearConsole();
@@ -399,9 +396,8 @@ public class CineMax {
      * questo metodo permette di visualizzare la proiezione e di prenotare i posti.
      * @param proiezione è la proiezione da visualizzare.
      * @param utente è l'utente cliente loggato.
-     * @throws NoSuchAlgorithmException
      */
-    public static void visualizzaProiezioneCliente(Proiezione proiezione,Cliente utente) throws NoSuchAlgorithmException {
+    public static void visualizzaProiezioneCliente(Proiezione proiezione,Cliente utente){
         clearConsole();
         Scanner scanner = new Scanner(System.in);
         System.out.println(proiezione.toInfo1()+"\n");
@@ -459,7 +455,7 @@ public class CineMax {
     }
 
 
-    public static void visualizzaProiezioneUtenteNR(Proiezione proiezione) throws NoSuchAlgorithmException {
+    public static void visualizzaProiezioneUtenteNR(Proiezione proiezione){
         clearConsole();
         System.out.println(proiezione.toInfo1()+"\n");
         System.out.println("Posti disponibili:   " + proiezione.getSala().postiDisponibili() + "\n");
@@ -474,11 +470,8 @@ public class CineMax {
     /**
      * questo metodo visualizza la proiezione e gestisce un menù per eliminazione e modifica della proiezione.
      * @param proiezione è la proiezione da visualizzare.
-     * @throws NoSuchAlgorithmException
      */
-    public static void visualizzaProiezioneProiezionista(Proiezione proiezione) throws NoSuchAlgorithmException {
-
-        Scanner scanner = new Scanner(System.in);
+    public static void visualizzaProiezioneProiezionista(Proiezione proiezione){
         int scelta;
         do {
             clearConsole();
@@ -501,9 +494,8 @@ public class CineMax {
     /**
      * questo metodo permette di eliminare la proiezione se nessuno ha prenotato un posto nella proiezione.
      * @param proiezione è la proiezione che si vuole eliminare.
-     * @throws NoSuchAlgorithmException
      */
-    public static void eliminaProiezione(Proiezione proiezione) throws NoSuchAlgorithmException {
+    public static void eliminaProiezione(Proiezione proiezione) {
 
         if(proiezione.getSala().postiOccupati()==0) {
             if(CineMaxManager.eliminaProiezione(proiezione.getDataOra()))
@@ -519,14 +511,12 @@ public class CineMax {
     /**
      * questo metodo permette di modificare la data e ora della proiezione.
      * @param proiezione è la proiezione alla quale si desidera cambiare data e ora.
-     * @throws NoSuchAlgorithmException
      */
-    public static void modificaProiezione(Proiezione proiezione) throws NoSuchAlgorithmException {
-        Scanner scanner = new Scanner(System.in);
+    public static void modificaProiezione(Proiezione proiezione){
         clearConsole();
         if(proiezione.getSala().postiOccupati()==0) {
 
-            int anno = inputInt("Inserisci nuovo anno:", "\ninserimento non valido. Riprova:", 1900, Year.now().getValue());
+            int anno = inputInt("Inserisci nuovo anno:", "\ninserimento non valido. Riprova:", Year.now().getValue(),2126);
             int mese = inputInt("Inserisci nuovo mese:", "\nInserimento non valido. Riprova:",1, 12);
             int giorno = inputInt("Inserisci nuovo giorno:","\nInserimento non valido. Riprova:",1,31);
             int ora = inputInt("Inserisci nuova ora:","\nInserimento non valido. Riprova:",0,23);
@@ -610,7 +600,7 @@ public class CineMax {
 
     /**
      * questo metodo permette di loggare.
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException  se l'algoritmo di cifratura della password non è disponibile.
      */
     public static void login() throws NoSuchAlgorithmException {
         clearConsole();
@@ -649,7 +639,7 @@ public class CineMax {
 
     /**
      * questo metodo permette la registrazione di un nuovo utente.
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException se l'algoritmo di cifratura della password non è disponibile.
      */
     public static void registrazioneUtente() throws NoSuchAlgorithmException {
         Scanner scanner = new Scanner(System.in);
@@ -758,7 +748,7 @@ public class CineMax {
     /**
      * questo metodo visualizza i dati del profilo dell'utente e gestisce il menù per la modifica della password, dell'username, del domicilio e della data di nascita.
      * @param utente è l'utente loggato.
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException se l'algoritmo di cifratura della password non è disponibile.
      */
     public static void profilo(Utente utente) throws NoSuchAlgorithmException {
 
@@ -773,7 +763,7 @@ public class CineMax {
                     modificaPassword(utente);
                     break;
                 case 2:
-                    utente=modificaUsername(utente);
+                    modificaUsername(utente);
                     break;
                 case 3:
                     modificaDomicilio(utente);
@@ -788,9 +778,8 @@ public class CineMax {
     /**
      * questo metodo permette di modificare la data di nascita dell'utente.
      * @param utente è l'utente a cui si vuole cambiare la data di nascita.
-     * @throws NoSuchAlgorithmException
      */
-    static public void modificaDataNascita(Utente utente) throws NoSuchAlgorithmException {
+    static public void modificaDataNascita(Utente utente){
         clearConsole();
         int giorno = inputInt("Inserisci nuovo giorno di nascita:","\nInserimento non valido. Riprova:",1,31);
         int mese = inputInt("Inserisci nuovo mese di nascita:", "\nInserimento non valido. Riprova:",1, 12);
@@ -803,7 +792,7 @@ public class CineMax {
     /**
      * questo metodo permette di modificare la password dell'utente.
      * @param utente è l'utente a cui si vuole cambiare la password.
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException se l'algoritmo di cifratura della password non è disponibile.
      */
     static public void modificaPassword(Utente utente) throws NoSuchAlgorithmException {
         clearConsole();
@@ -828,9 +817,8 @@ public class CineMax {
     /**
      * questo metodo permette di modificare l'username dell'utente.
      * @param utente è l'utente a cui si vuole cambiare l'username.
-     * @throws NoSuchAlgorithmException
      */
-    static public Utente modificaUsername(Utente utente) throws NoSuchAlgorithmException {
+    static public void modificaUsername(Utente utente){
 
         while (true){
             clearConsole();
@@ -840,13 +828,12 @@ public class CineMax {
             System.out.println("Username già usato");
             inputInt("premere 0 per riprovare:", "\ninserimento non valido. Riprova:", 0, 0);
         }
-        return utente;
     }
 
     /**
      * questo metodo permette di visualizzare le prenotazioni attive di un utente cliente
      * @param utente è l'utente cliente loggato.
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException se l'algoritmo di cifratura della password non è disponibile.
      */
     public static void visualizzaPrenotazioneCliente(Cliente utente) throws NoSuchAlgorithmException {
         int scelta=0;
@@ -855,12 +842,21 @@ public class CineMax {
 
             List<Prenotazione> prenotazioni=CineMaxManager.getPrenotazioniClienteAttive(utente);
             if(!prenotazioni.isEmpty()) {
-                System.out.println("Indice Codice prenotazione data   ora  titolo   genere    regista    anno  durata  eta minima  posti preso");
+                System.out.println("INDICE  CODICE          DATAORA             TITOLO                             GENERE            REGISTA                  ANNO      DURATA   ETA' MINIMA   COSTO TOTALE   POSTI PRESI");
 
                 int i = 1;
+                String space="      ";
                 for (Prenotazione p : prenotazioni) {
-                    System.out.println(" " + i + "  " + p.toInfoCliente());
+                    System.out.println("   " + i + space + p.toInfoCliente());
                     i++;
+                    if(i==10)
+                        space="     ";
+                    if(i==100)
+                        space="    ";
+                    if(i==1000)
+                        space="   ";
+                    if(i==10000)
+                        space="  ";
                 }
                 System.out.println();
                 scelta = inputInt("Inserisci l'indice di quale vuoi modificare/eliminare o 0 per tornare al menù principale.", "\nInserimento non valido riprova:", 0, prenotazioni.size());
@@ -882,7 +878,7 @@ public class CineMax {
      * questo metodo visualizza una prenotazione e permette di eliminarla e di modificarla.
      * @param prenotazione è la prenotazione che si vuole eliminare o modificare.
      * @param utente è l'utente loggato che ha la prenotazione.
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException se l'algoritmo di cifratura della password non è disponibile.
      */
     public static void modificaEliminaPrenotazione(Prenotazione prenotazione,Cliente utente) throws NoSuchAlgorithmException {
         int risposta;
@@ -890,7 +886,7 @@ public class CineMax {
             clearConsole();
             System.out.println("Indice Codice prenotazione data   ora  titolo   genere    regista    anno  durata  eta minima  posti preso");
             System.out.println(prenotazione.toInfoCliente());
-            risposta = inputInt("1  elimina\n2   Modifica\n0   Torna al menù principale","\nInserimento non valido. Riprova:",0,2);
+            risposta = inputInt("1   Elimina\n2   Modifica\n0   Torna al menù principale","\nInserimento non valido. Riprova:",0,2);
             switch (risposta) {
                 case 1:
                     if(CineMaxManager.eliminaPrenotazione(prenotazione.getCodicePrenotazione()))
@@ -903,11 +899,17 @@ public class CineMax {
                     int c = CineMaxManager.getPrenotazioniCliente(utente).size();
                     List<Proiezione> lista=CineMaxManager.getListaProiezioni();
                     lista=CineMaxManager.cercaProiezioni_Titolo(lista,prenotazione.getProiezione().getFilm().getTitolo());
-                    String dataM=Data.oggi.getAnno()+"-"+(Data.oggi.getMese()+1)+"-"+Data.oggi.getGiorno();
-                    lista=CineMaxManager.cercaProiezioni_Date(lista,Data.oggi.toString(),dataM);
-                    visualizzaProiezioni(utente,lista);
-                    if(c!=CineMaxManager.getPrenotazioniCliente(utente).size())
-                        CineMaxManager.eliminaPrenotazione(prenotazione.getCodicePrenotazione());
+                    Data dataM= new Data(2126,1,1);
+                    lista=CineMaxManager.cercaProiezioni_Date(lista,Data.oggi.toString(),dataM.toString());
+                    if(lista.isEmpty()) {
+                        System.out.println("\nNon ci sono proiezioni con queste richieste.");
+                        inputInt("premere 0 per tornare al menù", "\ninserimento non valido. Riprova:",0,0);
+                    }
+                    else {
+                        visualizzaProiezioni(utente, lista);
+                        if (c != CineMaxManager.getPrenotazioniCliente(utente).size())
+                            CineMaxManager.eliminaPrenotazione(prenotazione.getCodicePrenotazione());
+                    }
                     break;
             }
         }while(risposta==2);
@@ -982,10 +984,10 @@ public class CineMax {
                     if(!omonimi.isEmpty())
                     {
                         if(omonimi.size()==1) {
-                            List<Prenotazione> l = CineMaxManager.getPrenotazioniClienteAttive((Cliente) omonimi.get(0));
+                            List<Prenotazione> l = CineMaxManager.getPrenotazioniClienteAttive((Cliente) omonimi.getFirst());
                             if (!l.isEmpty()) {
                                 if (l.size() == 1)
-                                    visualizzaPrenotazione(l.get(0));
+                                    visualizzaPrenotazione(l.getFirst());
                                 else
                                     visualizzaPrenotazioni(l);
                             } else {
@@ -1033,7 +1035,7 @@ public class CineMax {
                 List<Prenotazione> l = CineMaxManager.getPrenotazioniClienteAttive((Cliente) utenti.get(risposta-1));
                 if (!l.isEmpty()) {
                     if (l.size() == 1)
-                        visualizzaPrenotazione(l.get(0));
+                        visualizzaPrenotazione(l.getFirst());
                     else
                         visualizzaPrenotazioni(l);
                 } else {
@@ -1062,7 +1064,7 @@ public class CineMax {
                 List<Prenotazione> l=CineMaxManager.cercaPrenotazioni(titolo);
                 if(!l.isEmpty()) {
                     if (l.size() == 1)
-                        visualizzaPrenotazione(l.get(0));
+                        visualizzaPrenotazione(l.getFirst());
                     else
                         visualizzaPrenotazioni(l);
                 }
@@ -1104,7 +1106,7 @@ public class CineMax {
         if(!l.isEmpty())
         {
             if(l.size()==1)
-                visualizzaPrenotazione(l.get(0));
+                visualizzaPrenotazione(l.getFirst());
             else
                 visualizzaPrenotazioni(l);
         }
